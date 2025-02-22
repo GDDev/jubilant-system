@@ -1,2 +1,1 @@
-# jubilant-system
-Internal use fitness social media. That's all I'm going to say.
+## Here to connect nutrition and PE students with normal people.
