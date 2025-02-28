@@ -2,8 +2,21 @@
 {% block title %}404 - Page not found{% endblock %}
 {% block navbar %}{% endblock%}
 {% block content %}
-<div>
-    <span>{{ quote }}</span>
-    <span> - {{ author }}, {{ year }}</span>
-</div>
+<body class="text-bg-dark">
+    <div class="d-flex flex-column vw-100 justify-content-between text-center align-items-center pt-5 pb-5">
+        <div class="header d-flex flex-column ">
+            <h1>404</h1>
+            <h2>Page not found</h2><br>
+        </div>
+
+        <div class="quote">
+            <p class="lead d-flex flex-column text-break">
+                <b>"{{ quote.quote }}"</b>
+                - {{ quote.author }}, {{ quote.year }}
+            </p>
+        </div>
+
+        <span class="footer">I'm scared, please take me <a href="{{ url_for('get_index') }}" class="text-decoration-none">home</a></span>
+    </div>
+</body>
 {% endblock %}
