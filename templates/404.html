@@ -1,22 +1,29 @@
-{% extends "layout.html" %}
-{% block title %}404 - Page not found{% endblock %}
-{% block navbar %}{% endblock%}
-{% block content %}
-<body class="text-bg-dark">
-    <div class="d-flex flex-column vw-100 justify-content-between text-center align-items-center pt-5 pb-5">
-        <div class="header d-flex flex-column ">
-            <h1>404</h1>
-            <h2>Page not found</h2><br>
-        </div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page not found</title>
 
-        <div class="quote">
-            <p class="lead d-flex flex-column text-break">
-                <b>"{{ quote.quote }}"</b>
-                - {{ quote.author }}, {{ quote.year }}
-            </p>
-        </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="text-bg-dark container-fluid d-flex flex-row vh-100 w-100 p-4">
+        <div class="d-flex flex-column h-100 w-100 justify-content-center align-items-center text-center">
+            <div class="header d-flex flex-column">
+                <h1>404</h1>
+                <h2>Page not found</h2><br>
+            </div>
 
-        <span class="footer">I'm scared, please take me <a href="{{ url_for('get_index') }}" class="text-decoration-none">home</a></span>
+            <div class="quote">
+                <p class="lead d-flex flex-column text-break">
+                    <b>"{{ quote.quote }}"</b>
+                    - {{ quote.author }}, {{ quote.year }}
+                </p>
+            </div>
+
+            <span class="footer">I'm scared, please take me <a href="{{ url_for('get_index') }}" class="text-decoration-none">home</a></span>
+        </div>
     </div>
 </body>
-{% endblock %}
+</html>
