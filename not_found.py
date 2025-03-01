@@ -1,6 +1,8 @@
 from random import choice, randint
 from datetime import date
 
+from numpy import random as rd
+
 real_people = [
     'Albert Einstein',
     'Cleopatra',
@@ -39,7 +41,7 @@ def random_year():
 
 def choose_real_person_funny_quote() -> dict:
     return {
-        'quote': choice(funny_quotes),
+        'quote': rd.choice(funny_quotes, replace=False),
         'author': choice(real_people),
         'year': random_year()
     }
@@ -47,7 +49,7 @@ def choose_real_person_funny_quote() -> dict:
 
 def choose_character_real_quote() -> dict:
     return {
-        'quote': choice(real_quotes),
+        'quote': rd.choice(real_quotes, replace=False),
         'author': choice(characters),
         'year': random_year()
     }
