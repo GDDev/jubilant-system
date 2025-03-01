@@ -1,8 +1,11 @@
 import requests
-from flask import Flask, render_template, jsonify
-from not_found import choose_quote
+from flask import Flask, render_template
+from flask_restful import Api
+from api_quotes import NotFoundPageQuoteApi
+
 
 app = Flask(__name__)
+api = Api(app)
 
 
 @app.route('/', methods=['GET',])
@@ -30,13 +33,14 @@ def get_notifications():
     return render_template('notifications.html')
 
 
-@app.route('/generate_quote', methods=['GET',])
-def get_quote():
-    return jsonify(choose_quote())
-
-
 @app.errorhandler(404)
 def get_404(e):
-    response = requests.get('http://127.0.0.1:5000/generate_quote')
+    response = requests.get('http://127.0.0.1:8000/api/generate_quote')
     quote = response.json()
     return render_template('404.html', quote=quote)
+
+
+api.add_resource(NotFoundPageQuoteApi, '/api/generate_quote')
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=8000, debug=True)
