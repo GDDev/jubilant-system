@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, make_response
 from not_found import choose_quote
 
 app = Flask(__name__)
@@ -32,7 +32,10 @@ def get_notifications():
 
 @app.route('/generate_quote', methods=['GET',])
 def get_quote():
-    return jsonify(choose_quote())
+    quote = choose_quote()
+    response = make_response(jsonify(quote))
+    response.set_cookie('used_quote', quote['quote'])
+    return response
 
 
 @app.errorhandler(404)
