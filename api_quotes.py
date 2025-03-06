@@ -11,5 +11,8 @@ class NotFoundPageQuoteApi(Resource):
     def get(self):
         quote = choose_quote()
         response = make_response(jsonify(quote))
-        response.set_cookie('used_quote', quote['quote'])
+        response.set_cookie(
+            'last_quote',
+            quote['quote'],
+        )
         return response

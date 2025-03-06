@@ -28,17 +28,17 @@
             </div>
             <ul class="nav nav-pills flex-column align-items-start w-100 mt-3">
                 <li class="nav-item w-100">
-                    <a href="{{ url_for('get_index') }}" class="nav-link px-1 {% if request.path == url_for('get_index') %}active{% endif %}" aria-current="page">
+                    <a href="{{ url_for('home') }}" class="nav-link px-1 {% if request.path == url_for('home') %}active{% endif %}" aria-current="page">
                         <i class="bi bi-house"></i> Feed
                     </a>
                 </li>
                 <li class="nav-item w-100">
-                    <a href="{{ url_for('get_user_diets') }}" class="nav-link px-1 {% if request.path == url_for('get_user_diets') %}active{% endif %}" aria-current="page">
+                    <a href="{{ url_for('user_diets') }}" class="nav-link px-1 {% if request.path == url_for('user_diets') %}active{% endif %}" aria-current="page">
                         <i class="fa-solid fa-clipboard-list"></i> Dietas
                     </a>
                 </li>
                 <li class="nav-item w-100">
-                    <a href="{{ url_for('get_user_workouts') }}" class="nav-link px-1 {% if request.path == url_for('get_user_workouts') %}active{% endif %}" aria-current="page">
+                    <a href="{{ url_for('user_workouts') }}" class="nav-link px-1 {% if request.path == url_for('user_workouts') %}active{% endif %}" aria-current="page">
                         <i class="fa-solid fa-dumbbell"></i> Treinos
                     </a>
                 </li>
@@ -48,12 +48,12 @@
                     </a>
                 </li> -->
                 <li class="nav-item w-100">
-                    <a href="{{ url_for('get_chats') }}" class="nav-link px-1 {% if request.path == url_for('get_chats') %}active{% endif %}" aria-current="page">
+                    <a href="{{ url_for('chats') }}" class="nav-link px-1 {% if request.path == url_for('chats') %}active{% endif %}" aria-current="page">
                         <i class="bi bi-chat-dots"></i> Conversas
                     </a>
                 </li>
                 <li class="nav-item w-100">
-                    <a href="{{ url_for('get_notifications') }}" class="nav-link px-1 {% if request.path == url_for('get_notifications') %}active{% endif %}" aria-current="page">
+                    <a href="{{ url_for('notifications') }}" class="nav-link px-1 {% if request.path == url_for('notifications') %}active{% endif %}" aria-current="page">
                         <i class="bi bi-bell"></i> Notificações
                     </a>
                 </li>
