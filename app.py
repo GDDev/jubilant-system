@@ -5,7 +5,7 @@ from api_quotes import NotFoundPageQuoteApi
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
-app.config.from_prefixed_env()
+app.config.from_envvar('FLASK_CONFIG_PATH')
 
 api = Api(app)
 api.add_resource(NotFoundPageQuoteApi, '/api/generate_quote')
