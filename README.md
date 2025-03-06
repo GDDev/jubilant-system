@@ -1,17 +1,19 @@
 # Here to connect nutrition and PE students with normal people
 
 >[!WARNING]
->Before running the app, make sure to set an env variable for the secret key.
+>Before running the app, make sure to run one of the env set-up options.
 >
->Recommended:
+>If on Windows:
 >
->Create a secret key
 >```ps
->python -c 'import secrets; print(secrets.token_hex())'
+>.\setup_env.ps1
 >```
->Then, copy the result and paste it on the following:
+>
+>If on Linux (NOT tested, please report any errors):
+>
 >```ps
->$env:FLASK_SECRET_KEY = "<copied_token_here>"
+>chmod +x setup_env.sh
+>source setup_env.sh
 >```
 
 ## Home page
