@@ -15,6 +15,11 @@ def user_diets():
     return render_template('user_diets.html')
 
 
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    return render_template('dashboard.html')
+
+
 @app.route('/workouts', methods=['GET',])
 def user_workouts():
     return render_template('user_workouts.html')

@@ -13,53 +13,7 @@
 </head>
 <body>
     <div class="container-fluid d-flex flex-row vh-100 w-100 p-4">
-        {% block navbar %}
-        <nav class="w-auto h-100 d-flex flex-column align-items-start">
-            <div class="dropdown">
-                <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ url_for('static', filename='img/mini-bornonaro.jpg') }}" alt="profile pic" width="45rem" height="45rem" class="rounded-circle me-2">
-                    <strong>username</strong>
-                </a>
-                <ul class="dropdown-menu text-small shadow">
-                    <li>
-                        <a class="dropdown-item" href="#">Sair</a>
-                    </li>
-                </ul>
-            </div>
-            <ul class="nav nav-pills flex-column align-items-start w-100 mt-3">
-                <li class="nav-item w-100">
-                    <a href="{{ url_for('home') }}" class="nav-link px-1 {% if request.path == url_for('home') %}active{% endif %}" aria-current="page">
-                        <i class="bi bi-house"></i> Feed
-                    </a>
-                </li>
-                <li class="nav-item w-100">
-                    <a href="{{ url_for('user_diets') }}" class="nav-link px-1 {% if request.path == url_for('user_diets') %}active{% endif %}" aria-current="page">
-                        <i class="fa-solid fa-clipboard-list"></i> Dietas
-                    </a>
-                </li>
-                <li class="nav-item w-100">
-                    <a href="{{ url_for('user_workouts') }}" class="nav-link px-1 {% if request.path == url_for('user_workouts') %}active{% endif %}" aria-current="page">
-                        <i class="fa-solid fa-dumbbell"></i> Treinos
-                    </a>
-                </li>
-                <!-- <li class="nav-item w-100">
-                    <a href="#" class="nav-link" aria-current="page">
-                        <i class="bi bi-play-btn"></i> Vídeos
-                    </a>
-                </li> -->
-                <li class="nav-item w-100">
-                    <a href="{{ url_for('chats') }}" class="nav-link px-1 {% if request.path == url_for('chats') %}active{% endif %}" aria-current="page">
-                        <i class="bi bi-chat-dots"></i> Conversas
-                    </a>
-                </li>
-                <li class="nav-item w-100">
-                    <a href="{{ url_for('notifications') }}" class="nav-link px-1 {% if request.path == url_for('notifications') %}active{% endif %}" aria-current="page">
-                        <i class="bi bi-bell"></i> Notificações
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        {% endblock %}
+        {% include "navbar.html" %}
         <div class="w-75 ms-auto end-0">
         {% block content %}{% endblock %}
         </div>
