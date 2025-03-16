@@ -1,5 +1,11 @@
 # Here to connect nutrition and PE students with normal people
 
+Install project requirements:
+
+```ps
+pip install requirements.txt
+```
+
 >[!WARNING]
 >Before running the app, make sure to run one of the env set-up options.
 >
