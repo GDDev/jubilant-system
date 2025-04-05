@@ -46,6 +46,10 @@ class UserProfile(UserMixin, Base):
 
     user: Mapped['User'] = relationship('User', back_populates='profile')
 
+
+    def get_id(self):
+        return str(self.alt_id)
+
     # def __init__(self, user_id: int, username: str, pwd: str, id: str = None, alt_id: str = None, visibility: str = 'public'):
     #     self.id = id or str(uuid4())
     #     self.alt_id = alt_id or str(uuid4())

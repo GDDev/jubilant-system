@@ -21,8 +21,8 @@ login_manager.init_app(app)
 
 
 @login_manager.user_loader
-def load_user(alt_id):
-    return UserProfile()
+def load_user(user_id):
+    return db.session.query(UserProfile).filter_by(alt_id=user_id).first()
 
 
 from .views.views import *
