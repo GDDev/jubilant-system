@@ -1,3 +1,6 @@
+from .user import User, UserProfile
+from .exceptions import AuthException
+
 from .models import *
 from .services import *
 from .repositories import *

@@ -1,12 +1,17 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
-from .models import UserProfile
+
+from .user import UserProfile
 from .utils import db
+from .auth import auth, AuthController
 
 # Flask
 app = Flask(__name__)
 app.config.from_envvar('FLASK_CONFIG_PATH')
+
+auth_controller = AuthController()
+app.register_blueprint(auth, url_prefix='/auth')
 
 # Flask-SQLAlchemy
 db.init_app(app)
