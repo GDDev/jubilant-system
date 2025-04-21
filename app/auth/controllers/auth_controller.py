@@ -1,11 +1,10 @@
 from flask import request, render_template, redirect, url_for, flash
 from flask_login import login_user
 
-from app.auth import SignUpForm, SignInForm
-from app.auth import AuthService
+from ..forms import SignUpForm
+from ..services import AuthService
 from app.auth import auth
-from app.auth.services import auth_service
-from app import AuthException
+from app.auth.exceptions import AuthException
 
 
 class AuthController:

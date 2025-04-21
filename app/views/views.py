@@ -1,10 +1,8 @@
 import requests
-from flask import render_template, request, url_for, redirect
-from flask_login import LoginManager, login_required, login_user
-from app.app import app
-from app.models import User
-from app.models import UserProfile
-from app.services import us
+from flask import render_template
+from app import main
+
+
 # from models.profile import Profile
 
 # TODO: probably turn this into blueprints

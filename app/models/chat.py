@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from app.utils import Base
+from core import Base
 
-from sqlalchemy import Integer, String, ForeignKey, UUID, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Integer, ForeignKey, UUID, DateTime
+from sqlalchemy.orm import Mapped, mapped_column
 import uuid
 
 class Chat(Base):

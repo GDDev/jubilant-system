@@ -1,5 +1,5 @@
-from app import UserProfile
-from app.utils import db
+from app.user import UserProfile
+from app import db
 
 class UserProfileRepository:
 

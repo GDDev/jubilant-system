@@ -1,10 +1,11 @@
 import uuid
 from datetime import datetime
 
-from app.utils import Base
+from core import Base
 
 from sqlalchemy import Integer, String, ForeignKey, DateTime, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
+
 
 class Comment(Base):
     __tablename__ = 'comments'

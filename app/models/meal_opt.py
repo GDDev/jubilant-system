@@ -1,7 +1,7 @@
-from app.utils import Base
+from core import Base
 
 from sqlalchemy import Integer, String, ForeignKey, Time
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from datetime import time
 

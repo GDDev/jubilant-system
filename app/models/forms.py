@@ -1,11 +1,8 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField, RadioField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo, InputRequired
+from wtforms import StringField, DateField
+from app.auth import SignUpForm
 
-from math import trunc
-from markupsafe import Markup
 
-    # def validate_major_end(form, field):
+# def validate_major_end(form, field):
     #     start = form.major_start.data
     #     end = field.data
     #     if end < start:

@@ -1,9 +1,10 @@
 import uuid
 
-from app.utils import Base
+from core import Base
 
 from sqlalchemy import Integer, String, ForeignKey, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
+
 
 class UserMajor(Base):
     __tablename__ = 'user_majors'

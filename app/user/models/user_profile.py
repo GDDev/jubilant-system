@@ -1,6 +1,6 @@
 import uuid
 
-from app.utils import Base
+from core import Base
 from flask_login import UserMixin  # type: ignore
 from sqlalchemy import Integer, String, ForeignKey, UUID  # type: ignore
 from sqlalchemy.orm import Mapped, mapped_column, relationship  # type: ignore
@@ -9,15 +9,15 @@ from secrets import token_hex
 
 class UserProfile(UserMixin, Base):
     __tablename__ = 'profiles'
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID,
+    id: Mapped[str] = mapped_column(
+        String(36),
         primary_key=True, 
-        default=uuid.uuid4()
+        default=str(uuid.uuid4())
     )
-    alt_id: Mapped[uuid.UUID] = mapped_column(
-        UUID,
+    alt_id: Mapped[str] = mapped_column(
+        String(36),
         unique=True, 
-        default=uuid.uuid4()
+        default=str(uuid.uuid4())
     )
     code: Mapped[str] = mapped_column(
         String(12),
@@ -53,4 +53,4 @@ class UserProfile(UserMixin, Base):
 
 
     def get_id(self):
-        return str(self.alt_id)
+        return self.alt_id

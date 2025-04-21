@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.utils import Base
+from core import Base
 
 class PlanItem(Base):
     __tablename__ = 'plan_items'

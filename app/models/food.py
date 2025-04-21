@@ -1,7 +1,8 @@
-from app.utils import Base
+from core import Base
 
 from sqlalchemy import Integer, String, ForeignKey, Float
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
+
 
 class Food(Base):
     __tablename__ = 'foods'

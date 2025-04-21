@@ -1,6 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from app import AuthException, db
+from ..exceptions import AuthException
+from core import db
 from app.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash
 

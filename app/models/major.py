@@ -1,6 +1,6 @@
 import uuid
 
-from app.utils import Base
+from core import Base
 from sqlalchemy import Integer, String, Date, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 

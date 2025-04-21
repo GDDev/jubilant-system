@@ -4,7 +4,7 @@ import uuid
 from sqlalchemy import Integer, String, DateTime, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.utils import Base
+from core import Base
 
 class Plan(Base):
     __tablename__ = 'plans'
