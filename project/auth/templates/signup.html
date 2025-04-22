@@ -11,8 +11,21 @@
 <body class="d-flex w-100 h-100 py-5 justify-content-center align-items-center">
     {% from "_formhelpers.html" import render_field %}
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flashes" style="position: fixed; top: 1rem; z-index: 1000;">
+          {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <form action="{{ url_for('auth.signup') }}" method="post" class="row vh-auto w-25 g-3 align-items-center
     needs-validation" novalidate>
+
         {{ form.csrf_token }}
         {{ render_field(form.name) }}
         {{ render_field(form.surname) }}
@@ -29,6 +42,9 @@
             {% endfor %}
             {{ form.accept_terms() }}
             {{ form.accept_terms.label|safe }}
+        </div>
+        <div class="col-12">
+            Já possui uma conta? <a href="{{ url_for('auth.signin') }}">Entrar.</a>
         </div>
         <div class="col-12">
             {{ form.submit(class="btn btn-primary") }}

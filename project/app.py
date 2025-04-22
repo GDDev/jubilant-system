@@ -30,7 +30,7 @@ def create_app() -> Flask:
         def load_user(user_id):
             from project.user import UserProfile
             try:
-                return db.session.query(UserProfile).filter_by(alt_id=UUID(user_id)).first()
+                return db.session.query(UserProfile).filter_by(alt_id=user_id).first()
             except (ValueError, TypeError):
                 return None
 

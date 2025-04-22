@@ -3,11 +3,11 @@
     <div class="dropdown">
         <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{ url_for('static', filename='img/user.png') }}" alt="profile pic" width="45rem" height="45rem" class="rounded-circle me-2">
-            <strong>username</strong>
+            <strong>{{ current_user.username }}</strong>
         </a>
         <ul class="dropdown-menu text-small shadow">
             <li>
-                <a class="dropdown-item" href="#">Sair</a>
+                <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
             </li>
         </ul>
     </div>

@@ -1,9 +1,8 @@
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..exceptions import AuthException
-from core import db
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class AuthService:
@@ -42,6 +41,22 @@ class AuthService:
 
         except SQLAlchemyError as e:
             raise AuthException('Falha ao cadastrar usuário.') from e
+
+    def sign_in_user(self, credential: str, pwd: str) -> UserProfile | None:
+        try:
+            user = self.user_profile_repository.find_by_username(credential)
+            if not user:
+                user = self.user_repository.find_by_email(credential)
+                if user:
+                    user = self.user_profile_repository.find_by_user_id(user.id)
+                else:
+                    raise AuthException('Usuário não encontrado.')
+
+            if user and check_password_hash(user.pwd, pwd): return user
+            return None
+        except (SQLAlchemyError, AuthException) as e:
+            raise e
+
 
     @staticmethod
     def hash_password(password):
