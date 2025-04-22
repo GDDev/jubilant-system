@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>401 - Unauthorized</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="text-bg-dark container-fluid d-flex flex-row vh-100 w-100 p-4">
+        <div class="d-flex flex-column h-100 w-100 justify-content-center align-items-center text-center">
+            <div class="header d-flex flex-column">
+                <h1>401</h1>
+                <h2>Não autorizado.</h2><br>
+            </div>
+
+            <p class="lead d-flex flex-column text-break">
+                Você não está logado para acessar essa página.
+            </p>
+
+            <span class="footer">Sinto muito, <a href="{{ url_for('auth.signin') }}"
+                                                               class="text-decoration-none">entrar</a></span>
+        </div>
+    </div>
+</body>
+</html>

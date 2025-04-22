@@ -1,1 +1,1 @@
-from .models.database import Base, db, migrate
+from .database import db, migrate, Base

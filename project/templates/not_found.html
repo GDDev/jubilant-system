@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page not found</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="text-bg-dark container-fluid d-flex flex-row vh-100 w-100 p-4">
+        <div class="d-flex flex-column h-100 w-100 justify-content-center align-items-center text-center">
+            <div class="header d-flex flex-column">
+                <h1>404</h1>
+                <h2>Page not found</h2><br>
+            </div>
+
+            <div class="quote">
+                <p class="lead d-flex flex-column text-break">
+                    <b>"{{ quote.quote }}"</b>
+                    - {{ quote.author }}, {{ quote.year }}
+                </p>
+            </div>
+
+            <span class="footer">I'm scared, please take me <a href="{{ url_for('main.home') }}"
+                                                               class="text-decoration-none">home</a></span>
+        </div>
+    </div>
+</body>
+</html>
