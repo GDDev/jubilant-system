@@ -1,3 +1,5 @@
+import uuid
+
 from project.user import UserProfile
 from core import db
 
@@ -19,3 +21,9 @@ class UserProfileRepository:
     @staticmethod
     def find_by_user_id(user_id: int) -> UserProfile | None:
         return db.session.query(UserProfile).filter_by(user_id=user_id).first()
+
+    @staticmethod
+    def new_alt_id(profile: UserProfile) -> UserProfile | None:
+        profile.alt_id = str(uuid.uuid4())
+        db.session.commit()
+        return profile

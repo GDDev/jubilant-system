@@ -1,8 +1,9 @@
-from flask import redirect, render_template, session, request, url_for
-from flask_login import fresh_login_required, current_user
+from flask import redirect, render_template, session, request, url_for, flash
+from flask_login import fresh_login_required, current_user, login_user
 
 from project.user import user
 from ..services import UserService, UserProfileService
+from ...auth.exceptions import AuthException
 
 user_service = UserService()
 user_profile_service = UserProfileService()
@@ -15,8 +16,17 @@ def update_email():
     c_user = user_service.find_by_id(session.get('user_id'))
     if request.method == 'POST':
         if request.form.get('btn') == 'Salvar':
-            user_service.update_email(c_user, request.form.get('email'))
-        return redirect(url_for('perfil.detail_profile', username=profile.username))
+            try:
+                if user_service.find_by_email(request.form.get('email')):
+                    raise AuthException('Email já cadastrado.')
+                profile = user_profile_service.new_alt_id(profile)
+                c_user.profile = profile
+                user_service.update_email(c_user, request.form.get('email'))
+
+                login_user(profile)
+                return redirect(url_for('perfil.detail_profile', username=profile.username))
+            except AuthException as e:
+                flash(str(e))
     return render_template('edit_email.html', profile=profile, user=c_user)
 
 @user.route('/delete', methods=['POST'])

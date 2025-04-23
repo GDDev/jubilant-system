@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block title %}{{ profile.username }}{% endblock %}
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flashes" style="position: relative; top: 1rem;">
+          {% for message in messages %}
+            <div class="alert alert-warning" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
     <div>
         <img src="{{ profile.profile_pic }}" alt="profile pic" width="45rem" height="45rem">
         <input type="text" value="{{ user.name }} {{ user.surname }}" class="form-control" disabled>
@@ -20,5 +31,14 @@
     <div>
         <a href="#">Ver formações</a>
         <span>Nenhuma formação cadastrada.</span>
+    </div>
+
+    <div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="submit" value="Deletar Conta" class="btn btn-danger">
+        </form>
     </div>
 {% endblock %}

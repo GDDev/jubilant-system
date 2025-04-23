@@ -1,3 +1,4 @@
+from .. import UserProfile
 from ..repositories import UserProfileRepository
 
 
@@ -14,3 +15,6 @@ class UserProfileService:
 
     def find_by_username(self, username: str):
         return self.user_profile_repository.find_by_username(username)
+
+    def new_alt_id(self, profile: UserProfile):
+        return self.user_profile_repository.new_alt_id(profile)

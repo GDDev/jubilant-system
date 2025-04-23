@@ -4,7 +4,6 @@ from core import db
 class UserRepository:
     @staticmethod
     def insert(user: User) -> User | None:
-        print("Hey, I'm here")
         db.session.add(user)
         db.session.commit()
         return user
