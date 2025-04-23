@@ -1,4 +1,4 @@
-from uuid import UUID
+from datetime import timedelta
 
 import requests
 from flask import Flask, render_template, request, url_for, redirect
@@ -28,6 +28,8 @@ def create_app() -> Flask:
 
         login_manager = LoginManager()
         login_manager.login_view = 'auth.signin'
+        login_manager.refresh_view = 'auth.refresh'
+        login_manager.needs_refresh_message = 'Por favor, confirme sua senha para continuar.'
         login_manager.init_app(app)
 
         @login_manager.user_loader
