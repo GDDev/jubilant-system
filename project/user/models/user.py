@@ -9,7 +9,7 @@ class User(Base):
     surname: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
-    profile: Mapped['UserProfile'] = relationship('UserProfile', uselist=False, back_populates='user')
+    profile: Mapped['UserProfile'] = relationship('UserProfile', uselist=False, back_populates='user', cascade='all, delete-orphan')
 
     # def __init__(self, name, surname, email):
     #     self.name = name

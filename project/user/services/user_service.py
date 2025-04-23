@@ -15,3 +15,6 @@ class UserService:
 
     def update_email(self, user: User, email: str):
         return self.user_repository.update_email(user, email)
+
+    def delete(self, user: User):
+        self.user_repository.delete(user)

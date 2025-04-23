@@ -1,5 +1,6 @@
 from flask import redirect, render_template, session, request, url_for, flash
-from flask_login import fresh_login_required, current_user, login_user
+from flask_login import fresh_login_required, current_user, login_user, logout_user
+from sqlalchemy.exc import SQLAlchemyError
 
 from project.user import user
 from ..services import UserService, UserProfileService
@@ -29,6 +30,14 @@ def update_email():
                 flash(str(e))
     return render_template('edit_email.html', profile=profile, user=c_user)
 
-@user.route('/delete', methods=['POST'])
-def delete_user():
-    pass
+@user.route('/excluir', methods=['POST'])
+def delete():
+    c_user = user_service.find_by_id(int(request.form.get('user_id')))
+    if c_user:
+        try:
+            user_service.delete(c_user)
+            logout_user()
+            flash('Conta excluída com sucesso!')
+        except SQLAlchemyError as e:
+            flash(str(e))
+    return redirect(url_for('main.home'))
