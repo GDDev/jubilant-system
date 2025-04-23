@@ -2,7 +2,8 @@
 <nav class="w-auto h-100 d-flex flex-column align-items-start">
     <div class="dropdown">
         <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ url_for('static', filename='img/user.png') }}" alt="profile pic" width="45rem" height="45rem" class="rounded-circle me-2">
+            <img src="{{ current_user.profile_pic }}" alt="profile pic" width="45rem" height="45rem"
+                 class="rounded-circle me-2">
             <strong>{{ current_user.username }}</strong>
         </a>
         <ul class="dropdown-menu text-small shadow">

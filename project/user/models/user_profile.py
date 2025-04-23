@@ -49,6 +49,12 @@ class UserProfile(UserMixin, Base):
         default='public'
     )
 
+    profile_pic: Mapped[str] = mapped_column(
+        String(250),
+        nullable=False,
+        default='/static/img/user.png'
+    )
+
     user: Mapped['User'] = relationship('User', back_populates='profile')
 
 
