@@ -1,12 +1,16 @@
+from ..repositories import UserProfileRepository
+
+
 class UserProfileService:
-    def create_id(self, userId: int) -> str:
-        return '1223' + str(userId)
 
-    def get_id(self) -> str:
-        return self._alternative_id
+    def __init__(self):
+        self.user_profile_repository = UserProfileRepository()
 
-    def get_real_id(self) -> str:
-        return self._id
+    def find_by_id(self, user_profile_id: str):
+        return self.user_profile_repository.find_by_id(user_profile_id)
 
-    def create_alternative_id(self) -> str:
-        return self._id + '123'
+    def find_by_user_id(self, user_id: int):
+        return self.user_profile_repository.find_by_user_id(user_id)
+
+    def find_by_username(self, username: str):
+        return self.user_profile_repository.find_by_username(username)

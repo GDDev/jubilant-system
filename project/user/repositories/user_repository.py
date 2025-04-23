@@ -21,3 +21,9 @@ class UserRepository:
     @staticmethod
     def find_by_email(email: str) -> User | None:
         return db.session.query(User).filter_by(email=email).first()
+
+    @staticmethod
+    def update_email(user: User, email: str) -> User | None:
+        user.email = email
+        db.session.commit()
+        return user

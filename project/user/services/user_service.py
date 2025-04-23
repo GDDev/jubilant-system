@@ -1,4 +1,5 @@
-from app.user import UserRepository
+from .. import User
+from ..repositories import UserRepository
 
 
 class UserService:
@@ -11,3 +12,6 @@ class UserService:
 
     def find_by_email(self, email: str):
         return self.user_repository.find_by_email(email)
+
+    def update_email(self, user: User, email: str):
+        return self.user_repository.update_email(user, email)

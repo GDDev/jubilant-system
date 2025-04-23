@@ -1,7 +1,7 @@
 from uuid import UUID
 
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 
@@ -17,14 +17,18 @@ def create_app() -> Flask:
 
     csrf = CSRFProtect(app)
 
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-
     with app.app_context():
         from project.auth import auth
         from project.main import main
+        from project.user import user, profile
         app.register_blueprint(auth, url_prefix='/auth')
         app.register_blueprint(main, url_prefix='/')
+        app.register_blueprint(user, url_prefix='/usuario')
+        app.register_blueprint(profile, url_prefix='/perfil')
+
+        login_manager = LoginManager()
+        login_manager.login_view = 'auth.signin'
+        login_manager.init_app(app)
 
         @login_manager.user_loader
         def load_user(user_id):
@@ -36,6 +40,8 @@ def create_app() -> Flask:
 
         @login_manager.unauthorized_handler
         def unauthorized():
+            if request.args.get('next') is None:
+                return redirect(url_for('auth.signin'))
             return render_template('unauthorized.html'), 401
 
     return app

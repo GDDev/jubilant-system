@@ -9,6 +9,10 @@ class UserProfileRepository:
         db.session.commit()
 
     @staticmethod
+    def find_by_id(user_profile_id: str) -> UserProfile | None:
+        return db.session.get(UserProfile, user_profile_id)
+
+    @staticmethod
     def find_by_username(username: str) -> UserProfile | None:
         return db.session.query(UserProfile).filter_by(username=username).first()
 

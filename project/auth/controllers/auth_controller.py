@@ -9,7 +9,7 @@ from project.auth.exceptions import AuthException
 
 auth_service = AuthService()
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth.route('/cadastrar', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
     form.accept_terms.label.text = Markup(f'Li e concordo com os <a href="{url_for("main.terms")}" target="_blank">Termos e '
@@ -41,7 +41,7 @@ def signup():
 
     return render_template('signup.html', form=form)
 
-@auth.route('/singin', methods=['GET', 'POST'])
+@auth.route('/entrar', methods=['GET', 'POST'])
 def signin():
     form = SignInForm()
 
@@ -50,7 +50,6 @@ def signin():
             profile = auth_service.sign_in_user(form.user.data, form.pwd.data)
 
             if profile is not None:
-                print(profile.get_id())
                 login_user(profile, remember=form.remember_me.data)
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('main.home'))
@@ -59,13 +58,13 @@ def signin():
 
     return render_template('signin.html', form=form)
 
-@auth.route('/signout', methods=['GET'])
+@auth.route('/sair', methods=['GET'])
 @login_required
 def signout():
     logout_user()
     return redirect(url_for('auth.signin'))
 
 
-@auth.route('/forgot_password', methods=['GET', 'POST'])
+@auth.route('/esqueci_senha', methods=['GET', 'POST'])
 def forgot_password():
     pass
