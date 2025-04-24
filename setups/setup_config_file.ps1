@@ -1,6 +1,6 @@
 Write-Host "Configurando aplicacao..."
 
-$configPath = "..\app\.settings.cfg"
+$configPath = "..\project\.settings.cfg"
 
 $secretKey = python -c "import secrets; print(str(secrets.token_hex()))"
 if (!(Test-Path $configPath)) {
