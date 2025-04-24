@@ -1,7 +1,8 @@
 . ..\.venv\Scripts\activate
 
 Write-Host "Iniciando Not_Found..."
-Start-Process -NoNewWindow -FilePath "python" -ArgumentList "..\not_found\app.py"
+Set-Location "..\not_found"
+Start-Process -NoNewWindow -FilePath "python" -ArgumentList "app.py"
 
 Write-Host "Iniciando aplicacao..."
 Set-Location "..\"
