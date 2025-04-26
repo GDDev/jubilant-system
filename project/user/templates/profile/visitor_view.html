@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ user.username }}</title>
-</head>
-<body>
-    <h1>You are visiting {{ user.username }}</h1>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}{{ profile.user.name }} {{ profile.user.surname }}{% endblock %}
+{% block content %}
+    <div>
+        <img src="{{ profile.profile_pic }}" alt="profile pic" width="45rem" height="45rem">
+        {{ profile.user.name }} {{ profile.user.surname }}
+
+        <form action="{{ url_for(amigo.add) }}">
+            <input type="submit" value="Solicitar amizade" class="btn btn-primary">
+        </form>
+    </div>
+
+{% endblock %}

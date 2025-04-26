@@ -1,3 +1,5 @@
+from flask import abort
+
 from .. import User
 from ..repositories import UserRepository
 
@@ -8,7 +10,10 @@ class UserService:
         self.user_repository = UserRepository()
 
     def find_by_id(self, user_id: int):
-        return self.user_repository.find_by_id(user_id)
+        user = self.user_repository.find_by_id(user_id)
+        if not user:
+            abort(404)
+        return user
 
     def find_by_email(self, email: str):
         return self.user_repository.find_by_email(email)

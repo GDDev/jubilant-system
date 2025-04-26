@@ -1,3 +1,5 @@
+from flask import abort
+
 from .. import UserProfile
 from ..repositories import UserProfileRepository
 
@@ -18,3 +20,18 @@ class UserProfileService:
 
     def new_alt_id(self, profile: UserProfile):
         return self.user_profile_repository.new_alt_id(profile)
+
+    def find_by_code(self, code):
+        profile = self.user_profile_repository.find_by_code(code)
+        if not profile or not self.check_profile_visibility(profile):
+            abort(404)
+        return profile
+
+    @staticmethod
+    def check_profile_visibility(profile: UserProfile):
+        if profile.visibility == 'public':
+            return True
+        return False
+
+    def find_profiles_by_search(self, search):
+        return self.user_profile_repository.find_profiles_by_search(search)

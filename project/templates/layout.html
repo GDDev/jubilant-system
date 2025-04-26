@@ -17,7 +17,8 @@
     <div class="container-fluid d-flex flex-row vh-100 w-100 p-4">
         {% include "navbar.html" %}
         <div class="w-75 ms-auto end-0">
-        {% block content %}{% endblock %}
+            {% include "searchbar.html" %}
+            {% block content %}{% endblock %}
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

@@ -18,11 +18,13 @@ def register_all_bp(flask: Flask):
     from project.auth import auth
     from project.main import main
     from project.user import user, profile
+    from project.friendship import friendship
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')
     flask.register_blueprint(user, url_prefix='/usuario')
     flask.register_blueprint(profile, url_prefix='/perfil')
+    flask.register_blueprint(friendship, url_prefix='/amigos')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()

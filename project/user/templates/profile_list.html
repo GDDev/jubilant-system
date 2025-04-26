@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Encontrar perfil{% endblock %}
+{% block content %}
+    <div class="w-75 h-auto d-flex flex-column align-items-center justify-content-center">
+        {% if not profiles %}
+            <h3 class="text-muted">Nenhum usuário encontrado para a pesquisa: <span class="text-black">{{ search
+                    }}</span></h3>
+            <a href="{{ url_for('main.home') }}">Retornar ao menu.</a>
+        {% endif %}
+        {% for profile in profiles %}
+            <div class="d-flex align-items-center my-3">
+                <a href="{{ url_for('perfil.detail_profile', code=profile.code) }}" class="d-flex text-decoration-none
+                text-black">
+                    <img src="{{ profile.profile_pic }}" alt="{{ profile.username }}'s profile pic"
+                         class="rounded-circle me-2" style="width: 3rem; height: 3rem;">
+                    <div class="d-flex flex-column align-items-start">
+                        {{ profile.user.name }} {{ profile.user.surname }}
+                        <span class="text-muted">{{ profile.username }}</span>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

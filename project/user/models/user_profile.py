@@ -57,6 +57,27 @@ class UserProfile(UserMixin, Base):
 
     user: Mapped['User'] = relationship('User', back_populates='profile')
 
+    sent_friend_requests: Mapped[list['Friendship']] = relationship(
+        'Friendship',
+        back_populates='sender',
+        foreign_keys='[Friendship.sender_id]',
+        cascade='all, delete-orphan'
+    )
+    received_friend_requests: Mapped[list['Friendship']] = relationship(
+        'Friendship',
+        back_populates='receiver',
+        foreign_keys='[Friendship.receiver_id]',
+        cascade='all, delete-orphan'
+    )
 
     def get_id(self):
         return self.alt_id
+
+    @property
+    def friends(self) -> list['UserProfile']:
+        return [f.receiver for f in self.sent_friend_requests if f.status == 'accepted'] + \
+            [f.sender for f in self.received_friend_requests if f.status == 'accepted']
+
+    @property
+    def pending_friend_requests(self) -> list['UserProfile']:
+        return [f.sender for f in self.received_friend_requests if f.status == 'pending']

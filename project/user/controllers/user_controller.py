@@ -27,7 +27,7 @@ def update_email():
                 login_user(profile)
             except AuthException as e:
                 flash(str(e))
-        return redirect(url_for('perfil.detail_profile', username=profile.username))
+        return redirect(url_for('perfil.detail_profile', code=profile.code))
     return render_template('edit_email.html', profile=profile, user=c_user)
 
 @user.route('/excluir', methods=['POST'])
@@ -41,5 +41,5 @@ def delete():
             flash('Conta excluída com sucesso!')
         except SQLAlchemyError as e:
             flash(str(e))
-            return redirect(url_for('perfil.detail_profile', username=current_user.username))
+            return redirect(url_for('perfil.detail_profile', code=current_user.code))
     return redirect(url_for('main.home'))

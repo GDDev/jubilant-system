@@ -1,6 +1,9 @@
 import uuid
 
-from project.user import UserProfile
+from sqlalchemy import or_, func
+from sqlalchemy.orm import joinedload
+
+from project.user import UserProfile, User
 from core import db
 
 class UserProfileRepository:
@@ -19,6 +22,10 @@ class UserProfileRepository:
         return db.session.query(UserProfile).filter_by(username=username).first()
 
     @staticmethod
+    def find_by_ilike_username(username: str) -> list[UserProfile]:
+        return db.session.query(UserProfile).filter(UserProfile.username.ilike(f'%{username}%')).all()
+
+    @staticmethod
     def find_by_user_id(user_id: int) -> UserProfile | None:
         return db.session.query(UserProfile).filter_by(user_id=user_id).first()
 
@@ -27,3 +34,26 @@ class UserProfileRepository:
         profile.alt_id = str(uuid.uuid4())
         db.session.commit()
         return profile
+
+    @staticmethod
+    def find_by_code(code):
+        return db.session.query(UserProfile).filter_by(code=code).first()
+
+    @staticmethod
+    def find_profiles_by_search(search):
+        if not search: return []
+        search = f'%{search.lower()}%'
+        return  (
+            db.session.query(UserProfile)
+            .join(UserProfile.user)
+            .options(joinedload(UserProfile.user))
+            .filter(
+                or_(
+                    func.lower(UserProfile.username).ilike(search),
+                    func.lower(UserProfile.code).ilike(search),
+                    func.lower(User.name).ilike(search),
+                    func.lower(User.surname).ilike(search)
+                )
+            )
+            .all()
+        )
