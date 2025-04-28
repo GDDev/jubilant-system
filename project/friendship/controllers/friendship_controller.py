@@ -31,11 +31,13 @@ def send_request():
     return redirect(url_for('perfil.detail_profile', code=request.form.get('friend_code')))
 
 
-@friendship.route('/aceitar', methods=['POST'])
+@friendship.route('/aceitar/<int:friendship_id>', methods=['GET', 'POST'])
 @login_required
-def accept_request():
+def accept_request(friendship_id: int):
     try:
-        friendship_service.accept_request(request.form.get('friendship_id'))
+        notification = [n for n in current_user.notifications if n.friendship_id == friendship_id][0]
+        notification_service.delete(notification)
+        friendship_service.accept_request(friendship_id)
     except FriendshipException as e:
         flash(str(e))
     return redirect(url_for('main.home'))

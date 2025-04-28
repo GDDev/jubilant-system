@@ -28,7 +28,7 @@ class FriendshipService:
             try:
                 self.friendship_repo.accept_request(friendship)
             except SQLAlchemyError as e:
-                raise FriendshipException('Erro ao aceitar solicitação de amizade: ' + str(e._message()))
+                raise FriendshipException('Erro ao aceitar solicitação de amizade: ')
 
     def decline_request(self, request_id: int) -> None:
         try:

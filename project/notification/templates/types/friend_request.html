@@ -5,7 +5,8 @@
         <span class="text-muted">{{ notification.sender.username }}</span>
     </div>
     <div class="d-flex align-items-start ">
-        <a href="{{ url_for('amigo.accept_request') }}"><i class="bi bi-check2 text-success
+        <a href="{{ url_for('amigo.accept_request', friendship_id=notification.friendship.id) }}"><i class="bi
+        bi-check2 text-success
         ms-3"></i></a>
         <a href="{{ url_for('amigo.decline_request', friendship_id=notification.friendship.id) }}"><i class="bi bi-x-lg
         text-danger
