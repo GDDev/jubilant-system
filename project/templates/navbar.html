@@ -24,6 +24,20 @@
                 <i class="bi bi-house"></i> Feed
             </a>
         </li>
+        <li class="nav-item w-100">
+            <a href="{{ url_for('amigo.get_open_requests') }}" class="nav-link px-1 {% if request.path == url_for
+            ('amigo.get_open_requests') %}active{%
+                    endif %}" aria-current="page">
+                <i class="bi bi-house"></i> Solicitações de Amizade
+            </a>
+        </li>
+        <li class="nav-item w-100">
+            <a href="{{ url_for('amigo.get_friends') }}" class="nav-link px-1 {% if request.path == url_for
+            ('amigo.get_friends') %}active{%
+                    endif %}" aria-current="page">
+                <i class="bi bi-house"></i> Amigos
+            </a>
+        </li>
 {#        <li class="nav-item w-100">#}
 {#            <a href="{{ url_for('user_diets') }}" class="nav-link px-1 {% if request.path == url_for('user_diets') %}active{% endif %}" aria-current="page">#}
 {#                <i class="fa-solid fa-clipboard-list"></i> Dietas#}
@@ -44,11 +58,12 @@
 {#                <i class="bi bi-chat-dots"></i> Conversas#}
 {#            </a>#}
 {#        </li>#}
-{#        <li class="nav-item w-100">#}
-{#            <a href="{{ url_for('notifications') }}" class="nav-link px-1 {% if request.path == url_for('notifications') %}active{% endif %}" aria-current="page">#}
-{#                <i class="bi bi-bell"></i> Notificações#}
-{#            </a>#}
-{#        </li>#}
+        <li class="nav-item w-100">
+            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link px-1 {% if request.path ==
+            url_for('notificacao.get_all') %}active{% endif %}" aria-current="page">
+                <i class="bi bi-bell"></i> Notificações
+            </a>
+        </li>
 {#        {% if True %}#}
 {#        <li class="nav-item w-100">#}
 {#            <a href="{{ url_for('dashboard') }}" class="nav-link px-1 {% if request.path == url_for('dashboard') %}active{% endif %}" aria-current="page">#}

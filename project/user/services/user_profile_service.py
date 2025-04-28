@@ -2,12 +2,14 @@ from flask import abort
 
 from .. import UserProfile
 from ..repositories import UserProfileRepository
+from ...friendship import FriendshipRepository
 
 
 class UserProfileService:
 
     def __init__(self):
         self.user_profile_repository = UserProfileRepository()
+        self.friendship_repository = FriendshipRepository()
 
     def find_by_id(self, user_profile_id: str):
         return self.user_profile_repository.find_by_id(user_profile_id)
@@ -35,3 +37,10 @@ class UserProfileService:
 
     def find_profiles_by_search(self, search):
         return self.user_profile_repository.find_profiles_by_search(search)
+
+    def friendship_request(self, current_user, user_profile):
+        friendship = (self.friendship_repository.find_by_sender_id_receiver_id(current_user.id, user_profile.id) or
+                      self.friendship_repository.find_by_sender_id_receiver_id(user_profile.id, current_user.id))
+        if friendship:
+            return friendship, friendship.sender
+        return None, None

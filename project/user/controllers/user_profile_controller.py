@@ -1,4 +1,4 @@
-from flask import render_template, abort, redirect, url_for, session, request, flash
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 
 from project.user import profile
@@ -13,22 +13,29 @@ user_profile_service = UserProfileService()
 def detail_profile(code: str):
     try:
         if code == current_user.code:
-            # session['profile_id'] = current_user.id
-            # session['user_id'] = user.id
             return render_template('profile/owner_view.html', profile=current_user)
 
         user_profile = user_profile_service.find_by_code(code)
-        return render_template('profile/visitor_view.html', profile=user_profile)
+        friendship, sender = user_profile_service.friendship_request(current_user, user_profile)
+        return render_template(
+            'profile/visitor_view.html',
+            profile=user_profile,
+            friendship=friendship,
+            sender=sender
+        )
 
     except Exception as e:
         flash(str(e))
     return redirect(url_for('main.home'))
 
 @profile.route('/update', methods=['POST'])
+@login_required
 def update_profile():
     pass
+    #TODO: Add logic to update profile
 
 @profile.route('/encontrar', methods=['GET', 'POST'])
+@login_required
 def find():
     search = request.form.get('search')
     profiles = []

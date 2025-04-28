@@ -1,0 +1,1 @@
+from .friendship_repository import FriendshipRepository

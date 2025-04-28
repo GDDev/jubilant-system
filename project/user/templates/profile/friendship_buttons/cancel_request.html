@@ -1,0 +1,7 @@
+<form action="{{ url_for('amigo.cancel_request') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <input type="hidden" name="friend_id" value="{{ profile.id }}">
+    <input type="hidden" name="friend_code" value="{{ profile.code }}">
+    <input type="submit" value="Cancelar solicitação" class="btn btn-primary">
+</form>

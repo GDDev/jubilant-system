@@ -1,0 +1,2 @@
+from .notification import Notification, NotificationType
+from .notification_friend_request import NotificationFriendRequest

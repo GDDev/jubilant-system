@@ -4,10 +4,17 @@
     <div>
         <img src="{{ profile.profile_pic }}" alt="profile pic" width="45rem" height="45rem">
         {{ profile.user.name }} {{ profile.user.surname }}
+        {% if not friendship %}
+        	{% include 'profile/friendship_buttons/send_request.html' %}
+        {% elif friendship.status == "pending" %}
+            {% if sender.id == current_user.id %}
+                {% include 'profile/friendship_buttons/cancel_request.html' %}
+            {% else %}
+                {% include 'profile/friendship_buttons/accept_request.html' %}
+                {% include 'profile/friendship_buttons/decline_request.html' %}
+            {% endif %}
+        {% endif %}
 
-        <form action="{{ url_for(amigo.add) }}">
-            <input type="submit" value="Solicitar amizade" class="btn btn-primary">
-        </form>
     </div>
 
 {% endblock %}
