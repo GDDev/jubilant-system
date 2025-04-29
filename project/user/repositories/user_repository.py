@@ -9,6 +9,11 @@ class UserRepository:
         return user
 
     @staticmethod
+    def insert_with_no_commit(session, user: User) -> User | None:
+        session.add(user)
+        session.flush()
+
+    @staticmethod
     def delete(user: User) -> None:
         db.session.delete(user)
         db.session.commit()

@@ -1,5 +1,6 @@
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
+from core import db
 from ..exceptions import AuthException
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,26 +20,25 @@ class AuthService:
             email=user_data['email']
         )
         try:
-            print("Begin")
-            # Calls a method to insert a user object into the db
-            user = self.user_repository.insert(user)
-
-            # Calls a method to hash the password
-            pwd = self.hash_password(profile_data['password'])
-
-            # Instantiate UserProfileObject
-            user_profile = UserProfile(
-                user_id=user.id,
-                username=profile_data['username'],
-                pwd=pwd,
-                role=user_data.get('role')
-            )
-
-            # Calls a method to insert a user's profile into the db
-            self.user_profile_repository.insert(user_profile)
+            session = db.session
+            with session.begin():
+                # Calls a method to insert a user object into the db
+                self.user_repository.insert_with_no_commit(session, user)
+                # Calls a method to hash the password
+                hashed_pwd = self.hash_password(profile_data['password'])
+                # Instantiate UserProfileObject
+                user_profile = UserProfile(
+                    user_id=user.id,
+                    username=profile_data['username'],
+                    pwd=hashed_pwd
+                )
+                # Calls a method to insert a user's profile into the db
+                self.user_profile_repository.insert_with_no_commit(session, user_profile)
 
             return user_profile
 
+        except IntegrityError as e:
+            raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.') from e
         except SQLAlchemyError as e:
             raise AuthException('Falha ao cadastrar usuário.') from e
 

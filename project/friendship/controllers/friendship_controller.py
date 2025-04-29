@@ -78,9 +78,3 @@ def get_friends():
 def remove():
     pass
     #TODO: Add logic to remove friend
-
-
-@friendship.route('/solicitacoes', methods=['GET'])
-@login_required
-def get_open_requests():
-    return render_template('request_list.html', requests=current_user.pending_friend_requests)
