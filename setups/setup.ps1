@@ -1,9 +1,34 @@
-. .\setup_venv.ps1
+$ErrorActionPreference = "Stop"
 
-. .\setup_env_variables.ps1
 
-. .\setup_config_file.ps1
+$scriptsPath = $PSScriptRoot
+$rootPath = Resolve-Path "$scriptsPath\.."
 
-. .\setup_database.ps1
+$venvPython = "$rootPath\.venv\Scripts\python.exe"
 
-. .\setup_apps.ps1
+try
+{
+    . $scriptsPath\setup_venv.ps1
+    Start-Sleep -Seconds 1
+    Clear-Host
+
+    . $scriptsPath\setup_env_variables.ps1
+    Start-Sleep -Seconds 1
+    Clear-Host
+
+    . $scriptsPath\setup_config_file.ps1
+    Start-Sleep -Seconds 1
+    Clear-Host
+
+    . $scriptsPath\setup_database.ps1
+    Start-Sleep -Seconds 1
+    Clear-Host
+
+    . $scriptsPath\setup_apps.ps1
+    Start-Sleep -Seconds 1
+    Clear-Host
+}
+catch {
+    Write-Host "❌ Erro: $($_.Exception.Message)"
+    exit 1
+}

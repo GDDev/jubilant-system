@@ -1,29 +1,26 @@
 Write-Host "Gerando ambientes e dependencias..."
+Start-Sleep -Seconds 2
+Clear-Host
 
-# Check Python installation
+Write-Host "Checando instalacao do Python..."
 If (!(Get-Command python -ErrorAction SilentlyContinue)){
-    Write-Host "Esta é uma aplicacao Python, portanto Python deve estar instalado para roda-la."
-    exit 1
+    throw "Esta é uma aplicacao Python, portanto Python deve estar instalado para roda-la."
 }
 
-# Create virtual environment
-if (!(Test-Path "..\.venv") -and !(Test-Path "..\venv") -and !(Test-Path "..\env")){
-    python -m venv ..\.venv
+Set-Location $rootPath
+
+Write-Host "Checando existencia de um ambiente virtual..."
+if (!(Test-Path "$rootPath\.venv\")){
+    Write-Host "Nenhum ambiente virtual encontrado.\n Gerando ambiente virtual..."
+    python -m venv .\.venv
+    . "$rootPath\.venv\Scripts\Activate.ps1"
 }
 
-# Activating virtual environment
-if ($env:ComSpec -match "cmd.exe") {
-    cmd /c "..\.venv\Scripts\activate.bat"
-} else {
-    . ..\.venv\Scripts\activate
-}
-
-# Installing dependencies
-# Ensure the virtual environment is actually activated
-$venvPython = "..\.venv\Scripts\python.exe"
-
-# Check if Python from .venv is running, not the system one
+Write-Host "Checando ativação do ambiente virtual..."
 if ((& $venvPython -c "import sys; print(sys.prefix)") -match ".*\\.venv") {
-    # Now install requirements in the correct environment
+    Write-Host "Instalando dependencias..."
     & $venvPython -m pip install -r ..\requirements.txt
+}
+else{
+    throw "Erro ao ativar ambiente virtual."
 }
