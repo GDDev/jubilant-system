@@ -12,7 +12,7 @@ if (!(Test-Path $configPath)) {
     if(-Not (Test-Path $configPath)){
         throw "Nao foi possivel criar o arquivo de configuracao."
     }
-    Write-Host "Arquivo de configuracao criado.\n Populando configuracoes..."
+    Write-Host "Arquivo de configuracao criado.`n Populando configuracoes..."
     $lines = @(
         "from os import getenv"
         "DB_TYPE = getenv('FLASK_DB_TYPE')"

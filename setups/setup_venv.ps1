@@ -11,15 +11,15 @@ Set-Location $rootPath
 
 Write-Host "Checando existencia de um ambiente virtual..."
 if (!(Test-Path "$rootPath\.venv\")){
-    Write-Host "Nenhum ambiente virtual encontrado.\n Gerando ambiente virtual..."
+    Write-Host "Nenhum ambiente virtual encontrado.`n Gerando ambiente virtual..."
     python -m venv .\.venv
     . "$rootPath\.venv\Scripts\Activate.ps1"
 }
 
-Write-Host "Checando ativação do ambiente virtual..."
+Write-Host "Checando ativacao do ambiente virtual..."
 if ((& $venvPython -c "import sys; print(sys.prefix)") -match ".*\\.venv") {
     Write-Host "Instalando dependencias..."
-    & $venvPython -m pip install -r ..\requirements.txt
+    & $venvPython -m pip install -r $rootPath\requirements.txt
 }
 else{
     throw "Erro ao ativar ambiente virtual."
