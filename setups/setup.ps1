@@ -11,15 +11,25 @@ function Run-SetupScript {
         [string]$ScriptFile
     )
 
-    $name = Split-Path $ScriptPath -Leaf
-    Write-Host "Executando: $name..."
-    Start-Sleep -Seconds 5
-    Clear-Host
+    try {
+        if (-not (Test-Path $ScriptFile)) {
+            throw "Arquivo de script não encontrado: $ScriptFile"
+        }
 
-    . $ScriptFile
+        $name = Split-Path $ScriptFile -Leaf
+        Write-Host "Executando: $name..."
+        Start-Sleep -Seconds 5
+        Clear-Host
 
-    $null = Read-Host "Pressione qualquer tecla para continuar."
-    Clear-Host
+        . $ScriptFile
+
+        $null = Read-Host "Pressione ENTER para continuar."
+        Clear-Host
+        }
+    catch {
+        throw "Erro ao executar o script: $_"
+    }
+
 }
 
 try
@@ -29,6 +39,6 @@ try
     }
 }
 catch {
-    Write-Host "❌ Erro: $($_.Exception.Message)"
+    Write-Host "[ERRO] Erro: $($_.Exception.Message)"
     exit 1
 }
