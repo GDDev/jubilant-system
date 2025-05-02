@@ -36,4 +36,4 @@ Start-Sleep -Seconds 3
 Write-Host "Iniciando migracoes..."
 Start-Sleep -Seconds 3
 Set-Location "$rootPath\project"
-& $venvPython flask db upgrade
+python flask db upgrade

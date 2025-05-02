@@ -13,7 +13,7 @@ function Run-SetupScript {
 
     try {
         if (-not (Test-Path $ScriptFile)) {
-            throw "Arquivo de script não encontrado: $ScriptFile"
+            throw "Arquivo de script nao encontrado: $ScriptFile"
         }
 
         $name = Split-Path $ScriptFile -Leaf

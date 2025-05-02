@@ -65,5 +65,5 @@ if (-Not (Test-Path Env:JUBILANT_MASTER_KEY)) {
         Set-Content -Path $envPath -Value "JUBILANT_MASTER_KEY=$fernetKey"
     }
 } else {
-    Write-Host "A chave de criptografia JUBILANT_MASTER_KEY já existe. Nenhuma nova chave foi gerada."
+    Write-Host "A chave de criptografia JUBILANT_MASTER_KEY ja existe. Nenhuma nova chave foi gerada."
 }

@@ -30,3 +30,6 @@ if (!(Test-Path $configPath)) {
     Write-Host "Arquivo de configuracao populado com sucesso."
     Start-Sleep -Seconds 3
 }
+else{
+    Write-Host "Arquivo de configuracao ja definido."
+}

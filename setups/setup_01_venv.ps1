@@ -14,6 +14,10 @@ if (!(Test-Path "$rootPath\.venv\")){
     python -m venv .\.venv
     . "$rootPath\.venv\Scripts\Activate.ps1"
 }
+else
+{
+    Write-Host "Ambiente virtual encontrado."
+}
 
 Write-Host "Checando ativacao do ambiente virtual..."
 Start-Sleep -Seconds 3
