@@ -6,27 +6,27 @@ $rootPath = Resolve-Path "$scriptsPath\.."
 
 $venvPython = "$rootPath\.venv\Scripts\python.exe"
 
+function Run-SetupScript {
+    param (
+        [string]$ScriptFile
+    )
+
+    $name = Split-Path $ScriptPath -Leaf
+    Write-Host "Executando: $name..."
+    Start-Sleep -Seconds 5
+    Clear-Host
+
+    . $ScriptFile
+
+    $null = Read-Host "Pressione qualquer tecla para continuar."
+    Clear-Host
+}
+
 try
 {
-    . $scriptsPath\setup_venv.ps1
-    Start-Sleep -Seconds 1
-    Clear-Host
-
-    . $scriptsPath\setup_env_variables.ps1
-    Start-Sleep -Seconds 1
-    Clear-Host
-
-    . $scriptsPath\setup_config_file.ps1
-    Start-Sleep -Seconds 1
-    Clear-Host
-
-    . $scriptsPath\setup_database.ps1
-    Start-Sleep -Seconds 1
-    Clear-Host
-
-    . $scriptsPath\setup_apps.ps1
-    Start-Sleep -Seconds 1
-    Clear-Host
+    Get-ChildItem -Path $scriptsPath -Filter "setup_*.ps1" | Sort-Object Name | ForEach-Object {
+        Run-SetupScript -ScriptFile $_.FullName
+    }
 }
 catch {
     Write-Host "❌ Erro: $($_.Exception.Message)"
