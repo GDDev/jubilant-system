@@ -23,7 +23,7 @@ function Run-SetupScript {
 
         . $ScriptFile
 
-        $null = Read-Host "Pressione ENTER para continuar."
+        $null = Read-Host "Pressione ENTER para continuar"
         Clear-Host
         }
     catch {
