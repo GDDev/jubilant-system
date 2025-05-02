@@ -27,7 +27,6 @@ def signup():
                 'email': form.email.data
             }
             profile_data = {
-                'role': form.role.data,
                 'username': form.username.data,
                 'password': form.pwd.data
             }

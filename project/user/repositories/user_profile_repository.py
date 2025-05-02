@@ -13,9 +13,11 @@ class UserProfileRepository:
         db.session.add(profile)
         db.session.commit()
 
-    def insert_with_no_commit(self, session, profile: UserProfile) -> None:
-        # session.add(self.assure_uuid_uniqueness(profile))
-        session.add(profile)
+    def insert_with_no_commit(self, profile: UserProfile) -> None:
+        profile = self.assure_uuid_uniqueness(profile)
+        if profile:
+            db.session.add(profile)
+            db.session.flush()
 
     @staticmethod
     def find_by_id(user_profile_id: str) -> UserProfile | None:
@@ -65,10 +67,14 @@ class UserProfileRepository:
     @staticmethod
     def assure_uuid_uniqueness(profile):
         while True:
-            if db.session.query(UserProfile).get(profile.id) is not None:
-                profile.id = str(uuid.uuid4())
-            if db.session.query(UserProfile).filter_by(alt_id = profile.alt_id).first() is not None:
-                profile.alt_id = str(uuid.uuid4())
-            else:
+            id_conflict = db.session.query(UserProfile).filter_by(id=profile.id).first() is not None
+            alt_id_conflict = db.session.query(UserProfile).filter_by(alt_id=profile.alt_id).first() is not None
+
+            if not id_conflict and not alt_id_conflict:
                 break
+
+            if id_conflict:
+                profile.id = str(uuid.uuid4())
+            if alt_id_conflict:
+                profile.alt_id = str(uuid.uuid4())
         return profile

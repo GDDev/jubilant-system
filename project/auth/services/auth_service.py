@@ -5,6 +5,8 @@ from ..exceptions import AuthException
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from ...role import RoleRepository, Role
+
 
 class AuthService:
 
@@ -20,26 +22,28 @@ class AuthService:
             email=user_data['email']
         )
         try:
-            session = db.session
-            with session.begin():
-                # Calls a method to insert a user object into the db
-                self.user_repository.insert_with_no_commit(session, user)
-                # Calls a method to hash the password
-                hashed_pwd = self.hash_password(profile_data['password'])
-                # Instantiate UserProfileObject
-                user_profile = UserProfile(
-                    user_id=user.id,
-                    username=profile_data['username'],
-                    pwd=hashed_pwd
-                )
-                # Calls a method to insert a user's profile into the db
-                self.user_profile_repository.insert_with_no_commit(session, user_profile)
+            # Calls a method to insert a user object into the db
+            self.user_repository.insert_with_no_commit(user)
+            # Calls a method to hash the password
+            hashed_pwd = self.hash_password(profile_data['password'])
+            # Instantiate UserProfileObject
+            user_profile = UserProfile(
+                user_id=user.id,
+                username=profile_data['username'],
+                pwd=hashed_pwd
+            )
+            # Calls a method to insert a user's profile into the db
+            self.user_profile_repository.insert_with_no_commit(user_profile)
+            RoleRepository.insert(Role(profile_id=user_profile.id))
 
+            db.session.commit()
             return user_profile
 
         except IntegrityError as e:
+            db.session.rollback()
             raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.') from e
         except SQLAlchemyError as e:
+            db.session.rollback()
             raise AuthException('Falha ao cadastrar usuário.') from e
 
     def sign_in_user(self, credential: str, pwd: str) -> UserProfile | None:

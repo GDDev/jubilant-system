@@ -1,9 +1,9 @@
 import uuid
 
 from core import Base
-from flask_login import UserMixin  # type: ignore
-from sqlalchemy import Integer, String, ForeignKey, UUID  # type: ignore
-from sqlalchemy.orm import Mapped, mapped_column, relationship  # type: ignore
+from flask_login import UserMixin
+from sqlalchemy import Integer, String, ForeignKey, UUID
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from secrets import token_hex
 
 
@@ -119,6 +119,12 @@ class UserProfile(UserMixin, Base):
         'NotificationFriendRequest',
         back_populates='sender',
         foreign_keys='[NotificationFriendRequest.sender_id]',
+        cascade='all, delete-orphan'
+    )
+    roles: Mapped[list['Role']] = relationship(
+        'Role',
+        back_populates='profile',
+        foreign_keys='[Role.profile_id]',
         cascade='all, delete-orphan'
     )
 

@@ -41,7 +41,7 @@ class Notification(Base):
     seen: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, comment='Whether the receiver has seen the notification')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'notification',
+        'polymorphic_identity': 'system',
         'polymorphic_on': type
     }
 
