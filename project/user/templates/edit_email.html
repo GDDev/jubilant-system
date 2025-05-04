@@ -3,7 +3,7 @@
     <form action="{{ url_for('usuario.update_email') }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <input type="email" name="email" value="{{ user.email }}" class="form-control">
+        <input type="email" name="email" value="{{ current_user.user.email }}" class="form-control">
         <input type="submit" name="btn" value="Salvar">
         <input type="submit" name="btn" value="Cancelar">
     </form>

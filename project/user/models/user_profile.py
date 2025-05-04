@@ -1,10 +1,18 @@
+from enum import Enum
+
 import uuid
 
 from core import Base
 from flask_login import UserMixin
-from sqlalchemy import Integer, String, ForeignKey, UUID
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from secrets import token_hex
+
+
+class RoleEnum(str, Enum):
+    USER = 'user'
+    ADMIN = 'admin'
+    GOD = 'god'
 
 
 class UserProfile(UserMixin, Base):
@@ -73,13 +81,6 @@ class UserProfile(UserMixin, Base):
         nullable=False,
         comment='Password for logging-in users'
     )
-    #TODO: either remove or turn into enum
-    role: Mapped[str] = mapped_column(
-        String(20),
-        nullable=False,
-        default='none',
-        comment='Role of the user'
-    )
     #TODO: turn into enum
     visibility: Mapped[str] = mapped_column(
         String(20), 
@@ -93,10 +94,21 @@ class UserProfile(UserMixin, Base):
         default='/static/img/user.png',
         comment='Profile picture of the user'
     )
+    role: Mapped[RoleEnum] = mapped_column('RoleEnum', nullable=False, default=RoleEnum.USER, comment="User's role in the system.")
+    supervisor_id: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=True,
+                                               comment="Supervisor's ID for student's users who want to suggest diets and workouts.")
+
+    ##### Relationships #####
+
     user: Mapped['User'] = relationship(
         'User',
         back_populates='profile'
     )
+
+    supervisor: Mapped['UserProfile'] = relationship('UserProfile', remote_side=[id], back_populates='supervised_students')
+
+    supervised_students: Mapped[list['UserProfile']] = relationship('UserProfile', back_populates='supervisor', foreign_keys=[supervisor_id])
+
     sent_friend_requests: Mapped[list['Friendship']] = relationship(
         'Friendship',
         back_populates='sender',
@@ -121,12 +133,17 @@ class UserProfile(UserMixin, Base):
         foreign_keys='[NotificationFriendRequest.sender_id]',
         cascade='all, delete-orphan'
     )
-    roles: Mapped[list['Role']] = relationship(
-        'Role',
-        back_populates='profile',
-        foreign_keys='[Role.profile_id]',
-        cascade='all, delete-orphan'
-    )
+
+    majors: Mapped[list['UserMajor']] = relationship('UserMajor', back_populates='profile', cascade='all, delete-orphan')
+
+    studied_majors: Mapped[list['UserMajor']] = relationship('UserMajor', primaryjoin="and_(UserProfile.id == "
+                                                                                     "UserMajor.profile_id, "
+                                                                                     "UserMajor.user_is == "
+                                                                                     "'student')", viewonly=True)
+    taught_majors: Mapped[list['UserMajor']] = relationship('UserMajor', primaryjoin="and_(UserProfile.id == "
+                                                                                     "UserMajor.profile_id, "
+                                                                                     "UserMajor.user_is == "
+                                                                                     "'professor'", viewonly=True)
 
     def get_id(self):
         """
@@ -167,3 +184,23 @@ class UserProfile(UserMixin, Base):
             list['UserProfile']: The list of users who have received friend requests from the logged-in user and have not accepted yet.
         """
         return [f.receiver for f in self.sent_friend_requests if f.status == 'pending']
+
+    @property
+    def is_student(self) -> bool:
+        """
+        A property to determine if the user is a student based on their majors.
+
+        Returns:
+            bool: True if the user is a student, False otherwise.
+        """
+        return any(m.approved for m in self.studied_majors)
+
+    @property
+    def is_professor(self) -> bool:
+        """
+        A property to determine if the user is a professor based on their majors.
+
+        Returns:
+            bool: True if the user is a professor, False otherwise.
+        """
+        return any(m.approved for m in self.taught_majors)

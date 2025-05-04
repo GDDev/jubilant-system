@@ -5,8 +5,6 @@ from ..exceptions import AuthException
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from ...role import RoleRepository, Role
-
 
 class AuthService:
 
@@ -34,7 +32,6 @@ class AuthService:
             )
             # Calls a method to insert a user's profile into the db
             self.user_profile_repository.insert_with_no_commit(user_profile)
-            RoleRepository.insert(Role(profile_id=user_profile.id))
 
             db.session.commit()
             return user_profile

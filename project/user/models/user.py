@@ -9,5 +9,4 @@ class User(Base):
     surname: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
-    profile: Mapped['UserProfile'] = relationship('UserProfile', uselist=False, back_populates='user', cascade='all, '
-                                                                                                               'delete-orphan', single_parent=True)
+    profile: Mapped['UserProfile'] = relationship('UserProfile', uselist=False, back_populates='user', cascade='all, delete-orphan', single_parent=True)

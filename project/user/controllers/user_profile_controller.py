@@ -1,3 +1,5 @@
+from werkzeug.exceptions import HTTPException
+
 from flask import render_template, redirect, url_for, request, flash, session
 from flask_login import login_required, current_user
 
@@ -25,7 +27,8 @@ def detail_profile(code: str):
             friendship=friendship,
             sender=sender
         )
-
+    except HTTPException as e:
+        raise e
     except Exception as e:
         flash(str(e))
     return redirect(url_for('main.home'))

@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
-{% block title %}{{ profile.user.name }} {{ profile.user.surname }}{% endblock %}
+{% block title %}{{ current_user.user.name }} {{ current_user.user.surname }}{% endblock %}
 {% block content %}
     <div>
-        <img src="{{ profile.profile_pic }}" alt="profile pic" width="45rem" height="45rem">
-        <input type="text" value="{{ profile.user.name }} {{ profile.user.surname }}" class="form-control" disabled>
+        <img src="{{ current_user.profile_pic }}" alt="profile pic" width="45rem" height="45rem">
+        <input type="text" value="{{ current_user.user.name }} {{ current_user.user.surname }}" class="form-control" disabled>
         {% block edit_email %}
-            <input type="email" value="{{ profile.user.email }}" class="form-control" disabled>
+            <input type="email" value="{{ current_user.user.email }}" class="form-control" disabled>
             <a href="{{ url_for('usuario.update_email') }}">Atualizar email</a>
         {% endblock %}
     </div>
 
     <div>
         <a href="#">Editar perfil</a>
-        Privacidade do perfil: {{ profile.visibility }}
-        Nome de usuário: {{ profile.username }}
+        Privacidade do perfil: {{ current_user.visibility }}
+        Nome de usuário: {{ current_user.username }}
         Senha: ************
     </div>
 
@@ -26,7 +26,7 @@
         <form action="{{ url_for('usuario.delete') }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-            <input type="hidden" name="user_id" value="{{ profile.user_id }}">
+            <input type="hidden" name="user_id" value="{{ current_user.user_id }}">
             <input type="submit" value="Deletar Conta" class="btn btn-danger">
         </form>
     </div>
