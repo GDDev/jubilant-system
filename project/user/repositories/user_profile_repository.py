@@ -20,6 +20,10 @@ class UserProfileRepository:
             db.session.flush()
 
     @staticmethod
+    def update(profile: UserProfile) -> None:
+        db.session.commit()
+
+    @staticmethod
     def find_by_id(user_profile_id: str) -> UserProfile | None:
         return db.session.get(UserProfile, user_profile_id)
 

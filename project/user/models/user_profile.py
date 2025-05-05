@@ -143,7 +143,7 @@ class UserProfile(UserMixin, Base):
     taught_majors: Mapped[list['UserMajor']] = relationship('UserMajor', primaryjoin="and_(UserProfile.id == "
                                                                                      "UserMajor.profile_id, "
                                                                                      "UserMajor.user_is == "
-                                                                                     "'professor'", viewonly=True)
+                                                                                     "'professor')", viewonly=True)
 
     def get_id(self):
         """

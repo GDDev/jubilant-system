@@ -3,6 +3,7 @@ from werkzeug.exceptions import HTTPException
 from flask import render_template, redirect, url_for, request, flash, session
 from flask_login import login_required, current_user
 
+from core import db
 from project.user import profile
 from ..services import UserService, UserProfileService
 
@@ -49,3 +50,16 @@ def find():
     except Exception as e:
         flash(str(e))
     return render_template('profile_list.html', profiles=profiles, search=search)
+
+@profile.route('/selecionar_supervisor', methods=['POST'])
+@login_required
+def select_supervisor():
+    sup_id = request.form.get('supervisor_id')
+    if user_profile_service.find_by_id(sup_id):
+        #TODO: add logic to send notification to chosen user before setting as supervisor.
+
+        # current_user.supervisor_id = sup_id
+        # db.session.commit()
+        user_profile_service.update(current_user, supervisor_id=sup_id)
+
+    return redirect(url_for('perfil.detail_profile', code=current_user.code))

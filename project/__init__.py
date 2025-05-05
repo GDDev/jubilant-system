@@ -20,6 +20,7 @@ def register_all_bp(flask: Flask):
     from project.user import user, profile
     from project.friendship import friendship
     from project.notification import notification
+    from project.academia import Major, UserMajor
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')

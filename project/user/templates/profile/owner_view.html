@@ -10,6 +10,38 @@
         {% endblock %}
     </div>
 
+    <form action="{{ url_for('perfil.select_supervisor') }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="supervisorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Escolher supervisor
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="supervisorDropdown">
+            {% for friend in current_user.friends %}
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="#" onclick="selectSupervisor('{{ friend
+                    .id }}', '{{ friend.user.name }} {{ friend.user.surname }}'); return false;">
+                        <img src="{{ friend.profile_pic }}" alt="#" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
+                        {{ friend.user.name }} {{ friend.user.surname }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <input type="hidden" name="supervisor_id" id="supervisorInput">
+
+        <p class="mt-2">Selecionado: <span id="selectedSupervisor">
+            {% if current_user.supervisor %}
+            	{{ current_user.supervisor.user.name }} {{ current_user.supervisor.user.surname }}
+            {% else %}
+                Nenhum
+            {% endif %}
+        </span></p>
+
+        <input type="submit" value="Salvar" class="btn btn-primary mt-2">
+        </div>
+    </form>
+
     <div>
         <a href="#">Editar perfil</a>
         Privacidade do perfil: {{ current_user.visibility }}
@@ -30,4 +62,11 @@
             <input type="submit" value="Deletar Conta" class="btn btn-danger">
         </form>
     </div>
+
+    <script>
+        function selectSupervisor(id, fullName) {
+            document.getElementById('supervisorInput').value = id;
+            document.getElementById('selectedSupervisor').textContent = fullName;
+        }
+    </script>
 {% endblock %}

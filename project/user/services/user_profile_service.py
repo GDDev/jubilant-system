@@ -11,6 +11,11 @@ class UserProfileService:
         self.user_profile_repository = UserProfileRepository()
         self.friendship_repository = FriendshipRepository()
 
+    def update(self, profile, **kwargs) -> None:
+        for key, value in kwargs.items():
+            setattr(profile, key, value)
+        self.user_profile_repository.update(profile)
+
     def find_by_id(self, user_profile_id: str):
         return self.user_profile_repository.find_by_id(user_profile_id)
 

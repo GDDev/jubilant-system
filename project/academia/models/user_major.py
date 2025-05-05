@@ -25,4 +25,4 @@ class UserMajor(Base):
     approved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     major: Mapped['Major'] = relationship('Major', foreign_keys=[major_id])
-    profile: Mapped['Profile'] = relationship('Profile', back_populates='majors', foreign_keys=[profile_id])
+    profile: Mapped['UserProfile'] = relationship('UserProfile', back_populates='majors', foreign_keys=[profile_id])

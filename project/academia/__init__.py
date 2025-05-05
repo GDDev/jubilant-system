@@ -1,1 +1,1 @@
-from models import Major, AreaTags, UserMajor, MajorEnum
+from .models import Major, AreaTags, UserMajor, MajorEnum
