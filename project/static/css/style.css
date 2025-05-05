@@ -1,0 +1,43 @@
+:root {
+    --primary: #003F88;
+    --primary-dark: #001936;
+    --light-blue: #0099FF;
+    --muted-text-color: #9D9D9D;
+}
+
+* {
+    color: #FFF;
+}
+
+
+.primary-bg, .primary-bg a{
+    background-color: var(--primary);
+    color: #FFF;
+}
+
+.primary-bg-dark, .primary-bg-dark a{
+    background-color: var(--primary-dark);
+    color: #FFF;
+}
+
+a.light-blue{
+    color: var(--light-blue);
+    text-decoration: none;
+}
+
+.text-muted{
+    color: var(--muted-text-color) !important;
+}
+
+.profile-pic-lg{
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+}
+
+.profile-pic-sm{
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+}
+

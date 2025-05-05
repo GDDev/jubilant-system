@@ -1,10 +1,13 @@
 {% extends "profile/owner_view.html" %}
 {% block edit_email %}
-    <form action="{{ url_for('usuario.update_email') }}" method="post">
+    <form action="{{ url_for('usuario.update_email') }}" method="post" class="d-flex flex-column
+    justify-content-between flex-wrap flex-md-nowrap align-items-center mt-3 w-100">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <input type="email" name="email" value="{{ current_user.user.email }}" class="form-control">
-        <input type="submit" name="btn" value="Salvar">
-        <input type="submit" name="btn" value="Cancelar">
+        <input type="email" name="email" value="{{ current_user.user.email }}" class="form-control w-25">
+        <div class="d-flex justify-content-between w-25 mt-3">
+            <input type="submit" name="btn" value="Salvar" class="btn btn-success">
+            <input type="submit" name="btn" value="Cancelar" class="btn btn-danger">
+        </div>
     </form>
 {% endblock %}

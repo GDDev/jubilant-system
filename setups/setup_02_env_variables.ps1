@@ -1,3 +1,5 @@
+Set-Location $rootPath
+
 Write-Host "Definindo variaves do banco de dados..."
 Start-Sleep 3
 $env:FLASK_DB_TYPE = Read-Host "Banco de dados a ser usado (padrao: mysql+pymysql)"
@@ -28,15 +30,21 @@ Start-Sleep -Seconds 2
 Clear-Host
 
 Write-Host "Gerando FLASK_SECRET_KEY..."
+Write-Host $PWD
 Start-Sleep 3
 if (-Not $env:FLASK_SECRET_KEY){
-    $secretKey = python -c "import secrets; print(str(secrets.token_hex()))"
+    $secretKey = python -c "from secrets import token_hex; print(str(token_hex()))"
     if (-Not $secretKey){
         throw "Falha ao gerar Chave Secreta."
     }
+    Write-Host $secretKey
     $env:FLASK_SECRET_KEY = $secretKey
     Write-Host "FLASK_SECRET_KEY gerada com sucesso."
+    Write-Host "Flask_SECRET_KEY: " $env:FLASK_SECRET_KEY
     Start-Sleep 3
+}
+else {
+    Write-Host "FLASK_SECRET_KEY ja definida..."
 }
 
 $envPath = "$rootPath\.env"

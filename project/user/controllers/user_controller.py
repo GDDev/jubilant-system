@@ -28,7 +28,7 @@ def update_email():
                 user_service.update_email(profile.user, new_email)
 
                 login_user(profile)
-                return redirect(url_for('perfil.detail_profile', code=profile.code))
+            return redirect(url_for('perfil.detail_profile', code=profile.code))
     except HTTPException as e:
         raise e
     except UserException as e:

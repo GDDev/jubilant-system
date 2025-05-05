@@ -1,14 +1,13 @@
 import uuid
 
 import pytest
-from sqlalchemy.exc import IntegrityError
 
 from core import db
 
 from project import create_app
 from project.auth.exceptions import AuthException
 from project.auth.services import AuthService
-from project.user import User, UserService
+from project.user import User
 
 
 @pytest.fixture
@@ -47,13 +46,12 @@ def test_user_profile_uuid_conflict(monkeypatch):
     }
 
     auth_service = AuthService()
-    user_service = UserService()
 
     profile1 = auth_service.sign_up_user(user_data_1, profile_data_1)
     assert db.session.get(User, profile1.user_id) is not None, "Expected user1 to be persisted"
 
     with pytest.raises(AuthException, match="Erro interno ao cadastrar usuário, por favor tente novamente."):
-        profile2 = auth_service.sign_up_user(user_data_2, profile_data_2)
+        _ = auth_service.sign_up_user(user_data_2, profile_data_2)
 
     db.session.rollback()
     db.session.expire_all()

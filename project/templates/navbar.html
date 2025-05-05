@@ -1,32 +1,45 @@
 {% block navbar %}
-<nav class="w-auto h-100 d-flex flex-column align-items-start">
-    <div class="dropdown">
-        <a href="" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ current_user.profile_pic }}" alt="profile pic" width="45rem" height="45rem"
-                 class="rounded-circle me-2">
+<nav class="h-100 d-flex flex-column align-items-start primary-bg" style="width: 15%">
+    <div class="dropdown w-75 p-4">
+        <a href="#" class="w-100 d-flex align-items-center justify-content-between link-body-emphasis
+        text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ current_user.profile_pic }}" alt="profile pic"
+                 class="profile-pic-sm me-auto img-thumbnail">
             <strong>{{ current_user.username }}</strong>
         </a>
-        <ul class="dropdown-menu text-small shadow">
+        <ul class="dropdown-menu text-small shadow primary-bg-dark">
             <li>
-                <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code)
+                <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user
+                .code)
                         }}">Perfil</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Formações</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">Configurações</a>
+            </li>
+            <li>
+                <hr class="dropdown-divider border-white">
             </li>
             <li>
                 <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
             </li>
         </ul>
     </div>
-    <ul class="nav nav-pills flex-column align-items-start w-100 mt-3">
+    <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4">
         <li class="nav-item w-100">
-            <a href="{{ url_for('main.home') }}" class="nav-link px-1 {% if request.path == url_for('main.home')
-                    %}active{%
+            <a href="{{ url_for('main.home') }}" class="nav-link {% if request.path == url_for
+            ('main.home')
+                    %}active px-3{%
                     endif %}" aria-current="page">
                 <i class="bi bi-house"></i> Feed
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('amigo.get_friends') }}" class="nav-link px-1 {% if request.path == url_for
-            ('amigo.get_friends') %}active{%
+            <a href="{{ url_for('amigo.get_friends') }}" class="nav-link {% if request.path == url_for
+            ('amigo.get_friends') %}active px-3{%
                     endif %}" aria-current="page">
                 <i class="bi bi-people"></i> Amigos
             </a>
@@ -52,8 +65,8 @@
 {#            </a>#}
 {#        </li>#}
         <li class="nav-item w-100">
-            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link px-1 {% if request.path ==
-            url_for('notificacao.get_all') %}active{% endif %}" aria-current="page">
+            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link {% if request.path ==
+            url_for('notificacao.get_all') %}active px-3{% endif %}" aria-current="page">
                 <i class="bi bi-bell"></i> Notificações
             </a>
         </li>
