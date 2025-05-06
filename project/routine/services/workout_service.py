@@ -1,0 +1,2 @@
+class WorkoutService:
+    pass
