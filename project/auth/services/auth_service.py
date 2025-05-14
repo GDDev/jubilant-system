@@ -38,10 +38,10 @@ class AuthService:
 
         except IntegrityError as e:
             db.session.rollback()
-            raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.') from e
+            raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.' + e._message()) from e
         except SQLAlchemyError as e:
             db.session.rollback()
-            raise AuthException('Falha ao cadastrar usuário.') from e
+            raise AuthException('Falha ao cadastrar usuário.' + e._message()) from e
 
     def sign_in_user(self, credential: str, pwd: str) -> UserProfile | None:
         try:

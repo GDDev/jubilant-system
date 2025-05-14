@@ -70,6 +70,10 @@ class UserProfileRepository:
 
     @staticmethod
     def assure_uuid_uniqueness(profile):
+        if not profile.id:
+            profile.id = str(uuid.uuid4())
+        if not profile.alt_id:
+            profile.alt_id = str(uuid.uuid4())
         while True:
             id_conflict = db.session.query(UserProfile).filter_by(id=profile.id).first() is not None
             alt_id_conflict = db.session.query(UserProfile).filter_by(alt_id=profile.alt_id).first() is not None
@@ -81,4 +85,5 @@ class UserProfileRepository:
                 profile.id = str(uuid.uuid4())
             if alt_id_conflict:
                 profile.alt_id = str(uuid.uuid4())
+
         return profile
