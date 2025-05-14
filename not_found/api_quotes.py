@@ -1,7 +1,7 @@
 from flask import jsonify, make_response
 from flask_restful import Resource
 
-from not_found import choose_quote
+from .not_found import choose_quote
 
 
 class NotFoundPageQuoteApi(Resource):

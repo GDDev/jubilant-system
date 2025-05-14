@@ -65,11 +65,9 @@ def create_app() -> Flask:
 def config_error_handlers(flask: Flask):
     @flask.errorhandler(404)
     def not_found(_):
-        response = requests.get(
-            'http://127.0.0.1:9090/not_found/generate_quote',
-            timeout=1000
-        )
-        quote = response.json()
+        from not_found import NotFoundPageQuoteApi
+
+        quote = NotFoundPageQuoteApi().get().json
         return render_template('not_found.html', quote=quote)
 
     @flask.errorhandler(403)
