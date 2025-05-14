@@ -14,9 +14,6 @@ class SignUpForm(FlaskForm):
         DataRequired('Preencha este campo.'),
         Email('Digite um email válido.')
     ])
-    role = SelectField('Você é:', choices=[
-        ('student', 'Estudante'), ('professor', 'Professor')
-    ])
     username = StringField('Nome de usuário:', validators=[
         DataRequired('Preencha este campo.')
     ])
