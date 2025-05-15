@@ -1,0 +1,12 @@
+<a href="{{ url_for('perfil.detail_profile', code=post.profile.code) }}" class="text-decoration-none bg-transparent">
+    <img src="{{ post.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm">
+    <strong>{{ post.profile.user.name }} {{ post.profile.user.surname }}</strong>
+</a>
+<span class="text-muted">{{ post.created_at.strftime('%d/%m/%Y') }}</span>
+
+<a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="text-decoration-none">
+    <h5>{{ post.title }}</h5>
+    <p>
+        {{ post.content }}
+    </p>
+</a>
