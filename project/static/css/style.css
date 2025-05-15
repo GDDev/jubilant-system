@@ -41,3 +41,7 @@ a.light-blue{
     border-radius: 50%;
 }
 
+.auto-grow {
+    overflow: hidden;
+    resize: none;
+}

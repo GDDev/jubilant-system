@@ -145,6 +145,9 @@ class UserProfile(UserMixin, Base):
                                                                                      "UserMajor.user_is == "
                                                                                      "'professor')", viewonly=True)
 
+    posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
+    comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
+
     def get_id(self):
         """
         A method to get the alternative ID as the main ID of the user profile.

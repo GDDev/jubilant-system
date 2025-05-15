@@ -1,5 +1,5 @@
 {% block navbar %}
-<nav class="h-100 d-flex flex-column align-items-start primary-bg" style="width: 15%">
+<nav class="vh-100 position-fixed d-flex flex-column align-items-start primary-bg" style="width: 15%">
     <div class="dropdown w-75 p-4">
         <a href="#" class="w-100 d-flex align-items-center justify-content-between link-body-emphasis
         text-decoration-none dropdown-toggle"
@@ -64,10 +64,17 @@
 {#                <i class="bi bi-chat-dots"></i> Conversas#}
 {#            </a>#}
 {#        </li>#}
-        <li class="nav-item w-100">
-            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link {% if request.path ==
-            url_for('notificacao.get_all') %}active px-3{% endif %}" aria-current="page">
-                <i class="bi bi-bell"></i> Notificações
+        <li class="nav-item position-relative w-100">
+            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link {% if request.path == url_for('notificacao.get_all') %}active px-3{% endif %}" aria-current="page">
+                <i class="bi bi-bell"></i> Notificações <span class="position-absolute end-0 top-50 translate-middle badge rounded-circle bg-danger text-white" id="notifications-count"></span>
+                {% if current_user.notifications %}
+                    <script>let notiCount = 0;</script>
+                	{% for notification in current_user.notifications %}
+                		{% if not notification.seen %}
+                            <script>notiCount++;</script>
+                		{% endif %}
+                	{% endfor %}
+                {% endif %}
             </a>
         </li>
 {#        {% if True %}#}
@@ -79,4 +86,12 @@
 {#        {% endif %}#}
     </ul>
 </nav>
+
+<script>
+    window.onload = () => {
+        const notificationsCount = document.getElementById('notifications-count');
+        if (notiCount !== 0) { notificationsCount.innerText = notiCount.toString(); }
+
+    }
+</script>
 {% endblock %}

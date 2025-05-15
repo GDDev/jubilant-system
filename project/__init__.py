@@ -21,6 +21,7 @@ def register_all_bp(flask: Flask):
     from project.friendship import friendship
     from project.notification import notification
     from project.academia import Major, UserMajor
+    from project.post import post_bp, comment_bp
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')
@@ -28,6 +29,8 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(profile, url_prefix='/perfil')
     flask.register_blueprint(friendship, url_prefix='/amigo')
     flask.register_blueprint(notification, url_prefix='/notificacao')
+    flask.register_blueprint(post_bp, url_prefix='/postagem')
+    flask.register_blueprint(comment_bp, url_prefix='/comentario')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()

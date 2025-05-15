@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Postagem de {{ post.profile.username }}{% endblock %}
+{% block content %}
+    {% include "post.html" %}
+    <hr>
+    <div class="comment-section">
+        <div class="mt-5 w-25">
+            {% for comment in post.comments %}
+                {% include "comment/comment.html" %}
+            {% endfor %}
+        </div>
+        {% include 'comment/comment_form.html' %}
+    </div>
+{% endblock %}
