@@ -28,3 +28,13 @@ def send_system_noti():
         except NotificationException as e:
             flash(str(e))
     return redirect(url_for('notificacao.get_all'))
+
+@notification.route('/ler_todas', methods=['POST'])
+@login_required
+def read_all():
+    try:
+        notifications = [n for n in current_user.notifications if n.seen == False]
+        noti_service.read_all(notifications)
+    except NotificationException as e:
+        flash(str(e))
+    return redirect(url_for('notificacao.get_all'))

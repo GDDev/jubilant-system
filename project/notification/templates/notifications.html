@@ -23,4 +23,16 @@
             {% endfor %}
         {% endif %}
     </div>
+
+<script>
+    window.onload = () => {
+        fetch('/notificacao/ler_todas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': '{{ csrf_token() }}'
+            }
+        });
+    };
+</script>
 {% endblock %}
