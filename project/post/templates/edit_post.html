@@ -13,8 +13,6 @@
                 }}</textarea>
 
         <input type="submit" value="Salvar" class="btn btn-success mt-3">
-        <a href="{{ url_for('post.detail_post', post_id=post.id) }}">
-            <button class="btn btn-danger mt-3">Cancelar</button>
-        </a>
+        <a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="btn btn-danger mt-3">Cancelar</a>
     </form>
 {% endblock %}
