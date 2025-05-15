@@ -25,3 +25,23 @@ class PostService:
             self.post_repo.insert(Post(profile_id=profile_id, title=title, content=content))
         except SQLAlchemyError as e:
             raise PostException('Erro ao criar post.') from e
+
+    def find_by_id(self, post_id: int) -> Post | None:
+        try:
+            return self.post_repo.find_by_id(post_id)
+        except SQLAlchemyError as e:
+            raise PostException('Erro ao recuperar post.') from e
+
+    def update_post(self, post: Post, title: str, content: str) -> None:
+        try:
+            post.title = title
+            post.content = content
+            self.post_repo.update(post)
+        except SQLAlchemyError as e:
+            raise PostException('Erro ao atualizar post.') from e
+
+    def delete(self, post):
+        try:
+            self.post_repo.delete(post)
+        except SQLAlchemyError as e:
+            raise PostException('Erro ao deletar post.') from e

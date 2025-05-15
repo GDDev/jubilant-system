@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Postagem de {{ post.profile.username }}{% endblock %}
+{% block content %}
+    {% include "post.html" %}
+
+    <div class="comment-section">
+    {% include 'comment/comment_form.html' %}
+    </div>
+{% endblock %}

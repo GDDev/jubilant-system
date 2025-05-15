@@ -1,12 +1,28 @@
-<a href="{{ url_for('perfil.detail_profile', code=post.profile.code) }}" class="text-decoration-none bg-transparent">
-    <img src="{{ post.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm">
-    <strong>{{ post.profile.user.name }} {{ post.profile.user.surname }}</strong>
-</a>
-<span class="text-muted">{{ post.created_at.strftime('%d/%m/%Y') }}</span>
+<div class="post-container d-flex flex-column h-auto">
+    <div class="d-flex align-items-center justify-content-between w-100 mb-3">
+        <a href="{{ url_for('perfil.detail_profile', code=post.profile.code) }}" class="bg-transparent text-decoration-none">
+            <div>
+                <img src="{{ post.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm" style="width:
+                1.5rem; height: 1.5rem;">
+                <strong style="font-size: 1rem;">{{ post.profile.user.name }} {{ post.profile.user.surname }}</strong>
+            </div>
+        </a>
 
-<a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="text-decoration-none">
-    <h5>{{ post.title }}</h5>
-    <p>
-        {{ post.content }}
-    </p>
-</a>
+        {% if current_user == post.profile %}
+            {% include "post_dropdown.html" %}
+        {% else %}
+            <div>
+                <span class="text-muted">{{ post.created_at.strftime('%d/%m/%Y') }}</span>
+            </div>
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="bg-transparent text-decoration-none">
+        <div class="d-flex flex-column justify-content-between h-100 w-100 ">
+            <strong class="text-capitalize">{{ post.title }}</strong>
+            <p class="text-wrap" style="font-size: 1.2rem;">
+                {{ post.content }}
+            </p>
+        </div>
+    </a>
+</div>
