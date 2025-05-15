@@ -26,3 +26,8 @@ class NotificationRepository:
     def delete(notification):
         db.session.delete(notification)
         db.session.commit()
+
+    @staticmethod
+    def mark_as_read(notification: Notification) -> None:
+        notification.seen = True
+        db.session.commit()
