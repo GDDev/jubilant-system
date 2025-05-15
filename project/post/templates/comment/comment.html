@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-between mt-3">
+    <a href="{{ url_for('perfil.detail_profile', code=comment.profile.code) }}" class="bg-transparent text-decoration-none">
+        <img src="{{ comment.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm" style="width:
+                1.2rem; height: 1.2rem;">
+        <span style="font-size: .8rem">{{ comment.profile.username }}</span>
+    </a>
+    <div>
+        <span class="text-muted" style="font-size: .6rem">
+            {{ comment.created_at.strftime('%d/%m/%Y') }}
+            {% if comment.created_at != comment.last_updated_at %}
+                (editado)
+            {% endif %}
+        </span>
+        {% if comment.profile_id == current_user.id %}
+            <a href="#" class="bg-transparent" id="postMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end bg-transparent border-0" aria-labelledby="postMenuLink" style="width:
+            max-content; min-width:fit-content;">
+                <li>
+                    <a href="#" class="dropdown-item rounded-pill mb-2" id="edit-comment">Editar <i class="bi
+                    bi-pencil-square"></i></a>
+                </li>
+                <li>
+                    <a href="{{ url_for('comment.delete', post_id=post.id, comment_id=comment.id) }}"
+                       class="dropdown-item rounded-pill
+                    text-danger">Excluir <i class="bi bi-trash3 text-danger"></i></a>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+<template id="edit-comment-template">
+    {% include "comment/edit_comment.html" %}
+</template>
+
+<div id="comment-container">
+    <p class="ms-4" style="font-size: 1rem">{{ comment.comment }}</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const editBtn = document.getElementById('edit-comment');
+        const commentContainer = document.getElementById('comment-container');
+        const editTemplate = document.getElementById('edit-comment-template');
+
+        if (editBtn && commentContainer) {
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                commentContainer.innerHTML = editTemplate.innerHTML;
+            });
+        }
+    });
+</script>

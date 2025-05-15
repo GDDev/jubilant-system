@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Feed{% endblock %}
+{% block content %}
+    <a href="{{ url_for('post.new') }}">
+        <button class="btn btn-primary position-absolute end-0 mx-5">Novo post <i class="fas fa-plus"></i></button>
+    </a>
+    {% if not all_posts %}
+        <h3>Nenhuma postagem para exibir. Seja o primeiro a postar!</h3>
+    {% else %}
+        <ul class="mt-5 list-unstyled d-flex flex-column align-items-center justify-content-center">
+            {% for post in all_posts %}
+                <li class="rounded mt-5 p-3" style="background-color: #003F88; color: white; width: 50rem;
+                min-height: 10rem; max-height: 20rem; overflow-wrap: break-word; white-space: nowrap; overflow:
+                hidden; text-overflow:
+                ellipsis;">
+                    {% include "post.html" %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

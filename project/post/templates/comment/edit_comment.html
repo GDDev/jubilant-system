@@ -1,0 +1,30 @@
+<form action="{{ url_for('comment.update', post_id=post.id, comment_id=comment.id) }}" method="post" class="mt-1">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="d-flex flex-column text-start w-100">
+        <label for="content"></label>
+        <textarea type="text" name="content" id="content" class="form-control auto-grow bg-transparent text-white"
+                  rows="1" maxlength="200">{{ comment.comment }}</textarea>
+        <div class="text-end small text-muted mt-1">
+            <span id="charCount">0</span>/200
+        </div>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+        <a href="{{ url_for('post.detail_post', post_id=comment.post_id) }}" class="btn btn-danger btn-sm">Cancelar</a>
+    </div>
+</form>
+
+<script>
+document.addEventListener('input', function (e) {
+  if (e.target.tagName.toLowerCase() === 'textarea' && e.target.classList.contains('auto-grow')) {
+      e.target.style.height = 'auto';
+      e.target.style.height = e.target.scrollHeight + 'px';
+
+      const countElement = document.getElementById('charCount');
+      if (countElement) {
+          countElement.innerText = e.target.value.length;
+      }
+  }
+});
+</script>
