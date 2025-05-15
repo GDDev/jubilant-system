@@ -8,11 +8,10 @@
         <input type="text" name="title" id="title" placeholder="Título da postagem" class="form-control" maxlength="50">
 
         <label for="content">Postagem</label>
-        <textarea name="content" id="content" cols="3" rows="5" class="form-control" placeholder="O que está em sua
-        mente?" maxlength="500" required></textarea>
+        <textarea name="content" id="content" cols="3" rows="5" class="form-control" placeholder="O que está em sua mente?" maxlength="500" required></textarea>
 
         <input type="submit" value="Postar" class="btn btn-success mt-3">
-        <a href="{{ url_for('post.detail_post', post_id=post.id) }}">
+        <a href="{{ url_for('post.feed') }}">
             <button class="btn btn-danger mt-3">Cancelar</button>
         </a>
     </form>
