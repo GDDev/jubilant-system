@@ -1,6 +1,3 @@
-from abc import abstractmethod
-
-from flask_login import current_user
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..models import Notification, NotificationType
@@ -24,6 +21,8 @@ class NotificationService:
     def instantiate_notification(**kwargs) -> Notification:
         if kwargs.get('type') == NotificationType.FRIEND_REQUEST:
             return NotificationFriendRequest(**kwargs)
+        elif kwargs.get('type') == NotificationType.SYSTEM:
+            return Notification(**kwargs)
         return Notification(**kwargs)
 
     def send_notification(self, **kwargs) -> None:
@@ -31,6 +30,17 @@ class NotificationService:
             self.noti_repo.insert(self.instantiate_notification(**kwargs))
         except SQLAlchemyError as e:
             raise NotificationException('Erro ao enviar notificação.') from e
+
+    def send_system_notification(self, content: str, target: str) -> None:
+        from ...user import UserProfileRepository
+        try:
+            profile_repo = UserProfileRepository()
+            targets = profile_repo.find_notification_targets(target)
+            for target in targets:
+                noti = self.instantiate_notification(receiver_id=target.id, content=content)
+                self.noti_repo.insert(noti)
+        except SQLAlchemyError as e:
+            raise NotificationException('Erro ao enviar notificação de sistema.') from e
 
     def open_notification(self, notification_id: int) -> None:
         try:
