@@ -30,6 +30,7 @@ class CommentService:
                 raise CommentException('Comentário não encontrado.')
             if comment.profile_id != current_user.id:
                 abort(403)
+            comment.comment = content
             self.comment_repo.update(comment)
         except SQLAlchemyError as e:
             raise CommentException('Falha ao editar comentário.') from e

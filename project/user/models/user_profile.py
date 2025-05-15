@@ -146,6 +146,7 @@ class UserProfile(UserMixin, Base):
                                                                                      "'professor')", viewonly=True)
 
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
+    comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
     def get_id(self):
         """

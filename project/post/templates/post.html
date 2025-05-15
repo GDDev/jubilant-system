@@ -12,7 +12,12 @@
             {% include "post_dropdown.html" %}
         {% else %}
             <div>
-                <span class="text-muted">{{ post.created_at.strftime('%d/%m/%Y') }}</span>
+                <span class="text-muted">
+                    {{ post.created_at.strftime('%d/%m/%Y') }}
+                    {% if post.created_at != post.last_updated_at %}
+                    	(editado)
+                    {% endif %}
+                </span>
             </div>
         {% endif %}
     </div>

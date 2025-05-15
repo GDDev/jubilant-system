@@ -16,3 +16,4 @@ class Comment(Base):
     last_updated_at: Mapped[DateTime] = mapped_column(DateTime, nullable=False, default=datetime.now())
 
     post: Mapped['Post'] = relationship('Post', back_populates='comments', foreign_keys=[post_id])
+    profile: Mapped['UserProfile'] = relationship('UserProfile', back_populates='comments', foreign_keys=[profile_id])
