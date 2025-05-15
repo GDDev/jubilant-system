@@ -23,6 +23,17 @@
                 {% include "searchbar.html" %}
             </div>
             <div class="p-4" style="height: 90%">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <div class="flashes" style="position: fixed; top: 1rem; z-index: 1000;">
+                      {% for message in messages %}
+                        <div class="alert alert-warning" role="alert">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
                 {% block content %}{% endblock %}
             </div>
         </div>

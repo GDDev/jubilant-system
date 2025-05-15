@@ -5,6 +5,8 @@ from sqlalchemy.orm import joinedload
 
 from project.user import UserProfile, User
 from core import db
+from project.user.models.user_profile import RoleEnum
+
 
 class UserProfileRepository:
 
@@ -87,3 +89,16 @@ class UserProfileRepository:
                 profile.alt_id = str(uuid.uuid4())
 
         return profile
+
+    @staticmethod
+    def find_notification_targets(target_type: str) -> list[UserProfile] | None:
+        users = db.session.query(UserProfile).filter_by(role=RoleEnum.USER).all()
+        admins = db.session.query(UserProfile).filter_by(role=RoleEnum.ADMIN).all()
+        if target_type == 'both':
+            return users + admins
+        elif target_type == 'users':
+            return users
+        elif target_type == 'admins':
+            return admins
+        else:
+            return None

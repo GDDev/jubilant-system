@@ -2,14 +2,22 @@
 {% block title %}Notificações {% endblock %}
 
 {% block content %}
+    {% if current_user.role == "god" %}
+        <a href="{{ url_for('notificacao.send_system_noti') }}">
+    	    <h3>Enviar notificação <i class="fa fa-plus"></i></h3>
+        </a>
+    {% endif %}
     <div class="w-75 h-auto d-flex flex-column align-items-center justify-content-center">
         {% if not notifications %}
             <h3 class="text-muted">Nenhuma notificação para mostrar.</h3>
         {% else %}
             {% for notification in notifications %}
-                <div class="d-flex align-items-center justify-content-center my-3 w-50 h-auto">
+                <div class="d-flex align-items-center justify-content-start my-3 w-50 h-auto">
                     {% if notification.type == 'friend_request' %}
                     	{% include 'types/friend_request.html' %}
+                    {% endif %}
+                    {% if notification.type == 'system' %}
+                    	{% include 'types/system.html' %}
                     {% endif %}
                 </div>
             {% endfor %}
