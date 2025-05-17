@@ -7,3 +7,4 @@ workout_bp = Blueprint('workout', __name__, template_folder='templates')
 
 from .controllers import routine_controller, item_controller
 from .models import Routine
+from .forms import NewRoutineForm

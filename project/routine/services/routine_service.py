@@ -25,3 +25,8 @@ class RoutineService:
 
     def update(self, routine: Routine) -> None:
         self.routine_repo.update(routine)
+
+    def delete(self, routine_id: int) -> None:
+        routine = self.routine_repo.find_by_id(routine_id)
+        if routine:
+            self.routine_repo.delete(routine)

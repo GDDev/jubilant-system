@@ -45,13 +45,13 @@
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all', workout_or_meal='dieta') }}" class="nav-link {% if request.path ==
-url_for('routine.list_all', workout_or_meal='dieta') %}active{% endif %}" aria-current="page">
+            <a href="{{ url_for('routine.list_all', routine_type='dieta') }}" class="nav-link {% if request.path ==
+url_for('routine.list_all', routine_type='dieta') %}active{% endif %}" aria-current="page">
                 <i class="fa-solid fa-clipboard-list"></i> Dietas
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all', workout_or_meal='treino') }}" class="nav-link {% if request.path == url_for('routine.list_all', workout_or_meal='treino') %}active{% endif %}" aria-current="page">
+            <a href="{{ url_for('routine.list_all', routine_type='treino') }}" class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}" aria-current="page">
                 <i class="fa-solid fa-dumbbell"></i> Treinos
             </a>
         </li>

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Adicionar Item à {{ routine_type.capitalize() }}{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto">
+        Item
+
+        <a href="{{ url_for('routine.new', routine_type=routine_type) + '?routine_id={}'.format(routine_id) }}"
+           class="btn
+        btn-outline-danger">Cancelar</a>
+    </div>
+{% endblock %}
