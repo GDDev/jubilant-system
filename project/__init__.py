@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from core import db, migrate
+from project.routine import item_bp
 
 
 def config_flask() -> Flask:
@@ -22,6 +23,7 @@ def register_all_bp(flask: Flask):
     from project.notification import notification
     from project.academia import Major, UserMajor
     from project.post import post_bp, comment_bp
+    from project.routine import routine_bp, item_bp
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')
@@ -31,6 +33,8 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(notification, url_prefix='/notificacao')
     flask.register_blueprint(post_bp, url_prefix='/postagem')
     flask.register_blueprint(comment_bp, url_prefix='/comentario')
+    flask.register_blueprint(routine_bp, url_prefix='/rotina')
+    flask.register_blueprint(item_bp, url_prefix='/item')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()

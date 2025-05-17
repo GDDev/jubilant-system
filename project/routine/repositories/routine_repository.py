@@ -1,20 +1,20 @@
 from core import db
-from project.routine import Routine
+from project.routine.models import Routine
 
 
 class RoutineRepository:
 
     @staticmethod
-    def insert(routine: Routine):
+    def insert(routine):
         db.session.add(routine)
         db.session.commit()
 
     @staticmethod
-    def update(routine: Routine):
+    def update(routine):
         db.session.commit()
 
     @staticmethod
-    def delete(routine: Routine):
+    def delete(routine):
         db.session.delete(routine)
         db.session.commit()
 
@@ -22,3 +22,7 @@ class RoutineRepository:
     def insert_without_commit(routine):
         db.session.add(routine)
         db.session.flush()
+
+    @staticmethod
+    def find_by_id(routine_id):
+        return db.session.get(Routine, routine_id)

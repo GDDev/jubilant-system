@@ -148,6 +148,9 @@ class UserProfile(UserMixin, Base):
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
+    created_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='creator', foreign_keys='[Routine.created_by]', cascade='all, delete-orphan')
+    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='[Routine.created_for]')
+
     def get_id(self):
         """
         A method to get the alternative ID as the main ID of the user profile.

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% if workout_or_meal == 'treino' %}
+    {% set title = 'Rotinas de treino'.capitalize() %}
+{% else %}
+    {% set title = 'Dietas' %}
+{% endif %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto">
+        {% if True %}
+            <div class="d-flex flex-column text-center">
+                <div class="d-flex align-items-center justify-content-between my-4">
+                    <h4>{{ title }} criadas por você</h4>
+                    <a href="{{ url_for('routine.new', workout_or_meal=workout_or_meal) }}" class="btn btn-success">
+                        <i class="bi bi-plus"> Adicionar</i>
+                    </a>
+                </div>
+
+                {% if True %}
+                    Você não criou nenhuma rotina ainda.
+
+                    {# TODO: Add list of workout routines created by the user #}
+                {% endif %}
+            </div>
+        <hr class="my-5">
+        {% endif %}
+        <div class="d-flex flex-column text-center mt-4">
+            <h4 class="text-start mb-4">{{ title }} criadas para você</h4>
+            {# TODO: Add list of workout routines created for the user #}
+            {% if True %}
+                Você não possui nenhuma rotina criada para você por seus amigos.
+
+                {# TODO: Add list of workout routines created by the user #}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,19 +1,18 @@
 from core import db
-from project.routine import ExerciseItem
 
 
 class ExerciseItemRepository:
 
     @staticmethod
-    def insert(item: ExerciseItem):
+    def insert(item):
         db.session.add(item)
         db.session.commit()
 
     @staticmethod
-    def update(item: ExerciseItem):
+    def update(item):
         db.session.commit()
 
     @staticmethod
-    def delete(item: ExerciseItem):
+    def delete(item):
         db.session.delete(item)
         db.session.commit()

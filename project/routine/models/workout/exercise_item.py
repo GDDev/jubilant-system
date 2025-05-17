@@ -4,10 +4,10 @@ from sqlalchemy import Integer, ForeignKey, Float, Time
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
 from core import Base
-from .. import RoutineItem
+from ...models import RoutineItem
 
 
-class ExerciseItem(Base, RoutineItem):
+class ExerciseItem(RoutineItem):
     __tablename__ = 'exercise_items'
     __mapper_args__ = {
         'polymorphic_identity': 'exercise_item',

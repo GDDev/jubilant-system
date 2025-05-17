@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Adicionar {{ workout_or_meal.capitalize() }}{% endblock %}
+{% block content %}
+
+    <div class="w-75 m-auto text-center mt-4">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <form action="{{ url_for('routine.new', workout_or_meal=workout_or_meal) }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {% if routine %}
+                    <input type="hidden" name="routine_id" value="{{ routine.id }}">
+                {% endif %}
+
+                <div class="d-flex">
+                    <label for="who-for"></label>
+                    <select name="who-for" id="who-for" class="form-select w-auto">
+                        <option class="primary-bg-dark border-0 rounded-pill" selected disabled>Selecione um amigo</option>
+                        {% for friend in current_user.friends %}
+                            <option value="{{ friend.id }}" class="primary-bg-dark border-0 rounded-pill">
+                                {{ friend.user.name }}{{ friend.user.surname }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="submit" value="Salvar seleção" class="btn btn-outline-info ms-2">
+                </div>
+            </form>
+        </div>
+        {% if routine %}
+        	<div class="mt-4">
+                Amigo selecionado: {{ routine.receiver.user.name }}{{ routine.receiver.user.surname }}
+                <div class="mt-5">
+                    {% if true %}
+                        Nenhum item adicionado.
+                    {% endif %}
+                </div>
+
+                <a href="{{ url_for('item.add', tipo='treino') }}" class="btn btn-success mt-4">
+                    <i class="bi bi-plus"> {{ workout_or_meal.capitalize() }}</i>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
