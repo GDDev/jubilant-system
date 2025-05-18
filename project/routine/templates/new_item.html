@@ -1,11 +1,49 @@
 {% extends "layout.html" %}
 {% block title %}Adicionar Item à {{ routine_type.capitalize() }}{% endblock %}
+{% if routine_type == 'treino' %}
+	{% set place = 'este treino' %}
+{% elif routine_type == 'dieta' %}
+    {% set place = 'esta dieta' %}
+{% endif %}
 {% block content %}
     <div class="w-75 m-auto">
-        Item
+        <form action="#" method="post" class="d-flex flex-column w-75 text-start">
+            {{ form.csrf_token }}
 
-        <a href="{{ url_for('routine.new', routine_type=routine_type) + '?routine_id={}'.format(routine_id) }}"
-           class="btn
-        btn-outline-danger">Cancelar</a>
+            <!-- Generalized Item form -->
+            {{ form.name.label(class='form-label') }}
+            {{ form.name(class='form-control w-auto', placeholder='Dê um nome para {}'.format(place)) }}
+            {{ form.expiration_date.label(class='form-label') }}
+            {{ form.expiration_date(class='form-control') }}
+            {{ form.description.label(class='form-label') }}
+            {{ form.description(class='form-control', placeholder='Adicione uma descrição e/ou observação para ajudar
+             seu amigo.') }}
+
+            <!-- Specific Workout form -->
+            {% if routine_type == 'treino' %}
+            	{{ form.min_reps.label(class='form-label') }}
+                {{ form.min_reps(class='form-control', value=4) }}
+                {{ form.max_reps.label(class='form-label') }}
+                {{ form.max_reps(class='form-control', placeholder=6) }}
+                {{ form.min_sets.label(class='form-label') }}
+                {{ form.min_sets(class='form-control', value=3) }}
+                {{ form.max_sets.label(class='form-label') }}
+                {{ form.max_sets(class='form-control', placeholder=8) }}
+                {{ form.set_duration.label(class='form-label') }}
+                {{ form.set_duration(class='form-control') }}
+                {{ form.set_interval.label(class='form-label') }}
+                {{ form.set_interval(class='form-control') }}
+                {{ form.weight.label(class='form-label') }}
+                {{ form.weight(class='form-control', placeholder='10,0') }}
+            {% endif %}
+            <!-- Specific Diet form -->
+
+            <!-- Submit button -->
+            <div class="d-flex justify-content-between text-end mt-4 align-items-end w-100">
+                {{ form.submit }}
+                <a href="{{ url_for('routine.new', routine_type=routine_type) + '?routine_id={}'.format(routine_id) }}"
+               class="btn btn-outline-danger">Cancelar</a>
+            </div>
+        </form>
     </div>
 {% endblock %}
