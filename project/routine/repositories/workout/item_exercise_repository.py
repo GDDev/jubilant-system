@@ -1,7 +1,8 @@
 from core import db
+from ...models import ItemExercises
 
 
-class ExerciseItemRepository:
+class ItemExerciseRepository:
 
     @staticmethod
     def insert(item):
@@ -16,3 +17,7 @@ class ExerciseItemRepository:
     def delete(item):
         db.session.delete(item)
         db.session.commit()
+
+    @staticmethod
+    def find_by_id(exercise_id):
+        return db.session.get(ItemExercises, exercise_id)

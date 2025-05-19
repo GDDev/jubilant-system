@@ -30,17 +30,22 @@
             </form>
         </div>
         {% if routine %}
-        	<div class="mt-4">
-                Amigo selecionado: {{ routine.receiver.user.name }}{{ routine.receiver.user.surname }}
-                <div class="mt-5">
-                    {% if true %}
-                        Nenhum item adicionado.
-                    {% endif %}
-                </div>
-
-                <a href="{{ url_for('item.add', routine_type='treino', routine_id=routine.id) }}" class="btn
-                btn-success mt-4">
-                    <i class="bi bi-plus"> {{ routine_type.capitalize() }}</i>
+        	{% include 'components/routine_new_edit.html' %}
+            <div class="mt-5 w-25 m-auto d-flex justify-content-between">
+                <a href="{{ url_for
+                    (
+                        'routine.list_all',
+                        routine_type=routine_type
+                    ) }}" class="btn btn-success bg-success">
+                    Salvar
+                </a>
+                <a href="{{ url_for
+                    (
+                        'routine.delete',
+                        routine_type=routine_type,
+                        routine_id=routine.id
+                    ) }}" class="btn btn-danger bg-danger">
+                    Cancelar
                 </a>
             </div>
         {% endif %}

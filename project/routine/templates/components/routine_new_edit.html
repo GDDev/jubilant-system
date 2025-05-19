@@ -1,0 +1,29 @@
+<div class="mt-4">
+    <div class="rounded-pill text-info-emphasis bg-light-subtle p-2 m-auto" style="width: fit-content;">
+        Amigo selecionado: {{ routine.receiver.user.name }} {{ routine.receiver.user.surname }}
+    </div>
+    <div class="mt-5">
+        {% if not routine.routine_items %}
+            Nenhum item adicionado.
+        {% else %}
+            {% for item in routine.routine_items %}
+                <div>
+                    {{ item.name }}
+                    <a href="{{ url_for('item.workout_exercises', routine_id=routine.id, item_id=item.id) }}"
+                    class="text-decoration-none">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{{ url_for('item.remove', item_id=item.id, routine_type=routine_type,
+                    routine_id=routine.id) }}">
+                        <i class="bi bi-trash3"></i>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('item.add', routine_type='treino', routine_id=routine.id) }}" class="btn
+    btn-success mt-4">
+        <i class="bi bi-plus"> {{ routine_type.capitalize() }}</i>
+    </a>
+</div>

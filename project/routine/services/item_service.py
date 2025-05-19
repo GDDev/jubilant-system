@@ -1,31 +1,42 @@
-from ..repositories import ExerciseItemRepository
+from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
+
+from ..models import RoutineItem, ItemType
+from ..repositories import ItemRepository
 
 
 class ItemService:
 
     def __init__(self):
-        self.item_repo = ExerciseItemRepository()
+        self.item_repo = ItemRepository()
 
-    # def add_exercise_item(self, item_data: dict):
-    #     pass
-    #     item_type = ItemType(item_data['item_type'])
-    #     item = ExerciseItem(
-    #         routine_id=item_data['routine_id'],
-    #         type=item_type,
-    #         name=item_data['name'],
-    #         description=item_data['description'],
-    #         exercise_id=item_data['exercise_id'],
-    #         min_sets=item_data['min_sets'],
-    #         max_sets=item_data['max_sets'],
-    #         set_duration=item_data['set_duration'],
-    #         set_interval=item_data['set_interval'],
-    #         min_reps=item_data['min_reps'],
-    #         max_reps=item_data['max_reps'],
-    #         weight=item_data['weight']
-    #     )
-    #     if item_data.get('expiration_date'):
-    #         item.expiration_date = item_data['expiration_date']
-    #     self.item_repo.insert(item)
-    #
-    # def add_meal_opt_item(self, item_data: dict):
-    #     pass
+    def add(self, routine_type: str, routine_id: int, name: str, expiration_date: datetime, description: str) -> RoutineItem | None:
+        try:
+            if routine_type == 'treino':
+                routine_type = ItemType.WORKOUT.value
+            elif routine_type == 'dieta':
+                routine_type = ItemType.DIET.value
+
+            return self.item_repo.insert(RoutineItem(
+                routine_id=routine_id,
+                type=routine_type,
+                name=name,
+                expiration_date=expiration_date,
+                description=description
+            ))
+        except SQLAlchemyError as e:
+            raise Exception(f'Erro ao adicionar {routine_type}') from e
+
+    def delete(self, item_id: int) -> None:
+        try:
+            item = self.item_repo.find_by_id(item_id)
+            if item:
+                self.item_repo.delete(item)
+        except SQLAlchemyError as e:
+            raise Exception(f'Erro ao remover item') from e
+
+    def find_by_id(self, item_id: int) -> RoutineItem | None:
+        try:
+            return self.item_repo.find_by_id(item_id)
+        except SQLAlchemyError as e:
+            raise Exception(f'Erro ao recuperar item') from e

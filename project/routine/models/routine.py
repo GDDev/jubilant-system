@@ -23,13 +23,13 @@ class Routine(Base):
     __tablename__ = 'routines'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     created_by: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=False)
-    status: Mapped[RoutineStatus] = mapped_column('RoutineStatus', nullable=False, default=RoutineStatus.PENDING)
+    status: Mapped[RoutineStatus] = mapped_column('status', nullable=False, default=RoutineStatus.PENDING)
     created_for: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     approved_by: Mapped[str] = mapped_column(String(36), nullable=True)
     approved_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     last_updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
-    type: Mapped[RoutineEnum] = mapped_column('RoutineEnum', nullable=False)
+    type: Mapped[RoutineEnum] = mapped_column('type', nullable=False)
 
 
     creator: Mapped['UserProfile'] = relationship('UserProfile', back_populates='created_routines', foreign_keys=[created_by])
