@@ -149,7 +149,8 @@ class UserProfile(UserMixin, Base):
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
     created_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='creator', foreign_keys='[Routine.created_by]', cascade='all, delete-orphan')
-    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='[Routine.created_for]')
+    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='['
+                                                                                                        'Routine.created_for]', cascade='all, delete-orphan')
 
     def get_id(self):
         """
