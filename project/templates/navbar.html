@@ -44,16 +44,17 @@
                 <i class="bi bi-people"></i> Amigos
             </a>
         </li>
-{#        <li class="nav-item w-100">#}
-{#            <a href="{{ url_for('user_diets') }}" class="nav-link px-1 {% if request.path == url_for('user_diets') %}active{% endif %}" aria-current="page">#}
-{#                <i class="fa-solid fa-clipboard-list"></i> Dietas#}
-{#            </a>#}
-{#        </li>#}
-{#        <li class="nav-item w-100">#}
-{#            <a href="{{ url_for('user_workouts') }}" class="nav-link px-1 {% if request.path == url_for('user_workouts') %}active{% endif %}" aria-current="page">#}
-{#                <i class="fa-solid fa-dumbbell"></i> Treinos#}
-{#            </a>#}
-{#        </li>#}
+        <li class="nav-item w-100">
+            <a href="{{ url_for('routine.list_all', routine_type='dieta') }}" class="nav-link {% if request.path ==
+url_for('routine.list_all', routine_type='dieta') %}active{% endif %}" aria-current="page">
+                <i class="fa-solid fa-clipboard-list"></i> Dietas
+            </a>
+        </li>
+        <li class="nav-item w-100">
+            <a href="{{ url_for('routine.list_all', routine_type='treino') }}" class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}" aria-current="page">
+                <i class="fa-solid fa-dumbbell"></i> Treinos
+            </a>
+        </li>
         <!-- <li class="nav-item w-100">
             <a href="#" class="nav-link" aria-current="page">
                 <i class="bi bi-play-btn"></i> Vídeos

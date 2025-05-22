@@ -1,2 +1,2 @@
 from .exercise import Exercise
-from .exercise_item import ExerciseItem
+from .item_exercises import ItemExercises

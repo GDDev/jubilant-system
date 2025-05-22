@@ -148,6 +148,10 @@ class UserProfile(UserMixin, Base):
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
+    created_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='creator', foreign_keys='[Routine.created_by]', cascade='all, delete-orphan')
+    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='['
+                                                                                                        'Routine.created_for]', cascade='all, delete-orphan')
+
     def get_id(self):
         """
         A method to get the alternative ID as the main ID of the user profile.
@@ -207,3 +211,19 @@ class UserProfile(UserMixin, Base):
             bool: True if the user is a professor, False otherwise.
         """
         return any(m.approved for m in self.taught_majors)
+
+    @property
+    def created_workout_routines(self) -> list['Routine']:
+        return [w for w in self.created_routines if w.type.value == 'workout']
+
+    @property
+    def created_meal_routines(self) -> list['Routine']:
+        return [m for m in self.created_routines if m.type.value == 'dietary']
+
+    @property
+    def workout_routines(self) -> list['Routine']:
+        return [w for w in self.routines if w.type.value == 'workout']
+
+    @property
+    def meal_routines(self) -> list['Routine']:
+        return [m for m in self.routines if m.type.value == 'dietary']
