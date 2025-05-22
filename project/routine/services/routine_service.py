@@ -1,7 +1,7 @@
 from flask_login import current_user
 
-from project.routine import Routine, RoutineEnum
-from project.routine.repositories.routine_repository import RoutineRepository
+from ..models import Routine, RoutineEnum
+from ..repositories import RoutineRepository
 
 
 class RoutineService:
@@ -9,13 +9,24 @@ class RoutineService:
     def __init__(self):
         self.routine_repo = RoutineRepository()
 
-    def add(self, routine_data: dict) -> Routine:
-        routine_type = RoutineEnum(routine_data['type'])
+    def add(self, created_for: str, routine_type: str) -> Routine:
+        routine_type = RoutineEnum.WORKOUT if routine_type == 'treino' else RoutineEnum.DIETARY
 
         routine = Routine(
             created_by=current_user.id,
-            created_for=routine_data.get('created_for'),
+            created_for=created_for,
             type=routine_type
         )
         self.routine_repo.insert(routine)
         return routine
+
+    def get_by_id(self, routine_id: int) -> Routine | None:
+        return self.routine_repo.find_by_id(routine_id)
+
+    def update(self, routine: Routine) -> None:
+        self.routine_repo.update(routine)
+
+    def delete(self, routine_id: int) -> None:
+        routine = self.routine_repo.find_by_id(routine_id)
+        if routine:
+            self.routine_repo.delete(routine)

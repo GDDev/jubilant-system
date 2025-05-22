@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Editar {{ routine_type.capitalize() }}{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4">
+        {% include 'components/routine_new_edit.html' %}
+
+        <div class="mt-5 w-25 m-auto d-flex justify-content-between">
+            <a href="{{ url_for
+                    (
+                        'routine.list_all',
+                        routine_type=routine_type
+                    ) }}" class="btn btn-success bg-success">
+                Salvar
+            </a>
+            <a href="{{ url_for('routine.list_all', routine_type=routine_type) }}" class="btn
+            btn-outline-danger">
+                Cancelar
+            </a>
+        </div>
+    </div>
+{% endblock %}

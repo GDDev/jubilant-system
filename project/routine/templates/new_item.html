@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Adicionar Item à {{ routine_type.capitalize() }}{% endblock %}
+{% if routine_type == 'treino' %}
+	{% set place = 'este treino' %}
+{% elif routine_type == 'dieta' %}
+    {% set place = 'esta dieta' %}
+{% endif %}
+{% block content %}
+    <div class="container w-50 m-auto">
+        {% if form.errors %}
+            <ul class="errors">
+            {% for error in form.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{{ url_for('item.add', routine_type=routine_type, routine_id=routine_id) }}" method="post"
+              class="row g-3">
+            {{ form.csrf_token }}
+
+            <div class="col-md-6">
+                {{ form.name.label(class='form-label') }}
+                <span class="text-danger" style="font-size: .6rem; font-weight: 300;">
+                    *obrigatório
+                </span>
+                {{ form.name(class='form-control', placeholder='Dê um nome para {}'.format(place)) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form.expiration_date.label(class='form-label') }}
+                {{ form.expiration_date(class='form-control') }}
+            </div>
+
+            <div class="col-12">
+                {{ form.description.label(class='form-label') }}
+                {{ form.description(class='form-control',
+                placeholder='Adicione uma descrição e/ou observação para ajudar seu amigo.') }}
+            </div>
+
+            <div class="col-12 d-flex justify-content-between mt-4">
+                {{ form.submit }}
+                <a href="{{ url_for('routine.update', routine_type=routine_type, routine_id=routine_id) }}"
+               class="btn btn-outline-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

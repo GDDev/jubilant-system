@@ -1,2 +1,2 @@
 from .exercise_repository import ExerciseRepository
-from .exercise_item_repository import ExerciseItemRepository
+from .item_exercise_repository import ItemExerciseRepository

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Exercícios{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4 d-flex flex-column align-items-center">
+        <div class="mb-4 h5"><strong>{{ item.name }}</strong></div>
+        {% if not item.exercises %}
+            <div class="mb-4">Nenhum exercício adicionado.</div>
+        {% else %}
+            {% for item_exercise in item.exercises %}
+                <div class="mb-4 w-25 rounded-pill py-2 bg-dark-subtle text-dark">
+                    Exercício: {{ item_exercise.exercise.name }}
+                    <a href="{{ url_for('item.remove_exercise', exercise_id=item_exercise.id) }}">
+                        <i class="bi bi-trash3 bg-dark-subtle text-danger"></i>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div>
+            <a href="{{ url_for('item.add_exercise', item_id=item.id) }}" class="btn btn-success"><i class="bi
+            bi-plus"></i>Adicionar exercício</a>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ url_for('routine.update', routine_type='treino', routine_id=item.routine_id) }}" class="btn
+            btn-outline-danger"><i class="bi bi-arrow-left"></i> Voltar</a>
+        </div>
+    </div>
+{% endblock %}
