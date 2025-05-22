@@ -8,6 +8,7 @@
     <orderEntry type="jdk" jdkName="Python 3.10 (jubilant-system)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PatientReportAndManagement" />
+    <orderEntry type="module" module-name="termooo_inspired_game" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />
