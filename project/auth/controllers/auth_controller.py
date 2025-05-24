@@ -133,8 +133,10 @@ def authorize_google():
             )
             if profile is not None:
                 login_user(profile)
-                next_page = request.args.get('next')
-                return redirect(next_page or url_for('main.home'))
+
+        login_user(user.profile)
+        next_page = request.args.get('next')
+        return redirect(next_page or url_for('main.home'))
 
     except (Exception, AuthException) as e:
         flash(str(e))
