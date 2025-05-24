@@ -1,8 +1,7 @@
-import requests
 from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
-from core import db, migrate
+from core import db, migrate, config_oauth
 from project.routine import item_bp
 
 
@@ -61,6 +60,7 @@ def create_app() -> Flask:
     flask = config_flask()
 
     init_db(flask)
+    config_oauth(flask)
 
     csrf = CSRFProtect(flask)
     with flask.app_context():
