@@ -1,10 +1,12 @@
 {% block navbar %}
 <nav class="vh-100 position-fixed d-flex flex-column align-items-start primary-bg" style="width: 15%">
     <div class="dropdown p-4" style="min-width: fit-content">
-        <button type="button" class="btn w-100 dropdown-toggle text-white text-wrap"
+        <button type="button" class="btn w-100 dropdown-toggle text-white"
            data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0">
-            <strong class="ms-1">{{ current_user.username }}</strong>
+            {% if current_user.username|length < 10 %}
+                <strong class="ms-1">{{ current_user.username }}</strong>
+            {% endif %}
         </button>
         <div class="dropdown-menu text-small shadow primary-bg-dark">
             <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
