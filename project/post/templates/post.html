@@ -1,8 +1,9 @@
 <div class="post-container d-flex flex-column h-auto">
-    <div class="d-flex align-items-center justify-content-between w-100 mb-3">
+    <div class="d-flex align-items-start justify-content-between w-100 mb-3">
         <a href="{{ url_for('perfil.detail_profile', code=post.profile.code) }}" class="bg-transparent text-decoration-none">
             <div>
-                <img src="{{ post.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm" style="width:
+                <img src="{{ post.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0"
+                     style="width:
                 1.5rem; height: 1.5rem;">
                 <strong style="font-size: 1rem;">{{ post.profile.user.name }} {{ post.profile.user.surname }}</strong>
             </div>
@@ -25,7 +26,7 @@
     <a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="bg-transparent text-decoration-none">
         <div class="d-flex flex-column justify-content-between h-100 w-100 ">
             <strong class="text-capitalize">{{ post.title }}</strong>
-            <p class="text-wrap" style="font-size: 1.2rem;">
+            <p class="text-wrap me-4" style="font-size: 1.2rem;">
                 {{ post.content }}
             </p>
         </div>

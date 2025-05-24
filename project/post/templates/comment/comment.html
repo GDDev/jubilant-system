@@ -1,6 +1,7 @@
-<div class="d-flex justify-content-between mt-3">
+<div class="d-flex justify-content-between mt-3" style="min-height: fit-content;">
     <a href="{{ url_for('perfil.detail_profile', code=comment.profile.code) }}" class="bg-transparent text-decoration-none">
-        <img src="{{ comment.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm" style="width:
+        <img src="{{ comment.profile.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0"
+             style="width:
                 1.2rem; height: 1.2rem;">
         <span style="font-size: .8rem">{{ comment.profile.username }}</span>
     </a>
@@ -12,21 +13,24 @@
             {% endif %}
         </span>
         {% if comment.profile_id == current_user.id %}
-            <a href="#" class="bg-transparent" id="postMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end bg-transparent border-0" aria-labelledby="postMenuLink" style="width:
-            max-content; min-width:fit-content;">
-                <li>
-                    <a href="#" class="dropdown-item rounded-pill mb-2" id="edit-comment">Editar <i class="bi
-                    bi-pencil-square"></i></a>
-                </li>
-                <li>
+            <div class="btn-group dropend">
+                <button type="button"
+                        class="btn btn-sm border-0 bg-transparent"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu bg-transparent border-0 fs-6" style="min-width:fit-content;">
+                    <button type="button" class="dropdown-item bg-transparent"
+                            id="edit-comment">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+
                     <a href="{{ url_for('comment.delete', post_id=post.id, comment_id=comment.id) }}"
-                       class="dropdown-item rounded-pill
-                    text-danger">Excluir <i class="bi bi-trash3 text-danger"></i></a>
-                </li>
-            </ul>
+                       class="dropdown-item bg-transparent text-danger">
+                        <i class="bi bi-trash3 text-danger"></i>
+                    </a>
+                </div>
+            </div>
         {% endif %}
     </div>
 </div>
@@ -35,8 +39,8 @@
     {% include "comment/edit_comment.html" %}
 </template>
 
-<div id="comment-container">
-    <p class="ms-4" style="font-size: 1rem">{{ comment.comment }}</p>
+<div id="comment-container text-wrap">
+    <p class="ms-4 text-break pe-4" style="font-size: 1rem;">{{ comment.comment }}</p>
 </div>
 
 <script>

@@ -65,6 +65,7 @@ def create_app() -> Flask:
     csrf = CSRFProtect(flask)
     with flask.app_context():
         register_all_bp(flask)
+        register_filters(flask)
         config_login_manager(flask)
 
     return flask
@@ -80,3 +81,13 @@ def config_error_handlers(flask: Flask):
     @flask.errorhandler(403)
     def forbidden(_):
         return render_template('forbidden.html'), 403
+
+    @flask.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('internal_server_error.html', error=str(e)), 500
+
+def register_filters(flask: Flask):
+    import emoji
+    @flask.template_filter('emojify')
+    def emoji_filter(s):
+        return emoji.emojize(s)

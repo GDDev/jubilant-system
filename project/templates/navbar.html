@@ -1,57 +1,47 @@
 {% block navbar %}
 <nav class="vh-100 position-fixed d-flex flex-column align-items-start primary-bg" style="width: 15%">
-    <div class="dropdown w-75 p-4">
-        <a href="#" class="w-100 d-flex align-items-center justify-content-between link-body-emphasis
-        text-decoration-none dropdown-toggle"
+    <div class="dropdown p-4" style="min-width: fit-content">
+        <button type="button" class="btn w-100 dropdown-toggle text-white"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ current_user.profile_pic }}" alt="profile pic"
-                 class="profile-pic-sm me-auto img-thumbnail">
-            <strong>{{ current_user.username }}</strong>
-        </a>
-        <ul class="dropdown-menu text-small shadow primary-bg-dark">
-            <li>
-                <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user
-                .code)
-                        }}">Perfil</a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#">Formações</a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#">Configurações</a>
-            </li>
-            <li>
-                <hr class="dropdown-divider border-white">
-            </li>
-            <li>
-                <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
-            </li>
-        </ul>
+            <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail">
+            <strong class="ms-1">{{ current_user.username }}</strong>
+        </button>
+        <div class="dropdown-menu text-small shadow primary-bg-dark">
+            <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
+            <a class="dropdown-item" href="#">Formações</a>
+            <a class="dropdown-item" href="#">Configurações</a>
+            <hr class="dropdown-divider border-white">
+            <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
+        </div>
     </div>
     <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4">
         <li class="nav-item w-100">
-            <a href="{{ url_for('main.home') }}" class="nav-link {% if request.path == url_for
-            ('main.home')
-                    %}active px-3{%
-                    endif %}" aria-current="page">
+            <a href="{{ url_for('post.feed') }}"
+               class="nav-link
+                {% if request.path == url_for('post.feed') %}active px-3{% endif %}"
+                aria-current="page">
                 <i class="bi bi-house"></i> Feed
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('amigo.get_friends') }}" class="nav-link {% if request.path == url_for
-            ('amigo.get_friends') %}active px-3{%
-                    endif %}" aria-current="page">
+            <a href="{{ url_for('amigo.get_friends') }}"
+               class="nav-link
+                {% if request.path == url_for('amigo.get_friends') %}active px-3{% endif %}"
+                aria-current="page">
                 <i class="bi bi-people"></i> Amigos
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all', routine_type='dieta') }}" class="nav-link {% if request.path ==
-url_for('routine.list_all', routine_type='dieta') %}active{% endif %}" aria-current="page">
+            <a href="{{ url_for('routine.list_all', routine_type='dieta') }}"
+               class="nav-link {% if request.path == url_for('routine.list_all', routine_type='dieta') %}active{% endif %}"
+                aria-current="page">
                 <i class="fa-solid fa-clipboard-list"></i> Dietas
             </a>
         </li>
         <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all', routine_type='treino') }}" class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}" aria-current="page">
+            <a href="{{ url_for('routine.list_all', routine_type='treino') }}"
+               class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}"
+                aria-current="page">
                 <i class="fa-solid fa-dumbbell"></i> Treinos
             </a>
         </li>
@@ -66,8 +56,12 @@ url_for('routine.list_all', routine_type='dieta') %}active{% endif %}" aria-curr
 {#            </a>#}
 {#        </li>#}
         <li class="nav-item position-relative w-100">
-            <a href="{{ url_for('notificacao.get_all') }}" class="nav-link {% if request.path == url_for('notificacao.get_all') %}active px-3{% endif %}" aria-current="page">
-                <i class="bi bi-bell"></i> Notificações <span class="position-absolute end-0 top-50 translate-middle badge rounded-circle bg-danger text-white" id="notifications-count"></span>
+            <a href="{{ url_for('notificacao.get_all') }}"
+               class="nav-link {% if request.path == url_for('notificacao.get_all') %}active px-3{% endif %}"
+                aria-current="page">
+                <i class="bi bi-bell"></i>
+                Notificações
+                <span class="position-absolute end-0 top-50 translate-middle badge rounded-circle bg-danger text-white" id="notifications-count"></span>
                 {% if current_user.notifications %}
                     <script>let notiCount = 0;</script>
                 	{% for notification in current_user.notifications %}
