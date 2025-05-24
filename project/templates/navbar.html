@@ -3,8 +3,10 @@
     <div class="dropdown p-4" style="min-width: fit-content">
         <button type="button" class="btn w-100 dropdown-toggle text-white"
            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail">
-            <strong class="ms-1">{{ current_user.username }}</strong>
+            <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0">
+            {% if current_user.username|length < 10 %}
+                <strong class="ms-1">{{ current_user.username }}</strong>
+            {% endif %}
         </button>
         <div class="dropdown-menu text-small shadow primary-bg-dark">
             <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>

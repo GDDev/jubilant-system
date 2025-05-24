@@ -3,7 +3,7 @@
 {% block content %}
     <div class="d-flex flex-column justify-content-between flex-wrap flex-md-nowrap align-items-center mt-3 w-75
     mx-auto">
-        <img src="{{ current_user.profile_pic }}" alt="profile pic" class="img-thumbnail profile-pic-lg">
+        <img src="{{ current_user.profile_pic }}" alt="profile pic" class="img-thumbnail profile-pic-lg p-1">
         <input type="text" value="{{ current_user.user.name }} {{ current_user.user.surname }}" class="form-control w-25
         mt-3" readonly>
         {% block edit_email %}

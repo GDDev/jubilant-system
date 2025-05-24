@@ -94,9 +94,18 @@ class UserProfile(UserMixin, Base):
         default='/static/img/user.png',
         comment='Profile picture of the user'
     )
-    role: Mapped[RoleEnum] = mapped_column('RoleEnum', nullable=False, default=RoleEnum.USER, comment="User's role in the system.")
-    supervisor_id: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=True,
-                                               comment="Supervisor's ID for student's users who want to suggest diets and workouts.")
+    role: Mapped[RoleEnum] = mapped_column(
+        'RoleEnum', nullable=False, default=RoleEnum.USER,
+        comment="User's role in the system."
+    )
+    supervisor_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey('profiles.id'), nullable=True,
+        comment="Supervisor's ID for student's users who want to suggest diets and workouts."
+    )
+    google_id: Mapped[str] = mapped_column(
+        String(100), unique=True, nullable=True,
+        comment="Google ID for users who are using google login."
+    )
 
     ##### Relationships #####
 

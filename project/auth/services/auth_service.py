@@ -30,6 +30,10 @@ class AuthService:
                 username=profile_data['username'],
                 pwd=hashed_pwd
             )
+
+            if profile_data.get('google_id'): user_profile.google_id = profile_data['google_id']
+            if profile_data.get('profile_pic'): user_profile.profile_pic = profile_data['profile_pic']
+
             # Calls a method to insert a user's profile into the db
             self.user_profile_repository.insert_with_no_commit(user_profile)
 
@@ -68,3 +72,9 @@ class AuthService:
             raise AuthException('E-mail já cadastrado.')
         elif self.user_profile_repository.find_by_username(form.username.data) is not None:
             raise AuthException(f'Nome de usuário "{form.username.data}" já está em uso.')
+
+    def find_user_by_email(self, email):
+        try:
+            return self.user_repository.find_by_email(email)
+        except SQLAlchemyError as e:
+            raise AuthException('Erro ao buscar usuário por e-mail.') from e
