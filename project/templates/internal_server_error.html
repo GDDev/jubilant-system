@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Internal Server Error</title>
+
+    <style>
+        *{
+            font-family: 'Segoe UI Emoji', sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="text-bg-dark container-fluid d-flex flex-row vh-100 w-100 p-4">
+        <div class="d-flex flex-column h-100 w-100 justify-content-center align-items-center text-center">
+            <div class="header d-flex flex-column">
+                <h1>500</h1>
+                <h2>Erro Interno do Servidor.</h2><br>
+            </div>
+
+            <p class="lead d-flex flex-column text-break align-items-center">
+                Infelizmente ocorreu um erro em nossa parte. Por favor, contate nosso suporte com a seguinte mensagem:
+                <span class="border border-danger w-50 my-4 p-3 rounded-4 text-justify fw-bold fs-5">
+                    {{ error }}</span>
+            </p>
+
+            <p class="footer">Entendido {{ ":thumbs_up:"| emojify }}, retornar ao <a href="{{ url_for('main.home')
+                    }}"
+                                                               class="text-decoration-none">menu</a></p>
+        </div>
+    </div>
+</body>
+</html>

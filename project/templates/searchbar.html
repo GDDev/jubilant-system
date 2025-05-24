@@ -14,15 +14,4 @@
             </div>
         </form>
     </div>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="flashes" style="position: relative; top: 1rem;">
-          {% for message in messages %}
-            <div class="alert alert-warning" role="alert">
-              {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
 {% endblock %}
