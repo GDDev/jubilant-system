@@ -45,7 +45,7 @@ def add():
                     # Creates new
                     major = major_service.add_temp(university=uni, uni_acronym=acronym, level=level, name=name, area_tag=tag, shift=shift, min_semesters=min, max_semesters=max)
 
-            return redirect(url_for('major.add_user_major', major=major))
+            return redirect(url_for('major.add_user_major', major_id=major.id))
 
     except MajorException as e:
         flash(str(e))

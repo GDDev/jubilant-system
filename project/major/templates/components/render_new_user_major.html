@@ -1,0 +1,65 @@
+<style>
+    .bg-select:focus{
+        background-color: var(--primary-dark);
+        color: #FFF;
+    }
+</style>
+
+<form action="{{ url_for('major.add_user_major') }}" method="post" class="row g-3 text-start">
+    <input type="hidden" name="major_id" id="major_id" value="{{ major_id }}">
+
+    {{ form.csrf_token }}
+    <div class="col-12 m-auto d-flex flex-column align-items-center justify-content-center gap-2">
+        <div class="col-4">
+            {{ form.college_code.label(class='form-label') }}
+            {{ form.college_code(class='form-control') }}
+        </div>
+        <div class="col-4">
+            {{ form.institutional_email.label(class='form-label') }}
+            {{ form.institutional_email(class='form-control') }}
+        </div>
+        <div class="col-4">
+            {{ form.user_is.label(class='form-label') }}
+            {{ form.user_is(class='form-select bg-select') }}
+        </div>
+        <div class="col-4">
+            {{ form.start_date.label(class='form-label') }}
+            {{ form.start_date(class='form-control', type='date') }}
+        </div>
+        <div class="col-4">
+            {{ form.check_ongoing(class='form-check-input') }}
+            {{ form.check_ongoing.label(class='form-check-label') }}
+        </div>
+        <div class="col-4" id="end_date_container">
+            {{ form.end_date.label(class='form-label') }}
+            {{ form.end_date(class='form-control', type='date') }}
+        </div>
+        <div class="col-4 mt-3 w-auto">
+            {{ form.submit }}
+            <a href="{{ url_for('major.list_all') }}" class="btn btn-outline-danger ms-2">Cancelar</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const on_going = document.getElementById('check_ongoing');
+        const end_date = document.getElementById('end_date_container');
+
+        on_going.addEventListener('click', () => {
+            check_ongoing();
+        });
+
+        function check_ongoing(){
+            if(on_going.checked === true){
+                end_date.style.display = 'none';
+                end_date.value = '';
+            }
+            else{
+                end_date.style.display = 'block';
+            }
+        }
+
+        check_ongoing()
+    });
+</script>

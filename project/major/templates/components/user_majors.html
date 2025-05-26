@@ -1,13 +1,13 @@
 {% if current_user.majors %}
     {% if current_user.taught_majors %}
     	<span class="h6">Cursos de graduação em que você leciona</span>
-        {% for taught_major in current_user.taught_majors %}
+        {% for user_major in current_user.taught_majors %}
         	{% include 'components/major_container.html' %}
         {% endfor %}
     {% endif %}
     {% if current_user.studied_majors %}
     	<span class="h6">Cursos de graduação em que você estuda/estudou</span>
-        {% for studied_major in current_user.studied_majors %}
+        {% for user_major in current_user.studied_majors %}
         	{% include 'components/major_container.html' %}
         {% endfor %}
     {% endif %}

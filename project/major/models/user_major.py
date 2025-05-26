@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class MajorEnum(str, Enum):
-    STUDENT = 'student'
+    STUDENT = 'estudante'
     PROFESSOR = 'professor'
 
 
@@ -19,8 +19,8 @@ class UserMajor(Base):
     profile_id: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=False)
     major_id: Mapped[int] = mapped_column(Integer, ForeignKey('majors.id'), nullable=False)
     college_code: Mapped[str] = mapped_column(String(50), nullable=False)
-    institutional_email: Mapped[str] = mapped_column(String(60), nullable=False)
-    user_is: Mapped[MajorEnum] = mapped_column('MajorEnum', nullable=False, default=MajorEnum.STUDENT)
+    institutional_email: Mapped[str] = mapped_column(String(100), nullable=False)
+    user_is: Mapped[MajorEnum] = mapped_column('training', nullable=False, default=MajorEnum.STUDENT)
     start_date: Mapped[date] = mapped_column(Date, nullable=False)
     end_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     approved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
