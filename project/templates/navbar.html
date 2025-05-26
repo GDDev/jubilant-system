@@ -10,7 +10,7 @@
         </button>
         <div class="dropdown-menu text-small shadow primary-bg-dark">
             <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
-            <a class="dropdown-item" href="#">Formações</a>
+            <a class="dropdown-item" href="{{ url_for('major.list_all') }}">Formações</a>
             <a class="dropdown-item" href="#">Configurações</a>
             <hr class="dropdown-divider border-white">
             <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>

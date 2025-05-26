@@ -109,10 +109,7 @@ class UserProfile(UserMixin, Base):
 
     ##### Relationships #####
 
-    user: Mapped['User'] = relationship(
-        'User',
-        back_populates='profile'
-    )
+    user: Mapped['User'] = relationship('User', back_populates='profile')
 
     supervisor: Mapped['UserProfile'] = relationship('UserProfile', remote_side=[id], back_populates='supervised_students')
 
@@ -153,6 +150,9 @@ class UserProfile(UserMixin, Base):
                                                                                      "UserMajor.profile_id, "
                                                                                      "UserMajor.user_is == "
                                                                                      "'professor')", viewonly=True)
+
+    submitted_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='submitter', foreign_keys='[TempMajor.submitted_by]', passive_deletes=True)
+    assigned_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='assigned_admin', foreign_keys='[TempMajor.assigned_to]', passive_deletes=True)
 
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
