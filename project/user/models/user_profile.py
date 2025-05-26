@@ -8,6 +8,8 @@ from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from secrets import token_hex
 
+from ...major import AreaTags
+
 
 class RoleEnum(str, Enum):
     USER = 'user'
@@ -220,6 +222,14 @@ class UserProfile(UserMixin, Base):
             bool: True if the user is a professor, False otherwise.
         """
         return any(m.approved for m in self.taught_majors)
+
+    def has_major(self, major_tag) -> bool:
+        majors = [major.major for major in self.majors if major.major] + [temp.temp_major for temp in self.majors if temp.temp_major]
+        if major_tag == AreaTags.NUTRI:
+            return any(m for m in majors if m.area_tag == AreaTags.NUTRI)
+        elif major_tag == AreaTags.PE:
+            return any(m for m in majors if m.area_tag == AreaTags.PE)
+        return any(m for m in majors if m.area_tag == AreaTags.OTHER)
 
     @property
     def created_workout_routines(self) -> list['Routine']:

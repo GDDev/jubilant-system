@@ -36,6 +36,7 @@ def add():
             max = form.max_semesters.data
             # Check if exists
             major = major_service.exists(uni, acronym, level, name, shift)
+            is_major_temp = major is None
             if not major:
                 # Check if doesn't exist but was suggested
                 major = major_service.exists_as_temp(uni, acronym, level, name, shift)
@@ -45,7 +46,7 @@ def add():
                     # Creates new
                     major = major_service.add_temp(university=uni, uni_acronym=acronym, level=level, name=name, area_tag=tag, shift=shift, min_semesters=min, max_semesters=max)
 
-            return redirect(url_for('major.add_user_major', major_id=major.id))
+            return redirect(url_for('major.add_user_major', major_id=major.id, is_major_temp=is_major_temp))
 
     except MajorException as e:
         flash(str(e))
