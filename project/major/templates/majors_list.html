@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}Formações{% endblock %}
+
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4 d-flex flex-column">
+        <a href="{{ url_for('major.add') }}"
+           class="btn btn-sm text-decoration-none text-white ms-auto small border-1 border-success"
+           style="width: fit-content;">
+            <i class="bi bi-plus"></i> Formação
+        </a>
+        <div class="text-start">
+            {% include 'components/user_majors.html' %}
+        </div>
+    </div>
+{% endblock %}

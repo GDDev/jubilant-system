@@ -10,7 +10,7 @@
         </button>
         <div class="dropdown-menu text-small shadow primary-bg-dark">
             <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
-            <a class="dropdown-item" href="#">Formações</a>
+            <a class="dropdown-item" href="{{ url_for('major.list_all') }}">Formações</a>
             <a class="dropdown-item" href="#">Configurações</a>
             <hr class="dropdown-divider border-white">
             <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
@@ -33,6 +33,7 @@
                 <i class="bi bi-people"></i> Amigos
             </a>
         </li>
+        {% if current_user.has_major('nutrição') %}
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all', routine_type='dieta') }}"
                class="nav-link {% if request.path == url_for('routine.list_all', routine_type='dieta') %}active{% endif %}"
@@ -40,6 +41,9 @@
                 <i class="fa-solid fa-clipboard-list"></i> Dietas
             </a>
         </li>
+        {% endif %}
+
+        {% if current_user.has_major('educação física') %}
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all', routine_type='treino') }}"
                class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}"
@@ -47,6 +51,8 @@
                 <i class="fa-solid fa-dumbbell"></i> Treinos
             </a>
         </li>
+        {% endif %}
+
         <!-- <li class="nav-item w-100">
             <a href="#" class="nav-link" aria-current="page">
                 <i class="bi bi-play-btn"></i> Vídeos

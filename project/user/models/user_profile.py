@@ -8,6 +8,8 @@ from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from secrets import token_hex
 
+from ...major import AreaTags
+
 
 class RoleEnum(str, Enum):
     USER = 'user'
@@ -109,10 +111,7 @@ class UserProfile(UserMixin, Base):
 
     ##### Relationships #####
 
-    user: Mapped['User'] = relationship(
-        'User',
-        back_populates='profile'
-    )
+    user: Mapped['User'] = relationship('User', back_populates='profile')
 
     supervisor: Mapped['UserProfile'] = relationship('UserProfile', remote_side=[id], back_populates='supervised_students')
 
@@ -153,6 +152,9 @@ class UserProfile(UserMixin, Base):
                                                                                      "UserMajor.profile_id, "
                                                                                      "UserMajor.user_is == "
                                                                                      "'professor')", viewonly=True)
+
+    submitted_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='submitter', foreign_keys='[TempMajor.submitted_by]', passive_deletes=True)
+    assigned_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='assigned_admin', foreign_keys='[TempMajor.assigned_to]', passive_deletes=True)
 
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
@@ -209,7 +211,7 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a student, False otherwise.
         """
-        return any(m.approved for m in self.studied_majors)
+        return any(m for m in self.studied_majors)
 
     @property
     def is_professor(self) -> bool:
@@ -219,7 +221,15 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a professor, False otherwise.
         """
-        return any(m.approved for m in self.taught_majors)
+        return any(m for m in self.taught_majors)
+
+    def has_major(self, major_tag) -> bool:
+        majors = [major.major for major in self.majors if major.major and major.approved] + [temp.temp_major for temp in self.majors if temp.temp_major and temp.approved]
+        if major_tag == AreaTags.NUTRI:
+            return any(m for m in majors if m.area_tag == AreaTags.NUTRI)
+        elif major_tag == AreaTags.PE:
+            return any(m for m in majors if m.area_tag == AreaTags.PE)
+        return any(m for m in majors if m.area_tag == AreaTags.OTHER)
 
     @property
     def created_workout_routines(self) -> list['Routine']:

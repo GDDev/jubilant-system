@@ -20,7 +20,7 @@ def register_all_bp(flask: Flask):
     from project.user import user, profile
     from project.friendship import friendship
     from project.notification import notification
-    from project.academia import Major, UserMajor
+    from project.major import major_bp
     from project.post import post_bp, comment_bp
     from project.routine import routine_bp, item_bp
 
@@ -34,6 +34,7 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(comment_bp, url_prefix='/comentario')
     flask.register_blueprint(routine_bp, url_prefix='/rotina')
     flask.register_blueprint(item_bp, url_prefix='/item')
+    flask.register_blueprint(major_bp, url_prefix='/formacao')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()

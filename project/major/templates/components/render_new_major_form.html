@@ -1,0 +1,203 @@
+<style>
+    .bg-select:focus{
+        background-color: var(--primary-dark);
+        color: #FFF;
+    }
+</style>
+
+<form action="{{ url_for('major.add') }}" method="post" class="row g-3 text-start">
+    {{ form.csrf_token }}
+    <div class="col-6">
+        {{ form.university.label(class='form-label') }}
+        {{ form.university(class='form-control', list="university-options") }}
+        <datalist id="university-options"></datalist>
+    </div>
+    <div class="col-6">
+        {{ form.uni_acronym.label(class='form-label') }}
+        {{ form.uni_acronym(class='form-control border-danger') }}
+    </div>
+    <div class="col-3">
+        {{ form.level.label(class='form-label') }}
+        {{ form.level(class='form-control border-danger') }}
+        <datalist id="level-options"></datalist>
+    </div>
+    <div class="col-5">
+        {{ form.name.label(class='form-label') }}
+        {{ form.name(class='form-control border-danger') }}
+        <datalist id="major-options"></datalist>
+    </div>
+    <div class="col-2">
+        {{ form.area_tag.label(class='form-label') }}
+        {{ form.area_tag(class='form-select border-danger bg-select') }}
+    </div>
+    <div class="col-2">
+        {{ form.shift.label(class='form-label') }}
+        {{ form.shift(class='form-select border-danger bg-select') }}
+    </div>
+    <div class="col-3 d-flex flex-column justify-content-between">
+        {{ form.min_semesters.label(class='form-label') }}
+        {{ form.min_semesters(class='form-control border-danger') }}
+    </div>
+    <div class="col-3">
+        {{ form.max_semesters.label(class='form-label') }}
+        {{ form.max_semesters(class='form-control border-danger') }}
+    </div>
+    <div class="col-3 mt-auto text-end">
+        {{ form.submit }}
+    </div>
+    <div class="col-3 mt-auto text-end">
+        <a href="{{ url_for('major.list_all') }}" class="btn btn-outline-danger">Cancelar</a>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const university = document.getElementById('university');
+        const uni_datalist = document.getElementById('university-options');
+        const uni_acronym = document.getElementById('uni_acronym');
+        const level = document.getElementById('level');
+        const level_datalist = document.getElementById('level-options');
+        const name = document.getElementById('name');
+        const major_datalist = document.getElementById('major-options');
+        const area_tag = document.getElementById('area_tag');
+        const major_shift = document.getElementById('shift');
+        const min_semesters = document.getElementById('min_semesters');
+        const max_semesters = document.getElementById('max_semesters');
+
+        university.addEventListener('input', async () => {
+            let uni_name = university.value.trim();
+            if (uni_name.length >= 3) {
+                try {
+                    await fetch(`/formacao/api/universidades?busca=${encodeURIComponent(uni_name)}`,
+                        {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            uni_datalist.innerHTML = '';
+                            data.forEach((result) => {
+                                let option = document.createElement('option');
+                                option.value = result.uni;
+                                option.dataset.acronym = result.acronym;
+                                option.dataset.levels = JSON.stringify(result.levels);
+                                uni_datalist.appendChild(option);
+                            })
+                        });
+
+                    uni_acronym.disabled = false;
+                    uni_acronym.readOnly = false;
+                    uni_acronym.classList.remove('border-danger');
+                    level.disabled = false;
+                    level.readOnly = false;
+                    level.classList.remove('border-danger');
+                } catch (error) {
+                    console.error('Error fetching university names:', error);
+                }
+            }
+            else {
+                uni_acronym.value = '';
+                uni_acronym.disabled = true;
+                uni_acronym.readOnly = true;
+                uni_acronym.classList.add('border-danger');
+                level.disabled = true;
+                level.readOnly = true;
+                level.classList.add('border-danger');
+            }
+        });
+        university.addEventListener('change', () => {
+            const selected = [...uni_datalist.options].find(option => option.value === university.value)
+            if (selected){
+                uni_acronym.value = selected.dataset.acronym;
+
+                level_datalist.innerHTML = '';
+                let levels = JSON.parse(selected.dataset.levels);
+                levels.forEach((level) => {
+                    let option = document.createElement('option');
+                    option.value = level.level;
+                    option.dataset.majors = JSON.stringify(level.majors);
+                    level_datalist.appendChild(option);
+                })
+            }
+        });
+        level.addEventListener('input', async () => {
+            let level_name = level.value.trim();
+            if (level_name.length >= 3) {
+                name.disabled = false;
+                name.readOnly = false;
+                name.classList.remove('border-danger');
+            }
+            else {
+                name.disabled = true;
+                name.readOnly = true;
+                name.classList.add('border-danger');
+            }
+        })
+        level.addEventListener('change', () => {
+            const selected = [...level_datalist.options].find(option => option.value === level.value)
+            if (selected){
+                major_datalist.innerHTML = '';
+                let majors = JSON.parse(selected.dataset.majors);
+                majors.forEach((major) => {
+                    let option = document.createElement('option');
+                    option.value = major.name;
+                    option.dataset.area_tag = major.area_tag;
+                    option.dataset.shift = major.major_shift;
+                    option.dataset.min_semesters = major.min_semesters;
+                    option.dataset.max_semesters = major.max_semesters;
+                    major_datalist.appendChild(option);
+                })
+            }
+        });
+        name.addEventListener('input', async () => {
+            let name_value = name.value.trim();
+            if (name_value.length >= 5) {
+                area_tag.disabled = false;
+                area_tag.readOnly = false;
+                area_tag.classList.remove('border-danger');
+                major_shift.disabled = false;
+                major_shift.readOnly = false;
+                major_shift.classList.remove('border-danger');
+                min_semesters.disabled = false;
+                min_semesters.readOnly = false;
+                min_semesters.classList.remove('border-danger');
+                max_semesters.disabled = false;
+                max_semesters.readOnly = false;
+                max_semesters.classList.remove('border-danger');
+            }
+            else {
+                area_tag.disabled = true;
+                area_tag.readOnly = true;
+                area_tag.classList.add('border-danger');
+                major_shift.disabled = true;
+                major_shift.readOnly = true;
+                major_shift.classList.add('border-danger');
+                min_semesters.disabled = true;
+                min_semesters.readOnly = true;
+                min_semesters.classList.add('border-danger');
+                max_semesters.disabled = true;
+                max_semesters.readOnly = true;
+                max_semesters.classList.add('border-danger');
+            }
+        })
+        name.addEventListener('change', () => {
+            const selected = [...major_datalist.options].find(option => option.value === name.value)
+            if (selected){
+                Array.from(area_tag.options).forEach((option) => {
+                    if (option.innerText.toLowerCase() === selected.dataset.area_tag){
+                        option.selected = true;
+                    }
+                })
+                Array.from(major_shift.options).forEach((option) => {
+                    if (option.innerText.toLowerCase() === selected.dataset.shift){
+                        option.selected = true;
+                    }
+                })
+                console.log(selected.dataset.shift);
+                min_semesters.value = selected.dataset.min_semesters;
+                max_semesters.value = selected.dataset.max_semesters;
+            }
+        })
+    });
+</script>
