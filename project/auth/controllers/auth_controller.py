@@ -17,7 +17,7 @@ auth_service = AuthService()
 def signup():
     form = SignUpForm()
     form.accept_terms.label.text = Markup(
-        f'Li e concordo com os <a href="{url_for("main.terms")}" target="_blank">Termos e Condições</a>'
+        f'Li e concordo com os <a href="{url_for("main.terms")}" class="text-decoration-none text-info" target="_blank">Termos e Condições</a>'
     )
 
     if request.method == 'POST' and form.validate_on_submit():
