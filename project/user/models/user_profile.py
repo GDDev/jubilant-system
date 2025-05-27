@@ -224,7 +224,7 @@ class UserProfile(UserMixin, Base):
         return any(m.approved for m in self.taught_majors)
 
     def has_major(self, major_tag) -> bool:
-        majors = [major.major for major in self.majors if major.major] + [temp.temp_major for temp in self.majors if temp.temp_major]
+        majors = [major.major for major in self.majors if major.major and major.approved] + [temp.temp_major for temp in self.majors if temp.temp_major and temp.approved]
         if major_tag == AreaTags.NUTRI:
             return any(m for m in majors if m.area_tag == AreaTags.NUTRI)
         elif major_tag == AreaTags.PE:

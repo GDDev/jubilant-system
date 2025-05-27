@@ -10,15 +10,12 @@ class UserMajorService:
         self.repo = UserMajorRepository()
         self.major_repo = MajorRepository()
 
-    def add(self, is_major_temp, major_id, **kwargs):
+    def add(self, **kwargs):
         try:
-            user_major = UserMajor(**kwargs)
-            if is_major_temp:
-                user_major.temp_major_id = major_id
-            else:
-                user_major.major_id = major_id
+            if not kwargs['major_id'] and not kwargs['temp_major_id']:
+                raise MajorException('Erro ao associar formação ao usuário.')
 
-            self.repo.insert(user_major)
+            self.repo.insert(UserMajor(**kwargs))
         except SQLAlchemyError as e:
             raise MajorException('Erro ao adicionar formação ao usuário.') from e
 
