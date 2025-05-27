@@ -1,6 +1,7 @@
+from flask import render_template
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-from core import db
+from core import db, send_mail
 from ..exceptions import AuthException
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -52,13 +53,12 @@ class AuthService:
             user = self.user_profile_repository.find_by_username(credential)
             if not user:
                 user = self.user_repository.find_by_email(credential)
-                if user:
-                    user = self.user_profile_repository.find_by_user_id(user.id)
-                else:
-                    raise AuthException('Usuário não encontrado.')
+                if not user:
+                    raise AuthException('Usuário ou senha incorretos.')
+                user = self.user_profile_repository.find_by_user_id(user.id)
 
             if user and check_password_hash(user.pwd, pwd): return user
-            return None
+            raise AuthException('Usuário ou senha incorretos.')
         except (SQLAlchemyError, AuthException) as e:
             raise e
 
@@ -78,3 +78,32 @@ class AuthService:
             return self.user_repository.find_by_email(email)
         except SQLAlchemyError as e:
             raise AuthException('Erro ao buscar usuário por e-mail.') from e
+
+    def forgot_password(self, email):
+        from secrets import token_urlsafe
+        try:
+            user = self.user_repository.find_by_email(email)
+            if not user:
+                raise AuthException('Erro ao redefinir senha: usuário não encontrado.')
+
+            new_pwd = token_urlsafe(18)
+            user.profile.pwd = self.hash_password(new_pwd)
+            self.user_profile_repository.update(user.profile)
+
+            html_body = render_template(
+                'new_pwd.html',
+                new_password=new_pwd,
+                user_name=user.name+" "+user.surname
+            )
+            text_body = f"Olá {user.name},\n\nAqui está sua nova senha: {new_pwd}\n\nPor favor, troque-a assim que possível."
+            send_mail(
+                subject='Redefinição de senha - Jubilant System',
+                body=text_body,
+                to=email,
+                html=html_body,
+            )
+            return True
+        except (SQLAlchemyError, AuthException) as e:
+            raise AuthException('Erro ao redefinir senha.') from e
+        except Exception as e:
+            raise AuthException(f'Ocorreu um erro desconhecido. {str(e)}') from e

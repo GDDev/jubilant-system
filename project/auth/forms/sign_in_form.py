@@ -3,10 +3,10 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 
 class SignInForm(FlaskForm):
-    user = StringField('Nome de usuário ou Email:', validators=[DataRequired()],
+    user = StringField('Nome de usuário ou Email:', validators=[DataRequired(message='Preencha este campo.')],
                        render_kw={"placeholder": "Insira seu nome de usuário",
                                   "style": "min-width: fit-content;"})
-    pwd = PasswordField('Senha:', validators=[DataRequired()],
+    pwd = PasswordField('Senha:', validators=[DataRequired(message='Preencha este campo.')],
                         render_kw={"placeholder": "Insira sua senha",
                                   "style": "min-width: fit-content;"})
 

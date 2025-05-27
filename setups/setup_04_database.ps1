@@ -36,4 +36,6 @@ Start-Sleep -Seconds 3
 Write-Host "Iniciando migracoes..."
 Start-Sleep -Seconds 3
 Set-Location "$rootPath\project"
+& $venvPython -m flask db init
+& $venvPython -m flask db migrate -m "Initial Migration"
 & $venvPython -m flask db upgrade

@@ -3,11 +3,10 @@ from flask_login import login_user, login_required, logout_user, current_user, c
 from markupsafe import Markup
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from ..forms import SignUpForm, SignInForm
-from ..forms.refresh_form import RefreshForm
+from ..forms import SignUpForm, SignInForm, ForgotPwdForm, RefreshForm
 from ..services import AuthService
-from project.auth import auth
-from project.auth.exceptions import AuthException
+from .. import auth
+from ..exceptions import AuthException
 
 from core import oauth
 
@@ -20,7 +19,7 @@ def signup():
         f'Li e concordo com os <a href="{url_for("main.terms")}" class="text-decoration-none text-info" target="_blank">Termos e Condições</a>'
     )
 
-    if request.method == 'POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         try:
             auth_service.validate_sign_up_data(form)
 
@@ -50,7 +49,7 @@ def signup():
 def signin():
     form = SignInForm()
 
-    if request.method == 'POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         try:
             profile = auth_service.sign_in_user(form.user.data, form.pwd.data)
 
@@ -88,7 +87,16 @@ def signout():
 
 @auth.route('/esqueci_senha', methods=['GET', 'POST'])
 def forgot_password():
-    pass
+    form = ForgotPwdForm()
+    try:
+        if form.validate_on_submit():
+            if auth_service.forgot_password(form.email.data):
+                flash('Nova senha enviada para seu email. Verifique sua caixa de entrada.')
+            return redirect(url_for('auth.signin'))
+    except AuthException as e:
+        flash(str(e))
+        return redirect(url_for('auth.forgot_password'))
+    return render_template('forgot_password.html', form=form)
 
 
 @auth.route('/entrar/google', methods=['GET', 'POST'])
@@ -140,6 +148,8 @@ def authorize_google():
         next_page = request.args.get('next')
         return redirect(next_page or url_for('main.home'))
 
-    except (Exception, AuthException) as e:
+    except AuthException as e:
         flash(str(e))
+    except Exception as e:
+        flash('Ocorreu um erro ao autorizar o login. Tente novamente.')
     return redirect(url_for('auth.signin'))
