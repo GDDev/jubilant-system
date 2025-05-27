@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Políticas de Privacidade</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="w-100 h-100 m-auto primary-bg-dark text-white d-flex flex-column justify-content-center
+    align-items-center py-5">
+        <h1 class="mb-5">Políticas de Privacidade</h1>
+        <div class="d-flex flex-column align-items-center text-start">
+            <p class="w-50 d-flex flex-column text-break text-wrap align-items-start gap-3">
+                <span>
+                    A sua privacidade é importante para nós. <br>
+                    <small class="text-muted">
+                        Afinal, a nossa equipe é composta por maníacos por controle e privacidade.
+                    </small>
+                </span>
+                <span>
+                    Nossas
+                    <a href="{{ url_for('main.privacy') }}" class="text-decoration-none text-info">
+                        Políticas de Privacidade
+                    </a>
+                    definem quais informações coletamos, como usamos e como protegemos a sua privacidade, além dos seus
+                    direitos em relação a elas.
+                </span>
+            </p>
+        </div>
+
+        <ol class="w-50 d-flex flex-column text-break text-wrap align-items-start" style="list-style-type:
+        upper-roman;">
+            <li>
+                <span>Information We Collect</span>
+                <p>
+                    We may collect the following information:
+
+                    Basic account details (e.g., name, email, username)
+
+                    Profile information (e.g., university, major, goals)
+
+                    Activity data (e.g., posts, suggestions, friendships)
+
+                    Login and session data (e.g., IP address, timestamps)
+                </p>
+            </li>
+            <li>
+                <span>How We Use Your Information</span>
+                <p>
+                    We use your information to:
+
+                    Create and manage your account
+
+                    Facilitate academic and social interactions
+
+                    Moderate content and ensure safety
+
+                    Improve platform features and usability
+                </p>
+            </li>
+            <li>
+                <span>Data Sharing</span>
+                <p>
+                    We do not share your personal information with third parties.
+
+                    We may disclose data only:
+
+                    When required by law or court order
+
+                    To investigate abuse, fraud, or misuse of the platform
+                </p>
+            </li>
+            <li>
+                <span>Cookies and Session Data</span>
+                <p>
+                    We use cookies and similar technologies only to manage sessions (e.g., staying logged in). These are essential for the platform to function.
+                </p>
+            </li>
+            <li>
+                <span>Your Rights</span>
+                <p>
+                    You have the right to:
+
+                    Access, update, or delete your personal data
+
+                    Request correction of incorrect information
+
+                    Withdraw from the platform at any time
+
+                    To exercise these rights, please contact the platform team.
+                </p>
+            </li>
+            <li>
+                <span>Data Security</span>
+                <p>
+                    We take reasonable steps to secure your data, including encryption of sensitive fields and access control for moderators and administrators.
+                </p>
+            </li>
+            <li>
+                <span>Platform Scope</span>
+                <p>
+                    This platform is a student project, not a commercial service. As such, it is not subject to commercial regulations like GDPR or CCPA, but we still value and respect your privacy.
+                </p>
+            </li>
+        </ol>
+    </div>
+</body>
+</html>
