@@ -2,7 +2,6 @@ from flask import flash, render_template, request, redirect, url_for
 from flask_login import current_user
 
 from .. import major_bp
-from ..models import MajorEnum
 from ..services import UserMajorService
 from ..forms import NewUserMajorForm
 from ..exceptions import MajorException
@@ -46,3 +45,26 @@ def remove_from_user(user_major_id: int):
         flash(str(e))
 
     return redirect(url_for('major.list_all'))
+
+@major_bp.route('editar/institucional/<int:user_major_id>', methods=['GET', 'POST'])
+def edit_user_major(user_major_id: int):
+    form = NewUserMajorForm()
+    user_major = None
+    try:
+        user_major = user_major_service.find_by_id(user_major_id)
+        if not user_major:
+            raise MajorException('Formação não encontrada.')
+        if form.validate_on_submit():
+            user_major_service.update(
+                user_major,
+                college_code=form.college_code.data,
+                institutional_email=form.institutional_email.data,
+                user_is=form.user_is.data,
+                start_date=form.start_date.data,
+                end_date=form.end_date.data if not form.check_ongoing.data else None,
+            )
+            return redirect(url_for('major.list_all'))
+    except MajorException as e:
+        flash(str(e))
+
+    return render_template('edit_major.html', form=form, user_major=user_major)
