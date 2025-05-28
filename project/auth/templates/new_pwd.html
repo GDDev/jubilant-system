@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 6px;
+            color: #333;
+            max-width: 600px;
+            margin: auto;
+        }
+        .password {
+            font-size: 18px;
+            font-weight: bold;
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sua Nova Senha</h2>
+        <p>Olá {{ user_name }},</p>
+        <p>Aqui está sua nova senha gerada automaticamente:</p>
+        <p class="password">{{ new_password }}</p>
+        <p>Por favor, acesse a plataforma com esta senha e altere-a o quanto antes em sua página de configurações.</p>
+        <p style="margin-top: 30px;">Atenciosamente,<br>Equipe Jubilant System</p>
+    </div>
+</body>
+</html>

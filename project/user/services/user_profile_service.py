@@ -49,3 +49,6 @@ class UserProfileService:
         if friendship:
             return friendship, friendship.sender
         return None, None
+
+    def get_admins(self):
+        return self.user_profile_repository.get_admins()

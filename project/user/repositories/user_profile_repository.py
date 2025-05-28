@@ -102,3 +102,7 @@ class UserProfileRepository:
             return admins
         else:
             return None
+
+    @staticmethod
+    def get_admins():
+        return db.session.query(UserProfile).filter_by(role=RoleEnum.ADMIN).all()

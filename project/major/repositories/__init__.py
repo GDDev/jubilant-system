@@ -1,0 +1,2 @@
+from .major_repository import MajorRepository
+from .user_major_repository import UserMajorRepository

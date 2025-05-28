@@ -2,15 +2,102 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termos e Condições de Uso</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Termos e Condições de Uso</h1>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Quisquam, quae.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Quisquam, quae.
-    </p>
+    <div class="w-100 h-100 m-auto primary-bg-dark text-white d-flex flex-column justify-content-center
+    align-items-center py-5">
+        <h1 class="mb-5">Termos e Condições de Uso</h1>
+
+        <div class="d-flex flex-column align-items-center text-start">
+            <b class="mb-3">Bem-vindo(a) ao Jubilant System.</b>
+            <p class="w-75 d-flex flex-column text-break text-wrap align-items-start">
+                <span>Para acessar e utilizar esta plataforma, é necessário aceitar nossos
+                    <a href="{{ url_for('main.terms') }}" class="text-decoration-none text-info">
+                        Termos de Uso
+                    </a>
+                    e nossa
+                    <a href="{{ url_for('main.privacy') }}" class="text-decoration-none text-info">
+                        Política de Privacidade.
+                    </a>
+                </span>
+                <span>Caso não concorde, não será possível criar uma conta.</span>
+                <span class="small text-muted text-start">*Sem conta, sem acesso</span>
+            </p>
+        </div>
+
+        <ol class="w-50 d-flex flex-column text-break text-wrap align-items-start" style="list-style-type:
+        upper-roman;">
+            <li>
+                <span>Use of the Platform</span>
+                <p>
+                    This platform is intended for academic and social use by students, professors, and authorized
+                    users. You agree to use it respectfully, lawfully, and in line with the platform’s goals.
+                </p>
+            </li>
+
+            <li>
+                <span>User Accounts</span>
+                <p>
+                    You are responsible for maintaining the confidentiality of your account information. Any activity under your account is your responsibility. Users must be at least 17 years old to register.
+                </p>
+            </li>
+
+            <li>
+                <span>User-Generated Content</span>
+                <p>
+                    You retain ownership of any content you post (such as posts, suggestions, or profile data), but grant us the right to display it on the platform. We may remove content that violates our rules or applicable laws.
+                </p>
+            </li>
+
+            <li>
+                <span>Privacy and Data</span>
+                <p>
+                    We collect and store basic personal information to provide our services. Your data is not shared with third parties, except as required by law enforcement. See our [Privacy Policy] for details.
+                </p>
+            </li>
+
+            <li>
+                <span>Intellectual Property</span>
+                <p>
+                    All logos, layout, and system content are part of a student project and are not intended for commercial use. External materials (e.g., university names) are used for illustrative purposes.
+                </p>
+            </li>
+
+            <li>
+                <span>Modifications and Availability</span>
+                <p>
+                    This platform is under active development and may change or become unavailable at any time. We are not responsible for any data loss or downtime.
+                </p>
+            </li>
+
+            <li>
+                <span>Termination</span>
+                <p>
+                    We may suspend or terminate accounts that violate these terms, especially in cases of harassment, misuse, or academic dishonesty.
+                </p>
+            </li>
+
+            <li>
+                <span>Disclaimer</span>
+                <p>
+                    This is an academic project. We make no guarantees about accuracy, availability, or performance. Use at your own risk.
+                </p>
+            </li>
+        </ol>
+
+        <span>For questions, feedback, or concerns, please contact the project team directly.</span>
+        <span class="small mt-5">
+            Você pode fechar essa página ou
+            <a href="{{ url_for('main.home') }}" class="text-decoration-none text-info">Voltar ao início</a>
+        </span>
+    </div>
 </body>
 </html>

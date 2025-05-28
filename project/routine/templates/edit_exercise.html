@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% block title %}Adicionar exercício{% endblock %}
+
+{% block content %}
+    <div class="container w-75 m-auto mt-4">
+        <form action="{{ url_for('item.update_exercise', item_id=item_exercise.id) }}" method="post"
+              class="row g-3">
+            {% for field in form._fields.values() %}
+            	{% for error in field.errors %}
+            		<span class="text-danger">{{ field.label(class="text-danger") }}: {{ error }}</span>
+            	{% endfor %}
+
+            {% endfor %}
+
+
+            {{ form.csrf_token }}
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    {{ form.exercise_name.label(class="form-label") }}
+                    {{ form.exercise_name(class="form-control w-auto", value=item_exercise.exercise.name) }}
+
+                    {{ form.muscle_group.label(class="form-label") }}
+                    {{ form.muscle_group(class="form-control w-auto", value=item_exercise.exercise.muscle_group) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.instruction.label(class="form-label") }}
+                    <textarea name="instruction" id="instruction" cols="1" rows="3" class="form-control small">{{ item_exercise.exercise.instruction }}</textarea>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="col-md-4">
+                {{ form.min_reps.label(class='form-label') }}
+                <span class="text-danger position-absolute" style="font-size: .6rem;">*</span>
+                {{ form.min_reps(class='form-control w-25', value=item_exercise.min_reps) }}
+            </div>
+            <div class="col-md-4">
+                {{ form.max_reps.label(class='form-label') }}
+                {{ form.max_reps(class='form-control w-25', value=item_exercise.max_reps) }}
+            </div>
+            <div class="col-md-4">
+                {{ form.min_sets.label(class='form-label') }}
+                <span class="text-danger position-absolute" style="font-size: .6rem;">*</span>
+                {{ form.min_sets(class='form-control w-25', value=item_exercise.min_sets) }}
+            </div>
+            <div class="col-md-4">
+                {{ form.max_sets.label(class='form-label') }}
+                {{ form.max_sets(class='form-control w-25', value=item_exercise.max_sets) }}
+            </div>
+            <div class="col-md-4">
+                {{ form.set_duration.label(class='form-label') }}
+                <span class="small text-info"><br>Atual: {{ item_exercise.set_duration|format_duration }}</span>
+                {{ form.set_duration(class='form-control w-50') }}
+            </div>
+            <div class="col-md-4">
+                {{ form.set_interval.label(class='form-label') }}
+                <span class="small text-info"><br>Atual: {{ item_exercise.set_interval|format_duration }}</span>
+                {{ form.set_interval(class='form-control w-50') }}
+            </div>
+            <div class="col-md-4">
+                {{ form.weight.label(class='form-label') }}
+                {{ form.weight(class='form-control w-25', value=item_exercise.weight) }}
+            </div>
+            <div class="col-md-8 mt-auto">
+                <input type="submit" value="Salvar" class="btn btn-success">
+                <a href="{{ url_for('item.workout_exercises', item_id=item_exercise.item.id, routine_id=item_exercise
+                .item.routine_id) }}"
+                   class="btn bg-danger ms-2">Cancelar</a>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

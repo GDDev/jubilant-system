@@ -1,8 +1,7 @@
-import requests
 from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
-from core import db, migrate
+from core import db, migrate, config_oauth, config_mail
 from project.routine import item_bp
 
 
@@ -21,7 +20,7 @@ def register_all_bp(flask: Flask):
     from project.user import user, profile
     from project.friendship import friendship
     from project.notification import notification
-    from project.academia import Major, UserMajor
+    from project.major import major_bp
     from project.post import post_bp, comment_bp
     from project.routine import routine_bp, item_bp
 
@@ -35,6 +34,7 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(comment_bp, url_prefix='/comentario')
     flask.register_blueprint(routine_bp, url_prefix='/rotina')
     flask.register_blueprint(item_bp, url_prefix='/item')
+    flask.register_blueprint(major_bp, url_prefix='/formacao')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()
@@ -61,6 +61,8 @@ def create_app() -> Flask:
     flask = config_flask()
 
     init_db(flask)
+    config_oauth(flask)
+    config_mail(flask)
 
     csrf = CSRFProtect(flask)
     with flask.app_context():
@@ -91,3 +93,14 @@ def register_filters(flask: Flask):
     @flask.template_filter('emojify')
     def emoji_filter(s):
         return emoji.emojize(s)
+
+    @flask.template_filter('format_duration')
+    def format_duration(time_obj):
+        if not time_obj:
+            return '00:00'
+        total_seconds = time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
+        if total_seconds < 60:
+            return f"{total_seconds} segundo{'s' if total_seconds > 1 else ''}"
+        else:
+            minutes = total_seconds // 60
+            return f"{minutes} minuto{'s' if minutes > 1 else ''}"

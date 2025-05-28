@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
-{% block title %}Adicionar Item à {{ routine_type.capitalize() }}{% endblock %}
-{% if routine_type == 'treino' %}
+{% block title %}Adicionar Item à {{ routine.type.value.capitalize() }}{% endblock %}
+{% if routine.type.value == 'workout' %}
 	{% set place = 'este treino' %}
-{% elif routine_type == 'dieta' %}
+{% elif routine.type.value == 'dietary' %}
     {% set place = 'esta dieta' %}
 {% endif %}
 {% block content %}
@@ -14,7 +14,7 @@
             {% endfor %}
             </ul>
         {% endif %}
-        <form action="{{ url_for('item.add', routine_type=routine_type, routine_id=routine_id) }}" method="post"
+        <form action="{{ url_for('item.add', routine_id=routine.id) }}" method="post"
               class="row g-3">
             {{ form.csrf_token }}
 
@@ -28,7 +28,7 @@
 
             <div class="col-md-6">
                 {{ form.expiration_date.label(class='form-label') }}
-                {{ form.expiration_date(class='form-control') }}
+                {{ form.expiration_date(class='form-control', type='date') }}
             </div>
 
             <div class="col-12">
@@ -39,7 +39,7 @@
 
             <div class="col-12 d-flex justify-content-between mt-4">
                 {{ form.submit }}
-                <a href="{{ url_for('routine.update', routine_type=routine_type, routine_id=routine_id) }}"
+                <a href="{{ url_for('routine.update', routine_id=routine.id) }}"
                class="btn btn-outline-danger">Cancelar</a>
             </div>
         </form>

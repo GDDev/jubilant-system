@@ -1,0 +1,19 @@
+{% if current_user.majors %}
+    {% if current_user.is_professor %}
+{#    {% if True %}#}
+    	<span class="fw-bold fs-5 font-monospace">Lecionando</span>
+        {% for user_major in current_user.taught_majors %}
+        	{% include 'components/major_container.html' %}
+        {% endfor %}
+        <hr class="my-5">
+    {% endif %}
+    {% if current_user.studied_majors %}
+    	<span class="fw-bold fs-5 font-monospace">Concluído/cursando</span>
+        {% for user_major in current_user.studied_majors %}
+        	{% include 'components/major_container.html' %}
+        {% endfor %}
+    {% endif %}
+{% else %}
+    <span class="fs-5 text-muted">Você ainda não cadastrou nenhuma formação.</span><br>
+    <span class="fs-6 text-muted">Cadastre seu nível de formação para desbloquear mais funções do app.</span>
+{% endif %}

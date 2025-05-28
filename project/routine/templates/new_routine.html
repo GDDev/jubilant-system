@@ -4,11 +4,12 @@
 {% block content %}
     <span class="d-flex align-items-center justify-content-center text-warning w-75 m-auto">
         <i class="bi bi-exclamation-triangle text-warning"></i>
-        Recarregar a página irá criar uma nova rotina.
+        Recarregar a página irá criar uma rotina.
     </span>
     <div class="w-75 m-auto text-center mt-4">
         <div class="d-flex flex-column align-items-center justify-content-center">
-            <form action="{{ url_for('routine.new', routine_type=routine_type) }}" method="post">
+            <form action="{{
+                    url_for('routine.new')+'?routine_type={}'.format(routine_type) }}" method="post">
                 {{ form.csrf_token }}
                 {{ form.routine_id(type="hidden", value=routine.id if routine else "") }}
 
@@ -35,14 +36,13 @@
                 <a href="{{ url_for
                     (
                         'routine.list_all',
-                        routine_type=routine_type
+                        routine_type=routine.type.value
                     ) }}" class="btn btn-success bg-success">
                     Salvar
                 </a>
                 <a href="{{ url_for
                     (
                         'routine.delete',
-                        routine_type=routine_type,
                         routine_id=routine.id
                     ) }}" class="btn btn-danger bg-danger">
                     Cancelar

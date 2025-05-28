@@ -1,0 +1,36 @@
+{% if user_major.major %}
+    {% set major = user_major.major %}
+{% elif user_major.temp_major %}
+    {% set major = user_major.temp_major %}
+{% endif %}
+
+<div class="d-flex flex-column justify-content-center align-items-start mt-4
+        {% if not user_major.approved %}border border-danger rounded p-2{% endif %}"
+     style="width: 50%">
+    {% if not user_major.approved %}
+    	<span class="small text-danger text-uppercase fw-bolder">Aprovação Pendente</span>
+    {% endif %}
+    <div class="d-flex align-items-center justify-content-between w-100">
+        <span class="small text-muted">{{ major.university }} - {{ major.uni_acronym }}</span>
+        <div class="d-flex align-items-center justify-content-between" style="width: 3rem;">
+            <a href="{{ url_for('major.edit_user_major', user_major_id=user_major.id) }}" class="text-decoration-none">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{{ url_for('major.remove_from_user', user_major_id=user_major.id) }}" class="text-decoration-none">
+                <i class="bi bi-trash3 text-danger"></i>
+            </a>
+        </div>
+    </div>
+
+    <div>
+        <b>{{ major.level }}</b> em <b>{{ major.name }}</b>
+    </div>
+    <div class="small fw-light">
+        De {{ user_major.start_date.strftime('%d/%m/%Y') }} até
+        {% if user_major.end_date %}
+        	{{ user_major.end_date.strftime('%d/%m/%Y') }}
+        {% else %}
+            o momento.
+        {% endif %}
+    </div>
+</div>

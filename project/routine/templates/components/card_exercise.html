@@ -1,0 +1,15 @@
+<span>
+    Realizar {% if exercise.max_sets %} entre <b>{{ exercise.min_sets }}</b> e <b>{{ exercise.max_sets }}
+{% else %} <b>{{ exercise.min_sets }} {% endif %} séries</b> de <b>{{ exercise.min_reps }} </b>
+{% if exercise.max_reps %} a <b>{{ exercise.max_reps }}</b> {% endif %} <b>repetições</b>. {% if exercise.weight %}
+        Com <b>{{ exercise.weight }} kg</b>. {% endif %} {% if exercise.set_duration %} A <b>duração</b> de cada
+        série deve ser de <b>{{ exercise.set_duration | format_duration }}</b>. {% endif %}
+{% if exercise.set_interval %} Com <b>intervalo</b> de <b>{{ exercise.set_interval | format_duration }}</b>. {% endif %}
+</span>
+<span class="mt-3"><b>
+{% if not exercise.exercise.instruction %}
+    Nenhuma instrução adicional.
+{% else %}
+    {{ exercise.exercise.instruction }}
+{% endif %}
+</b></span>
