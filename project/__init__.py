@@ -96,6 +96,8 @@ def register_filters(flask: Flask):
 
     @flask.template_filter('format_duration')
     def format_duration(time_obj):
+        if not time_obj:
+            return '00:00'
         total_seconds = time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
         if total_seconds < 60:
             return f"{total_seconds} segundo{'s' if total_seconds > 1 else ''}"

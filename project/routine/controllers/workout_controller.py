@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required
 
 from .. import item_bp
-from ..forms import NewWorkoutForm, NewItemForm
+from ..forms import NewWorkoutForm
 from ..services import ItemService, WorkoutService
 
 item_service = ItemService()
@@ -19,7 +19,7 @@ def workout_exercises():
         return render_template('item_exercises.html', item=item)
     except Exception as e:
         flash(str(e))
-    return redirect(url_for('item.add', routine_type='treino', routine_id=item.routine_id))
+    return redirect(url_for('item.add', routine_id=item.routine_id))
 
 
 @item_bp.route('/treino/adicionar/exercicio/', methods=['GET', 'POST'])
@@ -50,7 +50,7 @@ def add_exercise():
             return render_template('new_exercise_item.html', form=form, item=item)
     except Exception as e:
         flash(str(e))
-    return redirect(url_for('routine.list_all', routine_type='treino'))
+    return redirect(url_for('routine.list_all', routine_type='workout'))
 
 @item_bp.route('/treino/remover/exercicio/<int:exercise_id>', methods=['GET'])
 def remove_exercise(exercise_id: int):
@@ -58,7 +58,7 @@ def remove_exercise(exercise_id: int):
         workout_service.delete(exercise_id=exercise_id)
     except Exception as e:
         flash(str(e))
-    return redirect(url_for('routine.list_all', routine_type='treino'))
+    return redirect(url_for('routine.list_all', routine_type='workout'))
 
 @item_bp.route('/treino/editar/exercicio/<int:item_id>', methods=['GET', 'POST'])
 @login_required
@@ -95,6 +95,3 @@ def update_exercise(item_id: int):
     except Exception as e:
         flash(str(e))
     return render_template('edit_exercise.html', form=form, item_exercise=item_exercise)
-
-
-

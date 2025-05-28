@@ -1,0 +1,38 @@
+<form action="#" class="row g-3 text-start">
+    {{ form.csrf_token }}
+
+    <div class="col-12">
+        {{ form.i_name.label(class='form-label') }}
+        {{ form.i_name(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.i_description.label(class='form-label') }}
+        {{ form.i_description(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.meal_time.label(class='form-label') }}
+        {{ form.meal_time(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.f_name.label(class='form-label') }}
+        {{ form.f_name(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.quantity.label(class='form-label') }}
+        {{ form.quantity(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.weight.label(class='form-label') }}
+        {{ form.weight(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.f_description.label(class='form-label') }}
+        {{ form.f_description(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.submit }}
+        <a href="{{ url_for('item.diet_meals', item_id=meal.item.id) }}" class="btn btn-outline-danger mt-2 w-100">
+            Cancelar
+        </a>
+    </div>
+</form>

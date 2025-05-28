@@ -26,3 +26,7 @@ class RoutineRepository:
     @staticmethod
     def find_by_id(routine_id):
         return db.session.get(Routine, routine_id)
+
+    @staticmethod
+    def get_routines_by_type(routine_type, user_id):
+        return db.session.query(Routine).filter_by(type=routine_type, created_for=user_id).all()

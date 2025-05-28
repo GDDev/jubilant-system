@@ -12,14 +12,9 @@ class ItemService:
 
     def add(self, routine_type: str, routine_id: int, name: str, expiration_date: datetime, description: str) -> RoutineItem | None:
         try:
-            if routine_type == 'treino':
-                routine_type = ItemType.WORKOUT.value
-            elif routine_type == 'dieta':
-                routine_type = ItemType.DIET.value
-
-            return self.item_repo.insert(RoutineItem(
+             return self.item_repo.insert(RoutineItem(
                 routine_id=routine_id,
-                type=routine_type,
+                type=ItemType.WORKOUT.value if routine_type == 'workout' else ItemType.DIET.value,
                 name=name,
                 expiration_date=expiration_date,
                 description=description

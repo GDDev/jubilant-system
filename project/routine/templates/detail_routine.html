@@ -1,20 +1,15 @@
 {% extends 'layout.html' %}
 {% block title %}Visualizar Rotina{% endblock %}
 
-{% if routine.type.value == 'workout' %}
-	{% set r_type = 'treino' %}
-{% elif routine.type.value == 'dietary' %}
-    {% set r_type = 'dieta' %}
-{% endif %}
-
+{% set r_type = routine.type.value %}
 
 {% block content %}
     <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
         <p class="mb-5 text-center d-flex flex-column">
             <span class="fs-4 fw-bold text-info mb-3">
-            {% if r_type == 'treino' %}
+            {% if r_type == 'workout' %}
             	Ficha de treino
-            {% elif r_type == 'dieta' %}
+            {% elif r_type == 'dietary' %}
                 Dieta
             {% endif %}
             </span>
@@ -39,7 +34,7 @@
             </div>
         {% endfor %}
         <div class="w-75 text-center text-danger mt-5 m-auto">
-            <a href="{{ url_for('routine.list_all', routine_type=r_type) }}" class="text-decoration-none">
+            <a href="{{ url_for('routine.list_all')+'?routine_type={}'.format(r_type) }}" class="text-decoration-none">
                 <i class="small bi bi-arrow-return-left text-danger">Voltar</i>
             </a>
         </div>

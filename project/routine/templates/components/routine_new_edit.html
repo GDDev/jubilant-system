@@ -9,12 +9,13 @@
             {% for item in routine.routine_items %}
                 <div>
                     {{ item.name }}
-                    <a href="{{ url_for('item.workout_exercises', routine_id=routine.id, item_id=item.id) }}"
+                    <a href="{{ url_for(
+                    'item.workout_exercises' if item.type.value == 'workout_item' else 'item.diet_meals',
+                    item_id=item.id) }}"
                     class="text-decoration-none">
                         <i class="bi bi-eye"></i>
                     </a>
-                    <a href="{{ url_for('item.remove', item_id=item.id, routine_type=routine_type,
-                    routine_id=routine.id) }}">
+                    <a href="{{ url_for('item.remove', item_id=item.id) }}">
                         <i class="bi bi-trash3"></i>
                     </a>
                 </div>
@@ -22,8 +23,8 @@
         {% endif %}
     </div>
 
-    <a href="{{ url_for('item.add', routine_type='treino', routine_id=routine.id) }}" class="btn
+    <a href="{{ url_for('item.add', routine_id=routine.id) }}" class="btn
     btn-success mt-4">
-        <i class="bi bi-plus"> {{ routine_type.capitalize() }}</i>
+        <i class="bi bi-plus"></i> {% if routine.type.value == 'workout' %}Treino{% else %}Dieta{% endif %}
     </a>
 </div>
