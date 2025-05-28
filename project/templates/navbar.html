@@ -33,7 +33,7 @@
                 <i class="bi bi-people"></i> Amigos
             </a>
         </li>
-        {% if current_user.has_major('nutrição') %}
+        {% if current_user.is_student or current_user.is_professor %}
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all', routine_type='dieta') }}"
                class="nav-link {% if request.path == url_for('routine.list_all', routine_type='dieta') %}active{% endif %}"
@@ -41,9 +41,6 @@
                 <i class="fa-solid fa-clipboard-list"></i> Dietas
             </a>
         </li>
-        {% endif %}
-
-        {% if current_user.has_major('educação física') %}
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all', routine_type='treino') }}"
                class="nav-link {% if request.path == url_for('routine.list_all', routine_type='treino') %}active{% endif %}"

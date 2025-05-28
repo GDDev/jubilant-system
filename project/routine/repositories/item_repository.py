@@ -11,7 +11,7 @@ class ItemRepository:
         return item
 
     @staticmethod
-    def update() -> None:
+    def update(item: RoutineItem) -> None:
         db.session.commit()
 
     @staticmethod

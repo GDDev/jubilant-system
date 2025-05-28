@@ -19,5 +19,5 @@ class ItemExerciseRepository:
         db.session.commit()
 
     @staticmethod
-    def find_by_id(exercise_id):
-        return db.session.get(ItemExercises, exercise_id)
+    def find_by_id(item_id):
+        return db.session.get(ItemExercises, item_id)

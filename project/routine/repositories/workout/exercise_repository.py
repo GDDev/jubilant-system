@@ -25,3 +25,7 @@ class ExerciseRepository:
     @staticmethod
     def find_by_name_and_muscle_group(name, muscle_group):
         return db.session.query(Exercise).filter_by(name=name, muscle_group=muscle_group).first()
+
+    @staticmethod
+    def find_by_id( exercise_id):
+        return db.session.get(Exercise, exercise_id)

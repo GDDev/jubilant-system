@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block title %}Visualizar Rotina{% endblock %}
+
+{% if routine.type.value == 'workout' %}
+	{% set r_type = 'treino' %}
+{% elif routine.type.value == 'dietary' %}
+    {% set r_type = 'dieta' %}
+{% endif %}
+
+
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
+        <p class="mb-5 text-center d-flex flex-column">
+            <span class="fs-4 fw-bold text-info mb-3">
+            {% if r_type == 'treino' %}
+            	Ficha de treino
+            {% elif r_type == 'dieta' %}
+                Dieta
+            {% endif %}
+            </span>
+            <span>criada por
+            <a href="{{ url_for('perfil.detail_profile', code=routine.creator.code) }}"
+               class="fw-bolder text-info text-decoration-none">
+                {{ routine.creator.username }}
+            </a> para
+            <a href="{{ url_for('perfil.detail_profile', code=routine.receiver.code) }}"
+               class="fw-bolder text-info text-decoration-none">
+                {{ routine.receiver.username }}
+            </a>
+            </span>
+        </p>
+        {% for item in routine.routine_items %}
+            <div class="w-auto fs-6 rounded primary-bg m-auto text-center px-4 py-2">
+                {{ item.name }}
+                <a href="{{ url_for('item.detail', item_id=item.id) }}"
+                class="text-decoration-none">
+                    <i class="bi bi-eye primary-bg"></i>
+                </a>
+            </div>
+        {% endfor %}
+        <div class="w-75 text-center text-danger mt-5 m-auto">
+            <a href="{{ url_for('routine.list_all', routine_type=r_type) }}" class="text-decoration-none">
+                <i class="small bi bi-arrow-return-left text-danger">Voltar</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

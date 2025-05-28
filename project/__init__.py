@@ -93,3 +93,12 @@ def register_filters(flask: Flask):
     @flask.template_filter('emojify')
     def emoji_filter(s):
         return emoji.emojize(s)
+
+    @flask.template_filter('format_duration')
+    def format_duration(time_obj):
+        total_seconds = time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
+        if total_seconds < 60:
+            return f"{total_seconds} segundo{'s' if total_seconds > 1 else ''}"
+        else:
+            minutes = total_seconds // 60
+            return f"{minutes} minuto{'s' if minutes > 1 else ''}"

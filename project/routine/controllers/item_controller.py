@@ -30,7 +30,7 @@ def add(routine_type: str, routine_id: int):
 
     return render_template('new_item.html', form=form, routine_type=routine_type, routine_id=routine_id)
 
-@item_bp.route('remover/<string:routine_type>/<int:routine_id>/<int:item_id>', methods=['GET'])
+@item_bp.route('/remover/<string:routine_type>/<int:routine_id>/<int:item_id>', methods=['GET'])
 @login_required
 def remove(routine_type:str, routine_id: int, item_id: int):
     try:
@@ -38,3 +38,16 @@ def remove(routine_type:str, routine_id: int, item_id: int):
     except Exception as e:
         flash(str(e))
     return redirect(url_for('routine.update', routine_type=routine_type, routine_id=routine_id))
+
+
+@item_bp.route('/visualizar/<int:item_id>', methods=['GET'])
+@login_required
+def detail(item_id:int):
+    try:
+        item = item_service.find_by_id(item_id)
+        if not item:
+            raise Exception('Item não encontrado.')
+        return render_template('detail_item.html', item=item)
+    except Exception as e:
+        flash(str(e))
+    return redirect(url_for('main.home'))

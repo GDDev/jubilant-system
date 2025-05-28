@@ -4,7 +4,7 @@
 {% block content %}
     <span class="d-flex align-items-center justify-content-center text-warning w-75 m-auto">
         <i class="bi bi-exclamation-triangle text-warning"></i>
-        Recarregar a página irá criar uma nova rotina.
+        Recarregar a página irá criar uma rotina.
     </span>
     <div class="w-75 m-auto text-center mt-4">
         <div class="d-flex flex-column align-items-center justify-content-center">
@@ -12,7 +12,7 @@
                 {{ form.csrf_token }}
                 {{ form.routine_id(type="hidden", value=routine.id if routine else "") }}
 
-                <div class="d-flex">
+                <div class="d-flex"> 
                     <label for="who_for"></label>
                     <select name="who_for" id="who_for" class="form-select w-auto">
                         {% for option in form.who_for %}

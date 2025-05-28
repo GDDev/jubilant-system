@@ -18,8 +18,8 @@ class NewWorkoutForm(FlaskForm):
 
     min_sets = IntegerField('Quantidade mínima de séries', validators=[DataRequired(), NumberRange(min=1)])
     max_sets = IntegerField('Quantidade máxima de séries', validators=[Optional(), NumberRange(max=30)])
-    set_duration = TimeField('Duração das séries', format='%M:%S', validators=[Optional()])
-    set_interval = TimeField('Tempo de descanso', format='%M:%S', validators=[Optional()])
+    set_duration = TimeField('Duração das séries (min:seg)', format='%M:%S', validators=[Optional()])
+    set_interval = TimeField('Tempo de descanso (min:seg)', format='%M:%S', validators=[Optional()])
     min_reps = IntegerField('Repetições mínimas', validators=[DataRequired(), NumberRange(min=1, max=100)])
     max_reps = IntegerField('Repetições máximas', validators=[Optional(), NumberRange(max=100)])
     weight = DecimalField('Peso (kg)', places=1, filters=[normalize_comma],

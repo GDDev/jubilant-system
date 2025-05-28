@@ -40,3 +40,9 @@ class ItemService:
             return self.item_repo.find_by_id(item_id)
         except SQLAlchemyError as e:
             raise Exception(f'Erro ao recuperar item') from e
+
+    def update(self, item):
+        try:
+            self.item_repo.update(item)
+        except SQLAlchemyError as e:
+            raise Exception(f'Erro ao atualizar item') from e

@@ -85,3 +85,18 @@ def delete(routine_type: str, routine_id: int):
     except Exception as e:
         flash(str(e))
     return redirect(url_for('routine.list_all', routine_type=routine_type))
+
+
+@routine_bp.route('/visualizar/<int:routine_id>', methods=['GET'])
+@login_required
+def detail(routine_id: int):
+    try:
+        pass
+        routine = routine_service.get_by_id(routine_id)
+        if not routine:
+            raise Exception('Rotina não encontrada.')
+
+        return render_template('detail_routine.html', routine=routine)
+    except Exception as e:
+        flash(str(e))
+    return redirect(url_for('main.home'))
