@@ -19,7 +19,9 @@
 </head>
 <body>
     <div class="d-flex flex-row h-100 w-100" style="min-height: 100vh;">
+        {% block navbar %}
         {% include "navbar.html" %}
+        {% endblock %}
         <div class="ms-auto end-0 primary-bg-dark h-100" style="width: 85%">
             <div class="pt-4" style="min-height: 10vh;">
                 {% include "searchbar.html" %}

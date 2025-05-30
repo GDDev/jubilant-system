@@ -1,16 +1,20 @@
 {% extends "layout.html" %}
 {% block title %}Nova Postagem{% endblock %}
 {% block content %}
-    <form action="{{ url_for('post.new') }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="w-75 m-auto text-start mt-4">
+        <form action="{{ url_for('post.new') }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <label for="title" class="form-label">Título</label>
-        <input type="text" name="title" id="title" placeholder="Título da postagem" class="form-control" maxlength="50">
+            <label for="title" class="form-label">Título</label>
+            <input type="text" name="title" id="title" placeholder="Título da postagem"
+                   class="form-control" maxlength="50">
 
-        <label for="content">Postagem</label>
-        <textarea name="content" id="content" cols="3" rows="5" class="form-control" placeholder="O que está em sua mente?" maxlength="500" required></textarea>
+            <label for="content">Postagem</label>
+            <textarea name="content" id="content" cols="3" rows="5" class="form-control"
+                      placeholder="O que está em sua mente?" maxlength="500" required></textarea>
 
-        <input type="submit" value="Postar" class="btn btn-success mt-3">
-        <a href="{{ url_for('post.feed') }}" class="btn btn-danger mt-3">Cancelar</a>
-    </form>
+            <input type="submit" value="Postar" class="btn btn-success mt-3">
+            <a href="{{ url_for('post.feed') }}" class="btn btn-danger mt-3">Cancelar</a>
+        </form>
+    </div>
 {% endblock %}

@@ -1,9 +1,8 @@
 from werkzeug.exceptions import HTTPException
 
 from flask import render_template, redirect, url_for, request, flash, session
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, login_user
 
-from core import db
 from project.user import profile
 from ..services import UserService, UserProfileService
 
@@ -18,7 +17,7 @@ def detail_profile(code: str):
         if code == current_user.code:
             session['profile_id'] = current_user.id
             session['user_id'] = current_user.user.id
-            return render_template('profile/owner_view.html', profile=current_user)
+            return render_template('profile/visitor_view.html', profile=current_user)
 
         user_profile = user_profile_service.find_by_code(code)
         friendship, sender = user_profile_service.friendship_request(current_user, user_profile)
@@ -34,11 +33,50 @@ def detail_profile(code: str):
         flash(str(e))
     return redirect(url_for('main.home'))
 
-@profile.route('/update', methods=['POST'])
+
+@profile.route('/alterar/nome_de_usuario', methods=['GET', 'POST'])
 @login_required
-def update_profile():
-    pass
-    #TODO: Add logic to update profile
+def update_username():
+    try:
+        if request.method == 'POST':
+            new_username = request.form.get('username')
+            if not new_username or not new_username.strip():
+                raise Exception('Nome de usuário não pode ser vazio.')
+            user_profile = current_user
+            user_profile_service.update(user_profile, username=request.form.get('username'))
+
+            user_profile = user_profile_service.new_alt_id(user_profile)
+            login_user(user_profile)
+            return redirect(url_for('perfil.settings'))
+    except (HTTPException, Exception) as e:
+        flash(str(e))
+    return render_template('profile/edit_username.html')
+
+
+@profile.route('/alterar/senha', methods=['GET', 'POST'])
+@login_required
+def update_password():
+    from ...auth.services.auth_service import generate_password_hash
+    try:
+        if request.method == 'POST':
+            new_pwd = request.form.get('pwd')
+            if not new_pwd or not new_pwd.strip():
+                raise Exception('Senha não pode ser vazia.')
+            hashed_pwd = generate_password_hash(new_pwd)
+            if not hashed_pwd:
+                raise Exception('Erro ao criptografar senha.')
+            user_profile = current_user
+            user_profile_service.update(user_profile, pwd=hashed_pwd)
+
+            user_profile = user_profile_service.new_alt_id(user_profile)
+            login_user(user_profile)
+            return redirect(url_for('perfil.settings'))
+
+    except (HTTPException, Exception) as e:
+        flash(str(e))
+
+    return render_template('profile/edit_password.html')
+
 
 @profile.route('/encontrar', methods=['GET', 'POST'])
 @login_required
@@ -50,6 +88,7 @@ def find():
     except Exception as e:
         flash(str(e))
     return render_template('profile_list.html', profiles=profiles, search=search)
+
 
 @profile.route('/selecionar_supervisor', methods=['POST'])
 @login_required
@@ -63,3 +102,9 @@ def select_supervisor():
         user_profile_service.update(current_user, supervisor_id=sup_id)
 
     return redirect(url_for('perfil.detail_profile', code=current_user.code))
+
+
+@profile.route('/configuracoes', methods=['GET', 'POST'])
+@login_required
+def settings():
+    return render_template('profile/config.html')

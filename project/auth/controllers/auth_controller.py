@@ -14,6 +14,8 @@ auth_service = AuthService()
 
 @auth.route('/cadastrar', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     form = SignUpForm()
     form.accept_terms.label.text = Markup(
         f'Li e concordo com os <a href="{url_for("main.terms")}" class="text-decoration-none text-info" target="_blank">Termos e Condições</a>'
@@ -47,6 +49,8 @@ def signup():
 
 @auth.route('/entrar', methods=['GET', 'POST'])
 def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     form = SignInForm()
 
     if form.validate_on_submit():
@@ -87,6 +91,8 @@ def signout():
 
 @auth.route('/esqueci_senha', methods=['GET', 'POST'])
 def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     form = ForgotPwdForm()
     try:
         if form.validate_on_submit():
@@ -101,6 +107,8 @@ def forgot_password():
 
 @auth.route('/entrar/google', methods=['GET', 'POST'])
 def login_google():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     try:
         redirect_uri = url_for('auth.authorize_google', _external=True)
         return oauth.google.authorize_redirect(redirect_uri)
@@ -110,6 +118,8 @@ def login_google():
 
 @auth.route('/autorizar/google', methods=['GET', 'POST'])
 def authorize_google():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     try:
         from secrets import token_urlsafe
 

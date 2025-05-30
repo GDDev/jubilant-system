@@ -1,18 +1,20 @@
 {% extends "layout.html" %}
 {% block title %}Editar Postagem {{ post.title }}{% endblock %}
 {% block content %}
-    <form action="{{ url_for('post.update', post_id=post.id) }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="w-75 m-auto text-start mt-4">
+        <form action="{{ url_for('post.update', post_id=post.id) }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <label for="title" class="form-label">Título</label>
-        <input type="text" name="title" id="title" value="{{ post.title }}" class="form-control" maxlength="50">
+            <label for="title" class="form-label">Título</label>
+            <input type="text" name="title" id="title" value="{{ post.title }}" class="form-control" maxlength="50">
 
-        <label for="content">Postagem</label>
-        <textarea name="content" id="content" cols="3" rows="5" class="form-control" maxlength="500" required>{{ post
-        .content
-                }}</textarea>
+            <label for="content">Postagem</label>
+            <textarea name="content" id="content" cols="3" rows="5" class="form-control" maxlength="500" required>{{ post
+            .content
+                    }}</textarea>
 
-        <input type="submit" value="Salvar" class="btn btn-success mt-3">
-        <a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="btn btn-danger mt-3">Cancelar</a>
-    </form>
+            <input type="submit" value="Salvar" class="btn btn-success mt-3">
+            <a href="{{ url_for('post.detail_post', post_id=post.id) }}" class="btn btn-danger mt-3">Cancelar</a>
+        </form>
+    </div>
 {% endblock %}
