@@ -2,14 +2,6 @@
     {{ form.csrf_token }}
     <input type="hidden" name="item_id" id="item_id" value="{{ item.id }}">
 
-    {% for field in form._fields.keys() %}
-    	{% for error in field.errors %}
-    		<div class="bg-warning">
-                <span class="text-danger">{{ error }}</span>
-            </div>
-    	{% endfor %}
-    {% endfor %}
-
 
     <div class="col-12">
         {{ form.goal.label(class='form-label') }}

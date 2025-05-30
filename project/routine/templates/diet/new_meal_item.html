@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% block title %}Adicionar Refeição{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
+        <div class="w-50 text-center">
+            <span class="m-auto fs-5 fw-bold">Adicionar Refeição</span>
+            {% include 'diet/components/render_new_meal_form.html' %}
+        </div>
+    </div>
+{% endblock %}

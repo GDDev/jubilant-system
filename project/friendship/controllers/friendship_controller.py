@@ -11,15 +11,15 @@ friendship_service = FriendshipService()
 notification_service = NotificationService()
 
 
-@friendship.route('/adicionar', methods=['POST'])
+@friendship.route('/adicionar', methods=['GET'])
 @login_required
 def send_request():
     try:
         # Sends friend request
-        new_friendship = friendship_service.send_request(request.form.get('friend_id'))
+        new_friendship = friendship_service.send_request(request.args.get('friend_id'))
         # Sends notification to user receiving friend request
         notification_service.send_notification(
-            receiver_id=request.form.get('friend_id'),
+            receiver_id=request.args.get('friend_id'),
             sender_id=current_user.id,
             type=NotificationType.FRIEND_REQUEST,
             content=f'{current_user.user.name} {current_user.user.surname} te enviou uma solicitação de amizade.',
@@ -28,16 +28,17 @@ def send_request():
         )
     except (FriendshipException, NotificationException) as e:
         flash(str(e))
-    return redirect(url_for('perfil.detail_profile', code=request.form.get('friend_code')))
+    return redirect(url_for('perfil.detail_profile', code=request.args.get('friend_code')))
 
 
 @friendship.route('/aceitar/<int:friendship_id>', methods=['GET', 'POST'])
 @login_required
 def accept_request(friendship_id: int):
+    friend = friendship_service.find_by_id(friendship_id)
     try:
-        notification = [n for n in current_user.notifications if n.friendship_id == friendship_id][0]
-        notification_service.delete(notification)
-        friendship_service.accept_request(friendship_id)
+        if friend:
+            notification_service.delete_by_friendship_id(friend.id)
+            friendship_service.accept_request(friend)
     except FriendshipException as e:
         flash(str(e))
     return redirect(url_for('main.home'))
@@ -46,24 +47,29 @@ def accept_request(friendship_id: int):
 @friendship.route('/recusar/<int:friendship_id>', methods=['GET', 'POST'])
 @login_required
 def decline_request(friendship_id: int):
+    friend = friendship_service.find_by_id(friendship_id)
     try:
-        notification = [n for n in current_user.notifications if n.friendship_id == friendship_id][0]
-        notification_service.delete(notification)
-
-        friendship_service.decline_request(friendship_id)
+        if friend:
+            notification_service.delete_by_friendship_id(friendship_id)
+            friendship_service.decline_request(friendship_id)
     except FriendshipException as e:
         flash(str(e))
     return redirect(url_for('main.home'))
 
 
-@friendship.route('/cancelar', methods=['POST'])
+@friendship.route('/remover/<int:friendship_id>', methods=['GET', 'POST'])
 @login_required
-def cancel_request():
+def remove_friendship(friendship_id: int):
+    friend = friendship_service.find_by_id(friendship_id)
+    user_code = friend.receiver.code if friend else None
     try:
-        pass
-        #TODO: Add logic to cancel friend request
-    except FriendshipException as e:
+        if friend:
+            notification_service.delete_by_friendship_id(friend.id)
+            friendship_service.remove_friendship(friend)
+    except (FriendshipException, NotificationException) as e:
         flash(str(e))
+    if friend:
+        return redirect(url_for('perfil.detail_profile', code=user_code))
     return redirect(url_for('main.home'))
 
 
@@ -71,10 +77,3 @@ def cancel_request():
 @login_required
 def get_friends():
     return render_template('friend_list.html', friends=current_user.friends)
-
-
-@friendship.route('/remover', methods=['GET', 'POST'])
-@login_required
-def remove():
-    pass
-    #TODO: Add logic to remove friend

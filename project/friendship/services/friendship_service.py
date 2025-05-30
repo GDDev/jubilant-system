@@ -20,25 +20,36 @@ class FriendshipService:
         else:
             raise FriendshipException('Solicitação de amizade já enviada.')
 
-    def accept_request(self, request_id: int) -> None:
-        friendship = self.friendship_repo.find_by_id(request_id)
-        if friendship:
-            if friendship.status == 'accepted':
-                raise FriendshipException('Solicitação de amizade já aceita.')
-            try:
-                self.friendship_repo.accept_request(friendship)
-            except SQLAlchemyError as e:
-                raise FriendshipException('Erro ao aceitar solicitação de amizade: ')
+    def accept_request(self, friendship) -> None:
+        if friendship.status == 'accepted':
+            raise FriendshipException('Solicitação de amizade já aceita.')
+        try:
+            self.friendship_repo.accept_request(friendship)
+        except (FriendshipException, SQLAlchemyError, Exception) as e:
+            raise FriendshipException('Erro ao aceitar solicitação de amizade: ') from e
 
     def decline_request(self, request_id: int) -> None:
         try:
             friendship = self.friendship_repo.find_by_id(request_id)
-            self.friendship_repo.decline_request(friendship)
+            if friendship:
+                self.friendship_repo.delete(friendship)
         except SQLAlchemyError as e:
-            raise FriendshipException('Erro ao recusar solicitação de amizade: ' + str(e._message()))
+            raise FriendshipException('Erro ao recusar solicitação de amizade') from e
 
     def get_open_requests(self, user_id) -> list[Friendship] | None:
         try:
             return self.friendship_repo.find_pending_by_receiver_id(user_id)
         except:
             raise FriendshipException('Erro ao buscar solicitações de amizade.')
+
+    def remove_friendship(self, friendship):
+        try:
+            self.friendship_repo.delete(friendship)
+        except (SQLAlchemyError, Exception) as e:
+            raise  FriendshipException('Erro ao remover solicitação de amizade: ' + e._message())
+
+    def find_by_id(self, friendship_id: int) -> Friendship | None:
+        try:
+            return self.friendship_repo.find_by_id(friendship_id)
+        except (SQLAlchemyError, Exception) as e:
+            raise FriendshipException('Erro ao buscar amizade/solicitação.') from e

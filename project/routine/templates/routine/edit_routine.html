@@ -2,7 +2,7 @@
 {% block title %}Editar {{ routine.type.value.capitalize() }}{% endblock %}
 {% block content %}
     <div class="w-75 m-auto text-center mt-4">
-        {% include 'components/routine_new_edit.html' %}
+        {% include 'routine/components/routine_new_edit.html' %}
 
         <div class="mt-5 w-50 m-auto">
             <a href="{{ url_for('routine.list_all')+'?routine_type={}'.format(routine.type.value) }}"

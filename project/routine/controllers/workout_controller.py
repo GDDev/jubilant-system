@@ -16,7 +16,7 @@ def workout_exercises():
     try:
         if not item:
             raise Exception('Item não encontrado.')
-        return render_template('item_exercises.html', item=item)
+        return render_template('workout/item_exercises.html', item=item)
     except Exception as e:
         flash(str(e))
     return redirect(url_for('item.add', routine_id=item.routine_id))
@@ -47,7 +47,7 @@ def add_exercise():
                 )
                 return redirect(url_for('item.workout_exercises', item_id=item.id, routine_id=item.routine_id))
 
-            return render_template('new_exercise_item.html', form=form, item=item)
+            return render_template('workout/new_exercise_item.html', form=form, item=item)
     except Exception as e:
         flash(str(e))
     return redirect(url_for('routine.list_all', routine_type='workout'))
@@ -94,4 +94,4 @@ def update_exercise(item_id: int):
 
     except Exception as e:
         flash(str(e))
-    return render_template('edit_exercise.html', form=form, item_exercise=item_exercise)
+    return render_template('workout/edit_exercise.html', form=form, item_exercise=item_exercise)

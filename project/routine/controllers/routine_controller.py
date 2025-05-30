@@ -19,7 +19,7 @@ def list_all():
     except Exception as e:
         flash(str(e))
 
-    return render_template('routine_list.html', routines=routines)
+    return render_template('routine/routine_list.html', routines=routines)
 
 
 @routine_bp.route('/criar/', methods=['GET', 'POST'])
@@ -53,7 +53,7 @@ def new():
             routine_service.update(routine)
             # For the love of GOD DO NOT remove "+ '?routine_id={}'.format(routine.id)" DON'T EVEN THINK ABOUT IT
             return redirect(url_for('routine.new')+'?routine_type={}'.format(routine.type.value) + '&routine_id={}'.format(routine.id))
-        return render_template('new_routine.html', form=form, routine=routine, routine_type=routine_type)
+        return render_template('routine/new_routine.html', form=form, routine=routine, routine_type=routine_type)
 
     except Exception as e:
         flash(str(e))
@@ -69,7 +69,7 @@ def update(routine_id: int):
     routine = routine_service.get_by_id(int(routine_id))
     try:
         if routine:
-            return render_template('edit_routine.html', routine=routine)
+            return render_template('routine/edit_routine.html', routine=routine)
 
     except Exception as e:
         flash(str(e))
@@ -98,7 +98,7 @@ def detail(routine_id: int):
         if not routine:
             raise Exception('Rotina não encontrada.')
 
-        return render_template('detail_routine.html', routine=routine)
+        return render_template('routine/detail_routine.html', routine=routine)
     except Exception as e:
         flash(str(e))
     return redirect(url_for('main.home'))

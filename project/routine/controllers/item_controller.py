@@ -29,7 +29,7 @@ def add(routine_id: int):
                 return redirect(url_for('item.diet_meals', item_id=item.id))
     except Exception as e:
         flash(str(e))
-    return render_template('new_item.html', form=form, routine=routine)
+    return render_template('item_routine/new_item.html', form=form, routine=routine)
 
 @item_bp.route('/remover/<int:item_id>', methods=['GET'])
 @login_required
@@ -50,7 +50,7 @@ def detail(item_id:int):
         item = item_service.find_by_id(item_id)
         if not item:
             raise Exception('Item não encontrado.')
-        return render_template('detail_item.html', item=item)
+        return render_template('item_routine/detail_item.html', item=item)
     except Exception as e:
         flash(str(e))
     return redirect(url_for('main.home'))

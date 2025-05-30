@@ -7,6 +7,7 @@ class MealOptRepository:
     def insert(meal_opt: MealOpt):
         db.session.add(meal_opt)
         db.session.commit()
+        return meal_opt
 
     @staticmethod
     def update(meal_opt: MealOpt):

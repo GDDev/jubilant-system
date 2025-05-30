@@ -63,3 +63,12 @@ class NotificationService:
                 self.noti_repo.mark_as_read(n)
         except SQLAlchemyError as e:
             raise NotificationException('Erro ao marcar notificações como lidas.') from e
+
+    def delete_by_friendship_id(self, friendship_id):
+        try:
+            notifications = self.noti_repo.find_by_friendship_id(friendship_id)
+            if notifications:
+                for n in notifications:
+                    self.noti_repo.delete(n)
+        except (SQLAlchemyError, Exception) as e:
+            raise NotificationException('Erro ao excluir notificações: ' + e._message())
