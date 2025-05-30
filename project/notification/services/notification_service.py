@@ -49,12 +49,15 @@ class NotificationService:
             raise NotificationException('Erro ao marcar notificação como lida.') from e
 
     def get_by_id(self, notification_id):
-        pass
+        try:
+            return self.noti_repo.find_by_id(notification_id)
+        except (SQLAlchemyError, Exception) as e:
+            raise NotificationException('Erro ao buscar notificação.') from e
 
     def delete(self, notification):
         try:
             self.noti_repo.delete(notification)
-        except SQLAlchemyError as e:
+        except (SQLAlchemyError, Exception) as e:
             raise NotificationException('Erro ao excluir notificação.') from e
 
     def read_all(self, notifications: list[Notification]) -> None:
