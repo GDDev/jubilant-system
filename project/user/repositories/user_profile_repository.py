@@ -52,9 +52,9 @@ class UserProfileRepository:
         return db.session.query(UserProfile).filter_by(code=code).first()
 
     @staticmethod
-    def find_profiles_by_search(search):
-        if not search: return []
-        search = f'%{search.lower()}%'
+    def find_profiles_by_search(raw_search):
+        if not raw_search: return []
+        search = f'%{raw_search.lower()}%'
         return  (
             db.session.query(UserProfile)
             .join(UserProfile.user)
@@ -62,7 +62,7 @@ class UserProfileRepository:
             .filter(
                 or_(
                     func.lower(UserProfile.username).ilike(search),
-                    func.lower(UserProfile.code).ilike(search),
+                    UserProfile.code.like(raw_search),
                     func.lower(User.name).ilike(search),
                     func.lower(User.surname).ilike(search)
                 )
