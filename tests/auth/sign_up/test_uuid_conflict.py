@@ -1,23 +1,12 @@
 import uuid
 
-import pytest
-
 from core import db
 
-from project import create_app
-from project.auth.exceptions import AuthException
 from project.auth.services import AuthService
 from project.user import User
 
 
-@pytest.fixture
-def app_context():
-    app = create_app()
-    with app.app_context():
-        yield
-
-@pytest.mark.usefixtures("app_context")
-def test_user_profile_uuid_conflict():
+def test_user_profile_uuid_conflict(app):
     profile_id = uuid.uuid4()
     alt_id = uuid.uuid4()
 

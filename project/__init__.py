@@ -5,9 +5,12 @@ from core import db, migrate, config_oauth, config_mail
 from project.routine import item_bp
 
 
-def config_flask() -> Flask:
+def config_flask(config_class=None) -> Flask:
     flask = Flask(__name__)
-    flask.config.from_pyfile('.settings.py', silent=True)
+    if config_class:
+        flask.config.from_object(config_class)
+    else:
+        flask.config.from_pyfile('.settings.py', silent=True)
     return flask
 
 def init_db(flask: Flask):
@@ -59,8 +62,8 @@ def config_login_manager(flask: Flask):
             return redirect(url_for('auth.signin'))
         return render_template('unauthorized.html'), 401
 
-def create_app() -> Flask:
-    flask = config_flask()
+def create_app(config_class=None) -> Flask:
+    flask = config_flask(config_class)
 
     init_db(flask)
     config_oauth(flask)

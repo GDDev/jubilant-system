@@ -11,6 +11,15 @@ class UserMajorService:
         self.major_repo = MajorRepository()
 
     def add(self, **kwargs):
+        """
+        Adds a UserMajor to the database.
+
+        Args:
+            **kwargs: dict of the fields to fill in the UserMajor.
+
+        Returns:
+            None
+        """
         try:
             if not kwargs['major_id'] and not kwargs['temp_major_id']:
                 raise MajorException('Erro ao associar formação ao usuário.')
@@ -20,6 +29,15 @@ class UserMajorService:
             raise MajorException('Erro ao adicionar formação ao usuário.') from e
 
     def remove(self, user_major_id):
+        """
+        Removes a UserMajor from the database.
+
+        Args:
+            user_major_id: int of the UserMajor's ID.
+
+        Returns:
+            None
+        """
         try:
             user_major = self.repo.find_by_id(user_major_id)
             if not user_major:
@@ -31,6 +49,15 @@ class UserMajorService:
             raise MajorException('Erro ao deletar formação.') from e
 
     def find_by_id(self, user_major_id: int) -> UserMajor | None:
+        """
+        Tries to find a UserMajor by its ID.
+
+        Args:
+            user_major_id: into of the UserMajor's ID.
+
+        Returns:
+            Found UserMajor or None.
+        """
         try:
             return self.repo.find_by_id(user_major_id)
         except SQLAlchemyError as e:
@@ -39,6 +66,16 @@ class UserMajorService:
             raise MajorException('Erro desconhecido.') from e
 
     def update(self, user_major, **kwargs):
+        """
+        Updates a UserMajor.
+
+        Args:
+            user_major: the UserMajor to be updated.
+            **kwargs: dict of the fields to be updated.
+
+        Returns:
+            None
+        """
         try:
             for arg in kwargs:
                 setattr(user_major, arg, kwargs[arg])

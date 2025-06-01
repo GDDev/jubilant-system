@@ -10,8 +10,19 @@ from ..exceptions import MajorException
 user_major_service = UserMajorService()
 
 
-@major_bp.route('/adicionar/institucional/<int:major_id>/<is_major_temp>', methods=['GET', 'POST'])
-def add_user_major(major_id: int, is_major_temp: bool):
+@major_bp.route('/adicionar/institucional/', methods=['GET', 'POST'])
+def add_user_major():
+    """
+    Adds a Major to the current user.
+
+    Returns:
+        render_template: The rendered template for the add_user_major page.
+        Or
+        redirect: Redirects to the list_all page.
+    """
+    major_id = request.args.get('major_id')
+    is_major_temp = request.args.get('is_major_temp')
+
     if not major_id:
         raise MajorException('Formação não informada.')
 
@@ -39,6 +50,15 @@ def add_user_major(major_id: int, is_major_temp: bool):
 
 @major_bp.route('/remover/institucional/<int:user_major_id>', methods=['GET'])
 def remove_from_user(user_major_id: int):
+    """
+    Removes a major from the current user.
+
+    Args:
+        user_major_id: int of the UserMajor's ID.
+
+    Returns:
+        redirect: Redirects to the list_all page.
+    """
     try:
         user_major_service.remove(user_major_id)
     except MajorException as e:
@@ -48,6 +68,17 @@ def remove_from_user(user_major_id: int):
 
 @major_bp.route('editar/institucional/<int:user_major_id>', methods=['GET', 'POST'])
 def edit_user_major(user_major_id: int):
+    """
+    Updates a UserMajor.
+
+    Args:
+        user_major_id: int of the UserMajor's ID.
+
+    Returns:
+        render_template: The rendered template for the edit_user_major page.
+        Or
+        redirect: Redirects to the list_all page.
+    """
     form = NewUserMajorForm()
     user_major = None
     try:

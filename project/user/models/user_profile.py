@@ -97,7 +97,7 @@ class UserProfile(UserMixin, Base):
         comment='Profile picture of the user'
     )
     role: Mapped[RoleEnum] = mapped_column(
-        'RoleEnum', nullable=False, default=RoleEnum.USER,
+        'role', nullable=False, default=RoleEnum.USER,
         comment="User's role in the system."
     )
     supervisor_id: Mapped[str] = mapped_column(

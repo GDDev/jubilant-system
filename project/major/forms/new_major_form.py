@@ -8,19 +8,19 @@ from ..models import AreaTags, Shift
 
 
 class NewMajorForm(FlaskForm):
-    name = StringField('Nome do curso', validators=[DataRequired(), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Nutrição", "list": "major-options"})
-    level = StringField('Nível da formação', validators=[DataRequired(), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Bacharelado", "list": "level-options"})
-    university = StringField('Universidade', validators=[DataRequired(), Length(max=50)], render_kw={"placeholder": "Ex: Universidade de Mogi das Cruzes", "list": "university-options"})
+    name = StringField('Nome do curso', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Nutrição", "list": "major-options"})
+    level = StringField('Nível da formação', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Bacharelado", "list": "level-options"})
+    university = StringField('Universidade', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"placeholder": "Ex: Universidade de Mogi das Cruzes", "list": "university-options"})
     uni_acronym = StringField(
         'Sigla da Universidade',
-        validators=[Optional(), Length(max=5)],
+        validators=[DataRequired(message='Preencha este campo.'), Length(max=5)],
         render_kw={"placeholder": "Ex: UMC", "disabled": True, "readonly": True}
     )
     area_tag = SelectField(
         'Área',
         choices=[(area.name, area.value.capitalize()) for area in AreaTags],
         default=0,
-        validators=[DataRequired()],
+        validators=[DataRequired(message='Preencha este campo.')],
         render_kw={"disabled": True}
     )
     shift = SelectField(
