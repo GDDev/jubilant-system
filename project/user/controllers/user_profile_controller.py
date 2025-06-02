@@ -1,10 +1,12 @@
 from werkzeug.exceptions import HTTPException
 
-from flask import render_template, redirect, url_for, request, flash, session
+from flask import render_template, redirect, url_for, request, flash, session, jsonify
 from flask_login import login_required, current_user, login_user
 
+from core import admin_required
 from project.user import profile
 from ..services import UserService, UserProfileService
+from ..exceptions import UserProfileException
 
 user_service = UserService()
 user_profile_service = UserProfileService()
@@ -108,3 +110,24 @@ def select_supervisor():
 @login_required
 def settings():
     return render_template('profile/config.html')
+
+
+@profile.route('/api/listar_todos', methods=['GET'])
+@login_required
+@admin_required
+def get_all():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    try:
+        pagination = user_profile_service.get_all_pagination(page, per_page)
+        return jsonify({
+            'users': [user.to_dict() for user in pagination.items],
+            'total': pagination.total,
+            'pages': pagination.pages,
+            'current_page': pagination.page,
+            'has_next': pagination.has_next,
+            'has_prev': pagination.has_prev
+        })
+    except (HTTPException, UserProfileException, Exception) as e:
+        flash(str(e))
+        return jsonify({'error': str(e)})

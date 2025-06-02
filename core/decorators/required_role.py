@@ -3,8 +3,6 @@ from functools import wraps
 from flask import abort, redirect, url_for
 from flask_login import current_user
 
-from project.user.models.user_profile import RoleEnum
-
 
 def admin_required(func):
     @wraps(func)

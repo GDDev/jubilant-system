@@ -1,0 +1,19 @@
+<div class="mt-4 w-100 d-flex flex-column justify-content-center align-items-start fs-5">
+    <span class="fs-4 fw-bold m-auto">Visão Geral</span>
+    <div>
+        <p>Total de usuários cadastrados: <span class="fw-bold">{{ overall.get('total_users') }}</span></p>
+    </div>
+    <div>
+        <p>Total de amizades feitas: <span class="fw-bold">{{ overall.get('total_friends') }}</span></p>
+    </div>
+    <div>
+        <p>Total de dietas criadas: <span class="fw-bold">{{ overall.get('total_diets') }}</span></p>
+        <p>Total de treinos criados: <span class="fw-bold">{{ overall.get('total_workouts') }}</span></p>
+        <p>Proporção (dieta/treino):
+            <span class="fw-bold">
+                {{ overall.get('diet_workout_ratio') }}
+                /
+                {{ overall.get('workout_diet_ratio') }}
+            </span></p>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
-from core import db, migrate, config_oauth, config_mail
+from core import db, migrate, config_oauth, config_mail, mock_100_users
 from project.routine import item_bp
 
 
@@ -74,6 +74,7 @@ def create_app(config_class=None) -> Flask:
         register_all_bp(flask)
         register_filters(flask)
         config_login_manager(flask)
+
 
     return flask
 

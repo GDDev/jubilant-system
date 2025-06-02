@@ -172,6 +172,19 @@ class UserProfile(UserMixin, Base):
         """
         return self.alt_id
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'code': self.code,
+            'name': self.user.name,
+            'surname': self.user.surname,
+            'email': self.user.email,
+            'username': self.username,
+            'visibility': self.visibility,
+            'role': self.role.value,
+            'google_id': self.google_id
+        }
+
     @property
     def friends(self) -> list['UserProfile']:
         """

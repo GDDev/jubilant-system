@@ -106,3 +106,8 @@ class UserProfileRepository:
     @staticmethod
     def get_admins():
         return db.session.query(UserProfile).filter_by(role=RoleEnum.ADMIN).all()
+
+    @staticmethod
+    def get_all_pagination(page, per_page):
+        query = db.session.query(UserProfile).order_by(UserProfile.username.desc())
+        return query.paginate(page=page, per_page=per_page, error_out=False)
