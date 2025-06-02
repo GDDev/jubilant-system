@@ -2,8 +2,8 @@ import uuid
 
 from faker import Faker
 from werkzeug.security import generate_password_hash
-from core import db  # Adjust if needed
-from project.user import User, UserProfile  # Adjust if needed
+from core import db
+from project.user import User, UserProfile
 
 fake = Faker('pt_BR')
 Faker.seed(0)
@@ -47,7 +47,7 @@ def mock_100_users(app):
 
             user = User(name=name, surname=surname, email=email)
             db.session.add(user)
-            db.session.flush()  # To get user.id before commit
+            db.session.flush()
 
             profile = UserProfile(
                 id=str(uuid.uuid4()),
