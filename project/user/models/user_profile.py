@@ -97,12 +97,8 @@ class UserProfile(UserMixin, Base):
         comment='Profile picture of the user'
     )
     role: Mapped[RoleEnum] = mapped_column(
-        'RoleEnum', nullable=False, default=RoleEnum.USER,
+        'role', nullable=False, default=RoleEnum.USER,
         comment="User's role in the system."
-    )
-    supervisor_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey('profiles.id'), nullable=True,
-        comment="Supervisor's ID for student's users who want to suggest diets and workouts."
     )
     google_id: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=True,
@@ -113,9 +109,7 @@ class UserProfile(UserMixin, Base):
 
     user: Mapped['User'] = relationship('User', back_populates='profile')
 
-    supervisor: Mapped['UserProfile'] = relationship('UserProfile', remote_side=[id], back_populates='supervised_students')
-
-    supervised_students: Mapped[list['UserProfile']] = relationship('UserProfile', back_populates='supervisor', foreign_keys=[supervisor_id])
+    supervised_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='supervisor', foreign_keys='[Routine.supervisor_id]')
 
     sent_friend_requests: Mapped[list['Friendship']] = relationship(
         'Friendship',
@@ -160,8 +154,7 @@ class UserProfile(UserMixin, Base):
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
     created_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='creator', foreign_keys='[Routine.created_by]', cascade='all, delete-orphan')
-    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='['
-                                                                                                        'Routine.created_for]', cascade='all, delete-orphan')
+    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='[Routine.created_for]', cascade='all, delete-orphan')
 
     def get_id(self):
         """
@@ -171,6 +164,19 @@ class UserProfile(UserMixin, Base):
             str: The alternative ID of the user profile.
         """
         return self.alt_id
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'code': self.code,
+            'name': self.user.name,
+            'surname': self.user.surname,
+            'email': self.user.email,
+            'username': self.username,
+            'visibility': self.visibility,
+            'role': self.role.value,
+            'google_id': self.google_id
+        }
 
     @property
     def friends(self) -> list['UserProfile']:
@@ -221,7 +227,7 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a professor, False otherwise.
         """
-        return any(m for m in self.taught_majors)
+        return any(m.approved for m in self.taught_majors)
 
     def has_major(self, major_tag) -> bool:
         majors = [major.major for major in self.majors if major.major and major.approved] + [temp.temp_major for temp in self.majors if temp.temp_major and temp.approved]
@@ -230,6 +236,10 @@ class UserProfile(UserMixin, Base):
         elif major_tag == AreaTags.PE:
             return any(m for m in majors if m.area_tag == AreaTags.PE)
         return any(m for m in majors if m.area_tag == AreaTags.OTHER)
+
+    def teaches(self, major_tag) -> bool:
+        majors = [major for major in self.taught_majors if major.major]
+        return any(m.approved for m in majors if m.major.area_tag == major_tag)
 
     @property
     def created_workout_routines(self) -> list['Routine']:

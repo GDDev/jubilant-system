@@ -28,15 +28,14 @@ class FriendshipRepository:
         db.session.commit()
 
     @staticmethod
-    def decline_request(friendship):
-        if friendship.status == 'pending':
-            db.session.delete(friendship)
-            db.session.commit()
-
-    @staticmethod
     def find_by_receiver_id(user_id):
         return db.session.query(Friendship).filter_by(receiver_id=user_id).all()
 
     @staticmethod
     def find_pending_by_receiver_id(user_id):
         return db.session.query(Friendship).filter_by(receiver_id=user_id, status='pending').all()
+
+    @staticmethod
+    def delete(friendship):
+        db.session.delete(friendship)
+        db.session.commit()

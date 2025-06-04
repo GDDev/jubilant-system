@@ -1,8 +1,10 @@
 from flask import abort
+from sqlalchemy.exc import SQLAlchemyError
 
 from .. import UserProfile
 from ..repositories import UserProfileRepository
 from ...friendship import FriendshipRepository
+from ..exceptions import UserProfileException
 
 
 class UserProfileService:
@@ -52,3 +54,9 @@ class UserProfileService:
 
     def get_admins(self):
         return self.user_profile_repository.get_admins()
+
+    def get_all_pagination(self, page: int, per_page: int):
+        try:
+            return self.user_profile_repository.get_all_pagination(page, per_page)
+        except SQLAlchemyError as e:
+            raise UserProfileException('Erro ao buscar todos os usuários.') from e

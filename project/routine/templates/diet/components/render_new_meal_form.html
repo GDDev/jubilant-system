@@ -1,0 +1,32 @@
+<form action="{{ url_for('item.add_meal', item_id=item.id) }}" class="row g-3 text-start" method="post">
+    {{ form.csrf_token }}
+    <input type="hidden" name="item_id" id="item_id" value="{{ item.id }}">
+
+
+    <div class="col-12">
+        {{ form.goal.label(class='form-label') }}
+        {{ form.goal(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_calories.label(class='form-label') }}
+        {{ form.total_calories(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_protein.label(class='form-label') }}
+        {{ form.total_protein(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_fat.label(class='form-label') }}
+        {{ form.total_fat(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_carbs.label(class='form-label') }}
+        {{ form.total_carbs(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.submit }}
+        <a href="{{ url_for('item.diet_meals', item_id=item.id) }}" class="btn btn-outline-danger mt-2 w-100">
+            Cancelar
+        </a>
+    </div>
+</form>

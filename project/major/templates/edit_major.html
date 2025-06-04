@@ -26,17 +26,21 @@
 
             <form action="{{ url_for('major.edit_user_major', user_major_id=user_major.id) }}" method="post"
                   class="row g-3 mt-4 text-start w-50 m-auto">
+                {% from '_formhelpers.html' import show_errors %}
                 {{ form.csrf_token }}
 
                 <div class="col-12 m-auto">
+                    {{ show_errors(form.college_code) }}
                     {{ form.college_code.label(class='form-label') }}
                     {{ form.college_code(class='form-control', value=user_major.college_code) }}
                 </div>
                 <div class="col-12 m-auto">
+                    {{ show_errors(form.institutional_email) }}
                     {{ form.institutional_email.label(class='form-label') }}
                     {{ form.institutional_email(class='form-control', value=user_major.institutional_email) }}
                 </div>
                 <div class="col-12 m-auto">
+                    {{ show_errors(form.user_is) }}
                     {{ form.user_is.label(class='form-label') }}
                     <select name="user_is" id="user_is" class="form-select">
                         {% for key, value in form.user_is.choices %}
@@ -46,19 +50,15 @@
                             </option>
                         {% endfor %}
                     </select>
-                    {% for error in form.user_is.errors %}
-                        <div class="text-danger">
-                            {{ error }}
-                        </div>
-                    {% endfor %}
-
                 </div>
                 <div class="col-12 m-auto">
+                    {{ show_errors(form.start_date) }}
                     {{ form.start_date.label(class='form-label') }}
                     {{ form.start_date(class='form-control', type='date', value=user_major.start_date) }}
                 </div>
                 {% if user_major.end_date %}
                     <div class="col-12 m-auto">
+                        {{ show_errors(form.end_date) }}
                         {{ form.end_date.label(class='form-label') }}
                         {{ form.end_date(class='form-control', type='date', value=user_major.end_date) }}
                     </div>

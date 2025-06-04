@@ -1,5 +1,2 @@
-<form action="{{ url_for('amigo.accept_request', friendship_id=friendship.id) }}" method="post">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-    <input type="submit" value="Aceitar solicitação" class="btn btn-primary">
-</form>
+<a href="{{ url_for('amigo.accept_request', friendship_id=friendship.id) }}" role="button"
+   class="btn text-success border-0 p-1" style="font-size: .75rem">Aceitar solicitação</a>

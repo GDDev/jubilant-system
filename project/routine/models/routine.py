@@ -26,7 +26,7 @@ class Routine(Base):
     status: Mapped[RoutineStatus] = mapped_column('status', nullable=False, default=RoutineStatus.PENDING)
     created_for: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id'), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
-    approved_by: Mapped[str] = mapped_column(String(36), nullable=True)
+    supervisor_id: Mapped[str] = mapped_column(String(36), ForeignKey('profiles.id', ondelete='SET NULL'), nullable=True)
     approved_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     last_updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     type: Mapped[RoutineEnum] = mapped_column('type', nullable=False)
@@ -34,4 +34,5 @@ class Routine(Base):
 
     creator: Mapped['UserProfile'] = relationship('UserProfile', back_populates='created_routines', foreign_keys=[created_by])
     receiver: Mapped['UserProfile'] = relationship('UserProfile', back_populates='routines', foreign_keys=[created_for])
+    supervisor: Mapped['UserProfile'] = relationship('UserProfile', back_populates='supervised_routines', foreign_keys=[supervisor_id], passive_deletes=True)
     routine_items: Mapped[list['RoutineItem']] = relationship('RoutineItem', back_populates='routine', cascade='all, delete-orphan')

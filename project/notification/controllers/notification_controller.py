@@ -38,3 +38,15 @@ def read_all():
     except NotificationException as e:
         flash(str(e))
     return redirect(url_for('notificacao.get_all'))
+
+
+@notification.route('/remover/<int:notification_id>', methods=['GET', 'POST'])
+@login_required
+def delete(notification_id: int):
+    try:
+        noti = noti_service.get_by_id(notification_id)
+        if noti:
+            noti_service.delete(noti)
+    except NotificationException as e:
+        flash(str(e))
+    return redirect(url_for('notificacao.get_all'))

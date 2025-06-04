@@ -1,7 +1,4 @@
-<form action="{{ url_for('amigo.send_request') }}" method="post">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-    <input type="hidden" name="friend_id" value="{{ profile.id }}">
-    <input type="hidden" name="friend_code" value="{{ profile.code }}">
-    <input type="submit" value="Solicitar amizade" class="btn btn-primary">
-</form>
+<a href="{{ url_for('amigo.send_request')+'?friend_id={}&friend_code={}'.format(profile.id, profile.code) }}"
+   class="btn text-info border-0 p-1" style="font-size: .75rem">
+    Solicitar amizade
+</a>

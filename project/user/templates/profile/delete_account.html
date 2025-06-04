@@ -1,0 +1,25 @@
+{% extends 'profile/config.html' %}
+{% block edit_profile %}{% endblock %}
+{% block delete_account %}
+    <form action="{{ url_for('usuario.delete') }}" method="post"
+          class="d-flex flex-column w-50 m-auto mt-4 gap-3 justify-content-center align-items-center">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="user_id" value="{{ current_user.user.id }}">
+
+        <span class="text-warning fs-4">
+            <i class="bi bi-exclamation-triangle text-warning"></i>
+            Atenção
+            <i class="bi bi-exclamation-triangle text-warning"></i><br>
+            Esta ação não pode ser desfeita!
+        </span>
+
+        <span class="text-warning">Tem certeza de que deseja deletar a sua conta?</span>
+
+        <a href="{{ url_for('perfil.settings') }}" class="btn bg-success" style="width: fit-content;">
+            Cancelar
+        </a>
+        <button type="submit" class="btn btn-danger" style="width: fit-content;">
+            Deletar Conta PERMANENTEMENTE
+        </button>
+    </form>
+{% endblock %}

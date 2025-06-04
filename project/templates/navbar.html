@@ -1,17 +1,17 @@
-{% block navbar %}
 <nav class="vh-100 position-fixed d-flex flex-column align-items-start primary-bg" style="width: 15%">
     <div class="dropdown p-4" style="min-width: fit-content">
-        <button type="button" class="btn w-100 dropdown-toggle text-white"
+        <button type="button" class="btn w-100 text-white"
            data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0">
             {% if current_user.username|length < 10 %}
                 <strong class="ms-1">{{ current_user.username }}</strong>
             {% endif %}
+            <i class="fas fa-chevron-down small"></i>
         </button>
         <div class="dropdown-menu text-small shadow primary-bg-dark">
             <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
             <a class="dropdown-item" href="{{ url_for('major.list_all') }}">Formações</a>
-            <a class="dropdown-item" href="#">Configurações</a>
+            <a class="dropdown-item" href="{{ url_for('perfil.settings') }}">Configurações</a>
             <hr class="dropdown-divider border-white">
             <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
         </div>
@@ -36,14 +36,16 @@
         {% if current_user.is_student or current_user.is_professor %}
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all')+'?routine_type=dietary' }}"
-               class="nav-link {% if request.path == url_for('routine.list_all')+'?routine_type=dietary' %}active{% endif %}"
+               class="nav-link
+                {% if request.path == url_for('routine.list_all')+'?routine_type=dietary' %}active{% endif %}"
                 aria-current="page">
                 <i class="fa-solid fa-clipboard-list"></i> Dietas
             </a>
         </li>
         <li class="nav-item w-100">
             <a href="{{ url_for('routine.list_all')+'?routine_type=workout' }}"
-               class="nav-link {% if request.path == url_for('routine.list_all')+'?routine_type=workout' %}active{% endif %}"
+               class="nav-link
+                {% if request.path == url_for('routine.list_all')+'?routine_type=workout' %}active{% endif %}"
                 aria-current="page">
                 <i class="fa-solid fa-dumbbell"></i> Treinos
             </a>
@@ -77,13 +79,12 @@
                 {% endif %}
             </a>
         </li>
-{#        {% if True %}#}
-{#        <li class="nav-item w-100">#}
-{#            <a href="{{ url_for('dashboard') }}" class="nav-link px-1 {% if request.path == url_for('dashboard') %}active{% endif %}" aria-current="page">#}
-{#                <i class="bi bi-list-task"></i> Dashboard#}
-{#            </a>#}
-{#        </li>#}
-{#        {% endif %}#}
+        {% if current_user.role == 'admin' or current_user.role == 'god' %}
+            {% include 'navbar_opts/is_admin.html' %}
+        {% endif %}
+        {% if current_user.is_professor %}
+            {% include 'navbar_opts/is_professor.html' %}
+        {% endif %}
     </ul>
 </nav>
 
@@ -94,4 +95,3 @@
 
     }
 </script>
-{% endblock %}

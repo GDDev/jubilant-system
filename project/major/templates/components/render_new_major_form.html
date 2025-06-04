@@ -5,40 +5,50 @@
     }
 </style>
 
+{% from "_formhelpers.html" import show_errors %}
+
 <form action="{{ url_for('major.add') }}" method="post" class="row g-3 text-start">
     {{ form.csrf_token }}
     <div class="col-6">
+        {{ show_errors(form.university) }}
         {{ form.university.label(class='form-label') }}
         {{ form.university(class='form-control', list="university-options") }}
         <datalist id="university-options"></datalist>
     </div>
     <div class="col-6">
+        {{ show_errors(form.uni_acronym) }}
         {{ form.uni_acronym.label(class='form-label') }}
         {{ form.uni_acronym(class='form-control border-danger') }}
     </div>
     <div class="col-3">
+        {{ show_errors(form.level) }}
         {{ form.level.label(class='form-label') }}
         {{ form.level(class='form-control border-danger') }}
         <datalist id="level-options"></datalist>
     </div>
     <div class="col-5">
+        {{ show_errors(form.name) }}
         {{ form.name.label(class='form-label') }}
         {{ form.name(class='form-control border-danger') }}
         <datalist id="major-options"></datalist>
     </div>
     <div class="col-2">
+        {{ show_errors(form.area_tag) }}
         {{ form.area_tag.label(class='form-label') }}
         {{ form.area_tag(class='form-select border-danger bg-select') }}
     </div>
     <div class="col-2">
+        {{ show_errors(form.shift) }}
         {{ form.shift.label(class='form-label') }}
         {{ form.shift(class='form-select border-danger bg-select') }}
     </div>
     <div class="col-3 d-flex flex-column justify-content-between">
+        {{ show_errors(form.min_semesters) }}
         {{ form.min_semesters.label(class='form-label') }}
         {{ form.min_semesters(class='form-control border-danger') }}
     </div>
     <div class="col-3">
+        {{ show_errors(form.max_semesters) }}
         {{ form.max_semesters.label(class='form-label') }}
         {{ form.max_semesters(class='form-control border-danger') }}
     </div>

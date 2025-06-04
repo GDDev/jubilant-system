@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+{% block title %}Visualizar Ítem{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto mt-4 d-flex flex-column justify-content-center align-item-center">
+        <div class="d-flex flex-column align-items-center">
+            <span class="h5 text-info">{{ item.name }}</span>
+            <span class="small text-muted">
+                Criado em: {{ item.created_at.strftime('%d/%m/%Y') }}
+                {% if item.expiration_date %}
+                    <br>Válido até: {{ item.expiration_date.strftime('%d/%m/%Y') }}
+                {% else %}
+                    com validade indefinida.
+                {% endif %}
+            </span>
+        </div>
+        <div>
+            {% if item.type.value == 'workout_item'  %}
+                {% for exercise in item.exercises %}
+                    <div class="w-50 m-auto mt-4">
+                        <a class="btn w-100 text-start d-flex justify-content-between text-info"
+                           role="button" data-bs-toggle="collapse"
+                           href="#{{ exercise.id }}" aria-expanded="false" aria-controls="{{ exercise.id }}">
+                            {{ exercise.exercise.name }} ({{ exercise.exercise.muscle_group }})
+                            <i class="dropdown-toggle text-info"></i>
+                        </a>
+                        <div class="collapse w-100 text-white small" id="{{ exercise.id }}">
+                            <div class="card card-body bg-transparent border-0">
+                                {% include 'workout/components/card_exercise.html' %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif item.type.value == 'meal_item' %}
+                {% for meal in item.meals %}
+{#                    Meal Fields#}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="w-50 overflow-auto text-center text-break m-auto mt-5">
+            <span>
+                {{ item.source }}
+            </span>
+        </div>
+        <div class="w-75 text-center text-danger mt-5 m-auto">
+            <a href="{{ url_for('routine.detail', routine_id=item.routine_id) }}" class="text-decoration-none">
+                <i class="small bi bi-arrow-return-left text-danger">Voltar</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

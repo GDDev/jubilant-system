@@ -13,16 +13,21 @@ major_service = MajorService()
 @major_bp.route('/listar', methods=['GET'])
 @login_required
 def list_all():
-    # try:
-    #     pass
-    # except MajorException as e:
-    #     flash(str(e))
+    """
+    Renders the majors' list page.
+    """
     return render_template('majors_list.html')
 
 
 @major_bp.route('/adicionar', methods=['GET', 'POST'])
 @login_required
 def add():
+    """
+    Either gets an existing major with matching content or adds a new one on a temp table for admin approval.
+    Returns:
+        If 'GET' request, renders the form page.
+        If 'POST' request, redirects to the 'add_user_major' page.
+    """
     form = NewMajorForm()
     try:
         if form.validate_on_submit():
@@ -38,7 +43,7 @@ def add():
             major = major_service.exists(uni, acronym, level, name, shift)
             is_major_temp = False
             if not major:
-                # Check if doesn't exist but was suggested
+                # Checks if it doesn't exist but was suggested
                 major = major_service.exists_as_temp(uni, acronym, level, name, shift)
                 if major:
                     major_service.update(major, area_tag=tag, min_semesters=min, max_semesters=max)
@@ -66,6 +71,11 @@ def remove():
 
 @major_bp.route('/api/universidades', methods=['GET'])
 def autocomplete_university():
+    """
+    Searches the database for universities that match the query.
+    Returns:
+        JSON with the found universities' info.
+    """
     try:
         query = request.args.get('busca')
         majors = major_service.find_by_ilike_university(query)

@@ -1,6 +1,5 @@
 from typing import Optional
 
-from flask_login import current_user
 from sqlalchemy import String, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

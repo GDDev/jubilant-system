@@ -49,12 +49,15 @@ class NotificationService:
             raise NotificationException('Erro ao marcar notificação como lida.') from e
 
     def get_by_id(self, notification_id):
-        pass
+        try:
+            return self.noti_repo.find_by_id(notification_id)
+        except (SQLAlchemyError, Exception) as e:
+            raise NotificationException('Erro ao buscar notificação.') from e
 
     def delete(self, notification):
         try:
             self.noti_repo.delete(notification)
-        except SQLAlchemyError as e:
+        except (SQLAlchemyError, Exception) as e:
             raise NotificationException('Erro ao excluir notificação.') from e
 
     def read_all(self, notifications: list[Notification]) -> None:
@@ -63,3 +66,12 @@ class NotificationService:
                 self.noti_repo.mark_as_read(n)
         except SQLAlchemyError as e:
             raise NotificationException('Erro ao marcar notificações como lidas.') from e
+
+    def delete_by_friendship_id(self, friendship_id):
+        try:
+            notifications = self.noti_repo.find_by_friendship_id(friendship_id)
+            if notifications:
+                for n in notifications:
+                    self.noti_repo.delete(n)
+        except (SQLAlchemyError, Exception) as e:
+            raise NotificationException('Erro ao excluir notificações: ' + e._message())

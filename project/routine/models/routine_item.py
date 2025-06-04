@@ -22,7 +22,7 @@ class RoutineItem(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     last_updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     expiration_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
-    description: Mapped[str] = mapped_column(String(500), nullable=True)
+    source: Mapped[str] = mapped_column(String(500), nullable=True)
 
     routine: Mapped['Routine'] = relationship('Routine', back_populates='routine_items', foreign_keys=[routine_id])
     exercises: Mapped[list['ItemExercises']] = relationship('ItemExercises', back_populates='item', cascade='all, delete-orphan')

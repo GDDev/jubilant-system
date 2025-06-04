@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}{{ current_user.user.name }} {{ current_user.user.surname }}{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4">
+        <div class="w-100 m-auto d-flex flex-column align-items-center gap-3">
+            {% block edit_profile %}
+                <div class="gap-2 d-flex align-items-center w-100 m-auto justify-content-center">
+                    {% block change_profile_pic %}
+                        <img src="{{ current_user.profile_pic }}" alt="profile pic"
+                             class="img-thumbnail profile-pic-lg p-1" style="width: 4rem; height: 4rem;">
+                        <span class="text-white fw-bold">
+                            {{ current_user.user.name }} {{ current_user.user.surname }}<br>
+                            ({{ current_user.code }})
+                        </span>
+                    {% endblock %}
+                </div>
+
+                <div class="w-100 m-auto d-flex flex-column">
+                    {% block edit_username %}
+                        <span class="text-muted">Nome de usuário:
+                            <b class="text-white">{{ current_user.username }}</b>
+                        </span>
+                        <a href="{{ url_for('perfil.update_username') }}"
+                           class="text-decoration-none text-info">
+                            Alterar nome de usuário
+                        </a>
+                    {% endblock %}
+                </div>
+
+                <div class="w-100 m-auto d-flex flex-column">
+                    {% block edit_email %}
+                        <span class="text-muted">Email: <b class="text-white">{{ current_user.user.email }}</b></span>
+                        <a href="{{ url_for('usuario.update_email') }}" class="text-info text-decoration-none">
+                            Alterar email
+                        </a>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+        <div class="w-50 m-auto mt-5">
+            <div class="position-relative border rounded py-4 border-danger d-flex flex-column gap-4"
+                 style="min-width: fit-content;">
+                <span class="position-absolute top-0 start-50 translate-middle-x primary-bg-dark fw-bold
+                text-danger"
+                      style="margin-top: -0.6rem; width: fit-content;">
+                    ÁREA DE RISCO
+                </span>
+
+                <div class="w-100 m-auto d-flex flex-column">
+                    {% block reset_password %}
+                        <span class="text-muted">Senha: <b class="text-white">*************</b></span>
+                        <a href="{{ url_for('perfil.update_password') }}"
+                           class="text-decoration-none text-info">
+                            Alterar senha
+                        </a>
+                    {% endblock %}
+                </div>
+
+                {% block delete_account %}
+                    <a href="{{ url_for('usuario.delete') }}" class="text-danger text-decoration-none">
+                        Deletar conta
+                    </a>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

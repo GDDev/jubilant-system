@@ -25,7 +25,7 @@ class MealService:
 
     def add_food(self, **kwargs):
         try:
-            return self.food_repo.insert(Food(**kwargs))
+            self.food_repo.insert(Food(**kwargs))
         except SQLAlchemyError as e:
             raise Exception('Erro ao adicionar refeição.') from e
 

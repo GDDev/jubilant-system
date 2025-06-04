@@ -1,5 +1,5 @@
 from core import db
-from ..models import Notification
+from ..models import Notification, NotificationFriendRequest
 
 
 class NotificationRepository:
@@ -31,3 +31,7 @@ class NotificationRepository:
     def mark_as_read(notification: Notification) -> None:
         notification.seen = True
         db.session.commit()
+
+    @staticmethod
+    def find_by_friendship_id(friendship_id: int) -> list[NotificationFriendRequest] | None:
+        return db.session.query(NotificationFriendRequest).filter_by(friendship_id=friendship_id).all()

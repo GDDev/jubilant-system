@@ -21,7 +21,7 @@
                 </button>
                 <div class="dropdown-menu bg-transparent border-0 fs-6" style="min-width:fit-content;">
                     <button type="button" class="dropdown-item bg-transparent"
-                            id="edit-comment">
+                            id="edit-comment-{{ comment.id }}">
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
@@ -35,25 +35,24 @@
     </div>
 </div>
 
-<template id="edit-comment-template">
+<template id="edit-comment-template-{{ comment.id }}">
     {% include "comment/edit_comment.html" %}
 </template>
 
-<div id="comment-container text-wrap">
+<div id="comment-container-{{ comment.id }}" class="text-wrap">
     <p class="ms-4 text-break pe-4" style="font-size: 1rem;">{{ comment.comment }}</p>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const editBtn = document.getElementById('edit-comment');
-        const commentContainer = document.getElementById('comment-container');
-        const editTemplate = document.getElementById('edit-comment-template');
-
-        if (editBtn && commentContainer) {
-            editBtn.addEventListener('click', (e) => {
+        document.querySelectorAll('[id^="edit-comment-"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.preventDefault();
+                const commentId = btn.id.split('-')[2];
+                const commentContainer = document.getElementById(`comment-container-${commentId}`);
+                const editTemplate = document.getElementById(`edit-comment-template-${commentId}`);
                 commentContainer.innerHTML = editTemplate.innerHTML;
             });
-        }
+        });
     });
 </script>

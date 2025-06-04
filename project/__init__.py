@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
-from core import db, migrate, config_oauth, config_mail
+from core import db, migrate, config_oauth, config_mail, mock_100_users
 from project.routine import item_bp
 
 
-def config_flask() -> Flask:
+def config_flask(config_class=None) -> Flask:
     flask = Flask(__name__)
-    flask.config.from_pyfile('.settings.py', silent=True)
+    if config_class:
+        flask.config.from_object(config_class)
+    else:
+        flask.config.from_pyfile('.settings.py', silent=True)
     return flask
 
 def init_db(flask: Flask):
@@ -23,6 +26,7 @@ def register_all_bp(flask: Flask):
     from project.major import major_bp
     from project.post import post_bp, comment_bp
     from project.routine import routine_bp, item_bp
+    from project.dashboard import admin_ds_bp
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')
@@ -35,6 +39,7 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(routine_bp, url_prefix='/rotina')
     flask.register_blueprint(item_bp, url_prefix='/item')
     flask.register_blueprint(major_bp, url_prefix='/formacao')
+    flask.register_blueprint(admin_ds_bp, url_prefix='/admin')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()
@@ -57,8 +62,8 @@ def config_login_manager(flask: Flask):
             return redirect(url_for('auth.signin'))
         return render_template('unauthorized.html'), 401
 
-def create_app() -> Flask:
-    flask = config_flask()
+def create_app(config_class=None) -> Flask:
+    flask = config_flask(config_class)
 
     init_db(flask)
     config_oauth(flask)
@@ -69,6 +74,7 @@ def create_app() -> Flask:
         register_all_bp(flask)
         register_filters(flask)
         config_login_manager(flask)
+
 
     return flask
 
