@@ -36,6 +36,11 @@
                 {% endfor %}
             {% endif %}
         </div>
+        <div class="w-50 overflow-auto text-center text-break m-auto mt-5">
+            <span>
+                {{ item.source }}
+            </span>
+        </div>
         <div class="w-75 text-center text-danger mt-5 m-auto">
             <a href="{{ url_for('routine.detail', routine_id=item.routine_id) }}" class="text-decoration-none">
                 <i class="small bi bi-arrow-return-left text-danger">Voltar</i>

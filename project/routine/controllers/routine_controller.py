@@ -1,10 +1,12 @@
+from http.client import HTTPException
+
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 
 from .. import routine_bp
 from ..forms.new_routine_form import NewRoutineForm
 from ..services import RoutineService
-
+from ...major import AreaTags
 
 routine_service = RoutineService()
 
@@ -34,10 +36,6 @@ def new():
     routine_id = request.args.get('routine_id')
     routine = routine_service.get_by_id(int(routine_id)) if routine_id else None
     try:
-        # Checks if a supervisor is selected
-        if not current_user.supervisor:
-            raise Exception('Você precisa selecionar um professor como supervisor.')
-
         if form.validate_on_submit():
             who_for = form.who_for.data
             # Should be None for the first time creating it
@@ -57,8 +55,6 @@ def new():
 
     except Exception as e:
         flash(str(e))
-        if str(e) == 'Você precisa selecionar um professor como supervisor.':
-            return redirect(url_for('perfil.detail_profile', code=current_user.code))
 
         return redirect(url_for('routine.list_all', routine_type=routine_type))
 
@@ -102,3 +98,23 @@ def detail(routine_id: int):
     except Exception as e:
         flash(str(e))
     return redirect(url_for('main.home'))
+
+@routine_bp.route('/selecionar/revisor', methods=['GET', 'POST'])
+@login_required
+def select_supervisor():
+    routine_id = request.args.get('routine_id')
+    routine = routine_service.get_by_id(int(routine_id))
+    major_tag = AreaTags.NUTRI if routine.type.value == 'dietary' else AreaTags.PE
+    professors = [friend for friend in current_user.friends if friend.teaches(major_tag)]
+    try:
+        if not professors:
+            raise Exception('Você precisa ser amigo de um professor desta área para submeter essa rotina à análise.')
+        if not routine:
+            raise Exception('Rotina não encontrada.')
+
+
+
+    except (HTTPException, Exception) as e:
+        flash(str(e))
+        return redirect(url_for('main.home'))
+    return render_template('routine/select_supervisor.html', professors=professors)

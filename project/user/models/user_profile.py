@@ -100,10 +100,6 @@ class UserProfile(UserMixin, Base):
         'role', nullable=False, default=RoleEnum.USER,
         comment="User's role in the system."
     )
-    supervisor_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey('profiles.id'), nullable=True,
-        comment="Supervisor's ID for student's users who want to suggest diets and workouts."
-    )
     google_id: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=True,
         comment="Google ID for users who are using google login."
@@ -113,9 +109,7 @@ class UserProfile(UserMixin, Base):
 
     user: Mapped['User'] = relationship('User', back_populates='profile')
 
-    supervisor: Mapped['UserProfile'] = relationship('UserProfile', remote_side=[id], back_populates='supervised_students')
-
-    supervised_students: Mapped[list['UserProfile']] = relationship('UserProfile', back_populates='supervisor', foreign_keys=[supervisor_id])
+    supervised_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='supervisor', foreign_keys='[Routine.supervisor_id]')
 
     sent_friend_requests: Mapped[list['Friendship']] = relationship(
         'Friendship',
@@ -160,8 +154,7 @@ class UserProfile(UserMixin, Base):
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
     created_routines: Mapped[list['Routine']] = relationship('Routine', back_populates='creator', foreign_keys='[Routine.created_by]', cascade='all, delete-orphan')
-    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='['
-                                                                                                        'Routine.created_for]', cascade='all, delete-orphan')
+    routines: Mapped[list['Routine']] = relationship('Routine', back_populates='receiver', foreign_keys='[Routine.created_for]', cascade='all, delete-orphan')
 
     def get_id(self):
         """

@@ -10,14 +10,14 @@ class ItemService:
     def __init__(self):
         self.item_repo = ItemRepository()
 
-    def add(self, routine_type: str, routine_id: int, name: str, expiration_date: datetime, description: str) -> RoutineItem | None:
+    def add(self, routine_type: str, routine_id: int, name: str, expiration_date: datetime, source: str) -> RoutineItem | None:
         try:
              return self.item_repo.insert(RoutineItem(
                 routine_id=routine_id,
                 type=ItemType.WORKOUT.value if routine_type == 'workout' else ItemType.DIET.value,
                 name=name,
                 expiration_date=expiration_date,
-                description=description
+                source=source
             ))
         except SQLAlchemyError as e:
             raise Exception(f'Erro ao adicionar {routine_type}') from e

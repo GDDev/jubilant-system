@@ -2,10 +2,6 @@
 {% block title %}Adicionar {{ routine_type.capitalize() }}{% endblock %}
 
 {% block content %}
-    <span class="d-flex align-items-center justify-content-center text-warning w-75 m-auto">
-        <i class="bi bi-exclamation-triangle text-warning"></i>
-        Recarregar a página irá criar uma rotina.
-    </span>
     <div class="w-75 m-auto text-center mt-4">
         <div class="d-flex flex-column align-items-center justify-content-center">
             <form action="{{
@@ -31,6 +27,24 @@
             </form>
         </div>
         {% if routine %}
+            {% block supervisor %}
+{#                <div class="mt-5 w-100 m-auto d-flex justify-content-center">#}
+{#                {% if routine.supervisor %}#}
+{#                	<p>#}
+{#                        Professor escolhido como revisor:#}
+{#                        <span>{{ routine.supervisor.user.name }}</span>#}
+{#                    </p>#}
+{#                {% else %}#}
+{#                    <span class="text-muted small me-3">Nenhum professor selecionado para rever o seu trabalho.</span>#}
+{#                    {% block select_supervisor %}#}
+{#                        <a href="{{ url_for('routine.select_supervisor', routine_id=routine.id) }}"#}
+{#                           class="text-decoration-none text-info small">#}
+{#                            Selecionar revisor?#}
+{#                        </a>#}
+{#                    {% endblock %}#}
+{#                {% endif %}#}
+{#                </div>#}
+            {% endblock %}
         	{% include 'routine/components/routine_new_edit.html' %}
             <div class="mt-5 w-25 m-auto d-flex justify-content-between">
                 <a href="{{ url_for

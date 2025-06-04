@@ -21,7 +21,7 @@ def add(routine_id: int):
                 routine_id=routine_id,
                 name=form.name.data,
                 expiration_date=form.expiration_date.data,
-                description=form.description.data,
+                source=form.source.data,
             )
             if item.type == 'workout_item':
                 return redirect(url_for('item.workout_exercises', item_id=item.id))
