@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Feed{% endblock %}
+{% block searchbar %}{% include "searchbar.html" %}{% endblock %}
 {% block content %}
     <div class="w-75 m-auto mt-4">
         <a href="{{ url_for('post.new') }}" class="btn btn-success text-info position-absolute end-0 me-5" role="button">

@@ -24,7 +24,7 @@
         {% endblock %}
         <div class="ms-auto end-0 primary-bg-dark h-100" style="width: 85%">
             <div class="pt-4" style="min-height: 10vh;">
-                {% include "searchbar.html" %}
+            {% block searchbar %}{% endblock %}
             </div>
             <div class="p-4" style="min-height: 90vh;">
                 {% with messages = get_flashed_messages() %}

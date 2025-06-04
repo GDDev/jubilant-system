@@ -14,7 +14,10 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
     <div class="w-75 m-auto">
-        {% if current_user.has_major('educação física') or current_user.has_major('nutrição') %}
+        {% if current_user.has_major('educação física') and
+                routine_type == 'workout' or
+                current_user.has_major('nutrição') and
+                routine_type == 'dietary' %}
             <div class="d-flex flex-column text-center">
                 <div class="d-flex align-items-center justify-content-between my-4">
                     <h4>{{ title }} criadas por você</h4>

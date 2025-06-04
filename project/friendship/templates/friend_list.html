@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Amigos{% endblock %}
+{% block searchbar %}{% include "searchbar.html" %}{% endblock %}
 {% block content %}
     <div class="w-75 h-auto d-flex flex-column align-items-center justify-content-center m-auto">
         {% if not friends %}
-            <h3 class="text-muted">Nenhum amigo adicionado.</h3>
+            <span class="text-muted">Nenhum amigo adicionado.</span>
         {% else %}
             {% for friend in friends %}
                 <div class="d-flex align-items-center my-3 w-25">
