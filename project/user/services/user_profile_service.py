@@ -1,4 +1,5 @@
 from flask import abort
+from numpy.random import choice
 from sqlalchemy.exc import SQLAlchemyError
 
 from .. import UserProfile
@@ -43,6 +44,9 @@ class UserProfileService:
         return False
 
     def find_profiles_by_search(self, search):
+        if not search or search.strip() == '':
+            users = self.user_profile_repository.find_all()
+            return users if len(users) <= 10 else choice(users, 10, False).tolist()
         return self.user_profile_repository.find_profiles_by_search(search)
 
     def friendship_request(self, current_user, user_profile):
