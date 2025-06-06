@@ -3,17 +3,28 @@
 {% block content %}
     <div class="w-75 m-auto text-center mt-4 d-flex flex-column align-items-center">
         <div class="mb-4 h5"><strong>{{ item.name }}</strong></div>
-        {% if not item.meals %}
-            <div class="mb-4">Nenhuma refeição adicionada.</div>
+        {% if not item.opts %}
+            <div class="mb-4">Nenhuma opção adicionada.</div>
         {% else %}
             <div style="min-width: fit-content;">
-                {% for item_meal in item.meals %}
-                    <a href="#" class="text-decoration-none">
+                {% for opt in item.opts %}
+                    <a href="{{ url_for('item.detail_opt', opt_id=opt.id) }}"
+                       class="text-decoration-none">
                         <div class="w-100 text-center d-flex flex-column align-items-center justify-content-between
                         my-4">
-                            <span class="text-info">Opção {{ loop.index }}</span>
-                            {% if item_meal.goal %}
-                            	<span>Objetivo: {{ item_meal.goal }}</span>
+                            <div>
+                                <span class="text-info">
+                                    Opção {{ loop.index }} - {{ opt.ref_time.strftime('%H:%M') }}
+                                </span>
+                                <a href="{{ url_for('item.update_opt', opt_id=opt.id) }}" class="text-decoration-none">
+                                    <i class="bi bi-pencil text-muted me-4"></i>
+                                </a>
+                                <a href="{{ url_for('item.remove_opt', opt_id=opt.id) }}" class="text-decoration-none">
+                                    <i class="bi bi-trash3 text-danger"></i>
+                                </a>
+                            </div>
+                            {% if opt.goal %}
+                            	<span class="small text-muted">Objetivo: {{ opt.goal }}</span>
                             {% endif %}
                         </div>
                     </a>
@@ -21,7 +32,7 @@
             </div>
         {% endif %}
         <div>
-            <a href="{{ url_for('item.add_meal', item_id=item.id) }}" class="btn btn-success"><i class="bi
+            <a href="{{ url_for('item.add_opt', item_id=item.id) }}" class="btn btn-success"><i class="bi
             bi-plus"></i>Adicionar opção</a>
         </div>
 

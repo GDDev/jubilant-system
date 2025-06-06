@@ -22,9 +22,9 @@ class NewOptFoodForm(FlaskForm):
         'Quantidade',
         validators=[
             Optional(),
-            NumberRange(min=1)
+            NumberRange(min=1, max=50, message='A quantidade possui o gentil limite de 1 à 50.')
         ],
-        render_kw={'placeholder': 'Ex: 1'}
+        render_kw={'placeholder': '(Opcional) Ex: 1'}
     )
     weight = DecimalField(
         'Peso (g)',
@@ -32,15 +32,15 @@ class NewOptFoodForm(FlaskForm):
         filters=[normalize_comma],
         validators=[
             Optional(),
-            NumberRange(min=1)
+            NumberRange(min=1, max=5000, message='O peso possui o gentil limite de 1 à 5000 (5kg).')
         ],
-        render_kw={'placeholder': 'Ex: 250'}
+        render_kw={'placeholder': '(Opcional) Ex: 250'}
     )
     description = StringField(
         'Observações',
         validators=[
             Optional(),
-            length(max=500)
+            length(max=500, message='Limite de caracteres: 500')
         ],
         render_kw={'placeholder': 'Ex: Peito de frango pode ser cozido ou frito em Air Fryer'}
     )

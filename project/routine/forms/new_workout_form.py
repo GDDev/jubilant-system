@@ -10,8 +10,8 @@ class NewWorkoutForm(FlaskForm):
             return value.replace(',', '.')
         return value
 
-    # REMOVE AFTER
     exercise_name = StringField('Nome do exercício', validators=[Length(max=50), DataRequired()])
+    #TODO: Change to a SelectField
     muscle_group = StringField('Grupo muscular alvo', validators=[Length(max=50), DataRequired()])
     instruction = TextAreaField('Intruções de execução', validators=[Optional(), Length(max=500)])
 

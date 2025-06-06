@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block title %}Atualizar Alimento{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
+        <div class="w-50 text-center">
+            <form action="{{ url_for('item.update_food')+'?food_id={}'.format(food.id) }}" method="post"
+                  class="row g-3 text-start">
+                {% from "_formhelpers.html" import show_errors %}
+                {{ form.csrf_token }}
+
+                <div class="col-12">
+                    {{ show_errors(form.name) }}
+                    {{ form.name.label(class='form-label') }}
+                    {{ form.name(class='form-control', value=food.name) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.quantity) }}
+                    {{ form.quantity.label(class='form-label') }}
+                    {{ form.quantity(class='form-control', value=food.quantity) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.weight) }}
+                    {{ form.weight.label(class='form-label') }}
+                    {{ form.weight(class='form-control', value=food.weight) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.description) }}
+                    {{ form.description.label(class='form-label') }}
+                    {{ form.description(class='form-control', value=food.description) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form.submit }}
+                    <a href="{{ url_for('item.detail_opt', opt_id=food.opt_id) }}"
+                       class="btn btn-outline-danger mt-2 w-100">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

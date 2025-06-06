@@ -24,9 +24,12 @@ class RoutineItem(Base):
     expiration_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     source: Mapped[str] = mapped_column(String(500), nullable=True)
 
-    routine: Mapped['Routine'] = relationship('Routine', back_populates='routine_items', foreign_keys=[routine_id])
-    exercises: Mapped[list['ItemExercises']] = relationship('ItemExercises', back_populates='item', cascade='all, delete-orphan')
-    meals: Mapped[list['ItemMeals']] = relationship('ItemMeals',
-                                                    back_populates='item',
-                                                    foreign_keys='[ItemMeals.item_id]',
-                                                    cascade='all, delete-orphan')
+    routine: Mapped['Routine'] = relationship(
+        'Routine', back_populates='routine_items', foreign_keys=[routine_id]
+    )
+    exercises: Mapped[list['ItemExercises']] = relationship(
+        'ItemExercises', back_populates='item', cascade='all, delete-orphan'
+    )
+    opts: Mapped[list['ItemMeals']] = relationship(
+        'ItemOpts', back_populates='item', foreign_keys='[ItemOpts.item_id]', cascade='all, delete-orphan'
+    )

@@ -1,0 +1,42 @@
+<span class="d-flex flex-column">
+    {% if opt.total_calories %}
+    	<span>Calorias Totais: <b>{{ opt.total_calories }}</b></span>
+    {% endif %} 
+    {% if opt.total_protein %}
+    	<span>Proteína total: <b>{{ opt.total_protein }}</b></span>
+    {% endif %} 
+    {% if opt.total_fat %}
+    	<span>Gordura total: <b>{{ opt.total_fat }}</b></span>
+    {% endif %}
+    {% if opt.total_carbs %}
+    	<span>Carboidrato total: <b>{{ opt.total_carbs }}</b></span>
+    {% endif %} 
+</span>
+<span class="mt-2">
+    {% if opt.goal %}Refeição para <b>{{ opt.goal|lower }}</b>. {% endif %}
+    Às <b>{{ opt.ref_time.strftime('%H:%M') }}</b>, consumir:
+</span>
+<span class="mt-3 d-flex flex-column justify-content-between">
+    {% if not opt.opt_foods %}
+        <span class="fw-bold">Nenhum alimento adicionado</span>
+    {% else %}
+        {% for food in opt.opt_foods %}
+            <span>
+                {% if food.quantity %}
+                    <b>{{ food.quantity }}</b>
+                {% elif food.weight %}
+                    {% if food.weight % 1 == 0 %}
+                        <b>{{ '{:.0f}'.format(food.weight) }}</b>
+                    {% else %}
+                        <b>{{ '{:.2f}'.format(food.weight) }}</b>
+                    {% endif %}
+                    grama{% if food.weight > 1 %}s{% endif %}
+                {% endif %}
+                de {{ food.name }}.
+                {% if food.description %}
+                	<span class="text-muted small">({{ food.description|capitalize }})</span>
+                {% endif %}
+            </span>
+        {% endfor %}
+    {% endif %}
+</span>

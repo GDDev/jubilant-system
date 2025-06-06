@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% block title %}Atualizar Refeição{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
+        <div class="w-50 text-center">
+            <form action="{{ url_for('item.update_opt')+'?opt_id={}'.format(option.id) }}" method="post"
+                  class="row g-3 text-start">
+                {% from "_formhelpers.html" import show_errors %}
+                {{ form.csrf_token }}
+
+                <div class="col-12">
+                    {{ show_errors(form.ref_time) }}
+                    {{ form.ref_time.label(class='form-label') }}
+                    {{ form.ref_time(class='form-control', value=option.ref_time) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.goal) }}
+                    {{ form.goal.label(class='form-label') }}
+                    {{ form.goal(class='form-control', value=option.goal) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.total_calories) }}
+                    {{ form.total_calories.label(class='form-label') }}
+                    {{ form.total_calories(class='form-control', value=option.total_calories) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.total_protein) }}
+                    {{ form.total_protein.label(class='form-label') }}
+                    {{ form.total_protein(class='form-control', value=option.total_protein) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.total_fat) }}
+                    {{ form.total_fat.label(class='form-label') }}
+                    {{ form.total_fat(class='form-control', value=option.total_fat) }}
+                </div>
+                <div class="col-12">
+                    {{ show_errors(form.total_carbs) }}
+                    {{ form.total_carbs.label(class='form-label') }}
+                    {{ form.total_carbs(class='form-control', value=option.total_carbs) }}
+                </div>
+
+                <div class="col-12">
+                    {{ form.submit }}
+                    <a href="{{ url_for('item.diet_meals', item_id=option.item_id) }}"
+                       class="btn btn-outline-danger mt-2 w-100">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
