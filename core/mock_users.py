@@ -10,6 +10,8 @@ Faker.seed(0)
 
 def mock_100_users(app):
     with app.app_context():
+        if db.session.query(User).count() >= 100:
+            return
         used_emails = set()
         used_usernames = set()
 

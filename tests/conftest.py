@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 
 from project import create_app
 from core import db
-from project.major import Major, AreaTags, Shift, UserMajor, MajorEnum
+from project.major import Major, UserMajor, MajorEnum
 from project.testing_config import TestingConfig
 from project.user import User, UserProfile
 from project.user.models.user_profile import RoleEnum
@@ -98,10 +98,8 @@ def major_nutri(app):
             level='Bacharelado',
             university='Universidade de Mogi das Cruzes',
             uni_acronym='UMC',
-            area_tag=AreaTags.NUTRI,
-            shift=Shift.MORNING,
-            min_semesters=8,
-            max_semesters=12
+            area_tag='Nutrição',
+            morning='8.00 Semestres'
         )
         db.session.add(major)
         db.session.commit()
