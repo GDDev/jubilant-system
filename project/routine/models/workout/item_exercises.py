@@ -20,4 +20,4 @@ class ItemExercises(Base):
     weight: Mapped[float] = mapped_column(Float, nullable=True)
 
     item: Mapped['RoutineItem'] = relationship('RoutineItem', back_populates='exercises', foreign_keys=[item_id])
-    exercise: Mapped['Exercise'] = relationship('Exercise', foreign_keys=[exercise_id])
+    exercise: Mapped['Exercise'] = relationship('Exercise', foreign_keys=[exercise_id], cascade='all, delete-orphan', single_parent=True)

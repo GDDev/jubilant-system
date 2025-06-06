@@ -12,7 +12,7 @@
     <div class="col-6">
         {{ show_errors(form.university) }}
         {{ form.university.label(class='form-label') }}
-        {{ form.university(class='form-control', list="university-options") }}
+        {{ form.university(class='form-control') }}
         <datalist id="university-options"></datalist>
     </div>
     <div class="col-6">
@@ -23,14 +23,14 @@
     <div class="col-3">
         {{ show_errors(form.level) }}
         {{ form.level.label(class='form-label') }}
-        {{ form.level(class='form-control border-danger') }}
-        <datalist id="level-options"></datalist>
+        {{ form.level(class='form-select border-danger bg-select') }}
+{#        <datalist id="level-options"></datalist>#}
     </div>
     <div class="col-5">
         {{ show_errors(form.name) }}
         {{ form.name.label(class='form-label') }}
-        {{ form.name(class='form-control border-danger') }}
-        <datalist id="major-options"></datalist>
+        {{ form.name(class='form-select border-danger bg-select') }}
+{#        <datalist id="major-options"></datalist>#}
     </div>
     <div class="col-2">
         {{ show_errors(form.area_tag) }}
@@ -62,18 +62,29 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const university = document.getElementById('university');
-        const uni_datalist = document.getElementById('university-options');
-        const uni_acronym = document.getElementById('uni_acronym');
-        const level = document.getElementById('level');
-        const level_datalist = document.getElementById('level-options');
-        const name = document.getElementById('name');
-        const major_datalist = document.getElementById('major-options');
-        const area_tag = document.getElementById('area_tag');
-        const major_shift = document.getElementById('shift');
-        const min_semesters = document.getElementById('min_semesters');
-        const max_semesters = document.getElementById('max_semesters');
+        personalized_autocomplete();
+    });
 
+    const form = document.querySelector('form');
+    const university = document.getElementById('university');
+    const uni_datalist = document.getElementById('university-options');
+    const uni_acronym = document.getElementById('uni_acronym');
+    const level = document.getElementById('level-options');
+    const name = document.getElementById('major-options');
+    const area_tag = document.getElementById('area_tag');
+    const major_shift = document.getElementById('shift');
+    const min_semesters = document.getElementById('min_semesters');
+    const max_semesters = document.getElementById('max_semesters');
+
+
+    form.addEventListener('submit', () => {
+        uni_acronym.disabled = false;
+        uni_acronym.readOnly = false;
+        area_tag.disabled = false;
+    })
+
+
+    function personalized_autocomplete() {
         university.addEventListener('input', async () => {
             let uni_name = university.value.trim();
             if (uni_name.length >= 3) {
@@ -96,8 +107,6 @@
                             })
                         });
 
-                    uni_acronym.disabled = false;
-                    uni_acronym.readOnly = false;
                     uni_acronym.classList.remove('border-danger');
                     level.disabled = false;
                     level.readOnly = false;
@@ -121,19 +130,21 @@
             if (selected){
                 uni_acronym.value = selected.dataset.acronym;
 
-                level_datalist.innerHTML = '';
+                level.innerHTML = '';
                 let levels = JSON.parse(selected.dataset.levels);
-                levels.forEach((level) => {
+                levels.forEach((item) => {
                     let option = document.createElement('option');
-                    option.value = level.level;
-                    option.dataset.majors = JSON.stringify(level.majors);
-                    level_datalist.appendChild(option);
-                })
+                    option.value = item.level;
+                    option.text = item.level;
+                    option.setAttribute('class', 'form-control primary-bg-dark text-white')
+                    option.dataset.majors = JSON.stringify(item.majors);
+                    level.appendChild(option);
+                 })
             }
         });
-        level.addEventListener('input', async () => {
-            let level_name = level.value.trim();
-            if (level_name.length >= 3) {
+        level.addEventListener('change', async () => {
+            console.log(level.options)
+            if (level.options[level.selectedIndex] !== -1) {
                 name.disabled = false;
                 name.readOnly = false;
                 name.classList.remove('border-danger');
@@ -143,31 +154,27 @@
                 name.readOnly = true;
                 name.classList.add('border-danger');
             }
-        })
-        level.addEventListener('change', () => {
-            const selected = [...level_datalist.options].find(option => option.value === level.value)
+
+            name.innerHTML = '';
+            const selected = level.options[level.selectedIndex];
             if (selected){
-                major_datalist.innerHTML = '';
                 let majors = JSON.parse(selected.dataset.majors);
-                majors.forEach((major) => {
+                majors.forEach((item) => {
                     let option = document.createElement('option');
-                    option.value = major.name;
-                    option.dataset.area_tag = major.area_tag;
-                    option.dataset.shift = major.major_shift;
-                    option.dataset.min_semesters = major.min_semesters;
-                    option.dataset.max_semesters = major.max_semesters;
-                    major_datalist.appendChild(option);
+                    option.value = item.name;
+                    option.text = item.name;
+                    option.dataset.area_tag = item.area_tag;
+                    if (item.major_shift) { option.dataset.shift = item.major_shift; }
+                    if (item.min_semesters) { option.dataset.min_semesters = item.min_semesters; }
+                    if (item.max_semesters) { option.dataset.max_semesters = item.max_semesters; }
+                    name.appendChild(option);
                 })
             }
         });
-        name.addEventListener('input', async () => {
-            let name_value = name.value.trim();
-            if (name_value.length >= 5) {
-                area_tag.disabled = false;
-                area_tag.readOnly = false;
+        name.addEventListener('change', async () => {
+            if (name.options[name.selectedIndex] !== -1) {
                 area_tag.classList.remove('border-danger');
                 major_shift.disabled = false;
-                major_shift.readOnly = false;
                 major_shift.classList.remove('border-danger');
                 min_semesters.disabled = false;
                 min_semesters.readOnly = false;
@@ -177,11 +184,8 @@
                 max_semesters.classList.remove('border-danger');
             }
             else {
-                area_tag.disabled = true;
-                area_tag.readOnly = true;
                 area_tag.classList.add('border-danger');
                 major_shift.disabled = true;
-                major_shift.readOnly = true;
                 major_shift.classList.add('border-danger');
                 min_semesters.disabled = true;
                 min_semesters.readOnly = true;
@@ -190,24 +194,23 @@
                 max_semesters.readOnly = true;
                 max_semesters.classList.add('border-danger');
             }
-        })
-        name.addEventListener('change', () => {
-            const selected = [...major_datalist.options].find(option => option.value === name.value)
+
+            const selected = name.options[name.selectedIndex];
             if (selected){
                 Array.from(area_tag.options).forEach((option) => {
-                    if (option.innerText.toLowerCase() === selected.dataset.area_tag){
+                    if (option.innerText === selected.dataset.area_tag){
                         option.selected = true;
                     }
                 })
                 Array.from(major_shift.options).forEach((option) => {
-                    if (option.innerText.toLowerCase() === selected.dataset.shift){
+                    if (option.innerText === selected.dataset.shift){
                         option.selected = true;
                     }
                 })
                 console.log(selected.dataset.shift);
-                min_semesters.value = selected.dataset.min_semesters;
-                max_semesters.value = selected.dataset.max_semesters;
+                if (selected.dataset.min_semesters) { min_semesters.value = selected.dataset.min_semesters; }
+                if (selected.dataset.max_semesters) { max_semesters.value = selected.dataset.max_semesters; }
             }
-        })
-    });
+        });
+    }
 </script>

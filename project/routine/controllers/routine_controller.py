@@ -104,7 +104,7 @@ def detail(routine_id: int):
 def select_supervisor():
     routine_id = request.args.get('routine_id')
     routine = routine_service.get_by_id(int(routine_id))
-    major_tag = AreaTags.NUTRI if routine.type.value == 'dietary' else AreaTags.PE
+    major_tag = 'Nutrição' if routine.type.value == 'dietary' else 'Educação física'
     professors = [friend for friend in current_user.friends if friend.teaches(major_tag)]
     try:
         if not professors:

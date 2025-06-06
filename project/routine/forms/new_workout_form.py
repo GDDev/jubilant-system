@@ -1,6 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, DecimalField, TimeField, StringField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange, Length, Optional
+from wtforms.fields.choices import SelectField
+from wtforms.validators import DataRequired, NumberRange, Length, Optional, ValidationError
+
+
+def not_default(form, field):
+    if field.data == '':
+        raise ValidationError('Selecione uma opção válida.')
 
 
 class NewWorkoutForm(FlaskForm):
@@ -12,7 +18,33 @@ class NewWorkoutForm(FlaskForm):
 
     exercise_name = StringField('Nome do exercício', validators=[Length(max=50), DataRequired()])
     #TODO: Change to a SelectField
-    muscle_group = StringField('Grupo muscular alvo', validators=[Length(max=50), DataRequired()])
+
+    # muscle_group = StringField('Grupo muscular alvo', validators=[Length(max=50), DataRequired()])
+    muscle_group = SelectField('Grupo muscular alvo',
+                                   validators=[DataRequired()],
+                                   choices=[
+                                       ('','-----Selecione-----'),
+                                       ('Bíceps', 'Bíceps'),
+                                       ('Tríceps', 'Tríceps'),
+                                       ('Antebraço', 'Antebraço'),
+                                       ('Peitoral', 'Peitoral'),
+                                       ('Superior de costas', 'Superior de costas'),
+                                       ('Dorsal', 'Dorsal'),
+                                       ('Inferior de costas', 'Inferior de costas'),
+                                       ('Deltóide frontal', 'Deltóide frontal'),
+                                       ('Deltóide medial', 'Deltóide medial'),
+                                       ('Deltóide posterior', 'Deltóide posterior'),
+                                       ('Abdômen', 'Abdômen'),
+                                       ('Oblíquos', 'Oblíquos'),
+                                       ('Lombar', 'Lombar'),
+                                       ('Quadríceps', 'Quadríceps'),
+                                       ('Anterior de coxa', 'Anterior de coxa'),
+                                       ('Posterior de coxa', 'Posterior de coxa'),
+                                       ('Panturrilha', 'Panturrilha'),
+                                       ('Glúteos', 'Glúteos'),
+                                       ('Full body', 'Full body')
+                                   ]
+                               )
     instruction = TextAreaField('Intruções de execução', validators=[Optional(), Length(max=500)])
 
 
