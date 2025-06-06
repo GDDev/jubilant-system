@@ -1,6 +1,24 @@
 {% set QUESTIONS = [
-    {'question': 'Question Number Uno', 'answer': 'First Answer'},
-    {'question': 'Question Number Segundo', 'answer': 'Second Answer'}
+    {
+        'question': 'Como criar uma conta?',
+        'answer': 'Acesse a <a href="#" class="text-decoration-none bg-transparent text-info"> tela de cadastro</a>
+        e preencha o formulário.'
+    },
+    {
+        'question': 'Como crio um Treino/uma Dieta?',
+        'answer': 'Para criar um treino ou uma dieta, primeiro você precisa ser estudante ou professor de nutrição ou
+         educação física. Cadastre essa formação e clique sobre a aba "Treinos"/"Dietas" que aparecerá. Clique em "+
+         Adicionar", selecione o amigo para o qual deseja criar o treino/a dieta para e preencha os formulários
+         conforme forem aparecendo.'
+    },
+    {
+        'question': 'Como adiciono uma formação?',
+        'answer': 'Se você for novo, no centro da aba à esquerda da tela deverá aparecer um botão com fundo
+        amarelado, clique sobre ele e preencha o formulário. Caso já tenha cadastrado uma formação antes mas tenha
+        esquecido como se faz, clique sobre sua foto de perfil ou nome de usuário na aba à esquerda, em seguida
+        clique em "Formações", aperte o botão para adicionar uma formação e preencha os formulários conforme
+        necessário.'
+    }
 ] %}
 
 <!DOCTYPE html>
@@ -30,7 +48,7 @@
                 </a>
                 <div class="collapse w-100" id="{{ title }}">
                     <div class="card card-body text-dark">
-                        {{ item.answer }}
+                        {{ item.answer | safe }}
                     </div>
                 </div>
             {% endfor %}
