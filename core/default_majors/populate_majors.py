@@ -6,7 +6,7 @@ import json
 from sqlalchemy.exc import SQLAlchemyError
 
 from core import db
-from project.major import Major
+from project.major import Major, Shift
 
 
 def populate_majors(app):
@@ -26,16 +26,18 @@ def populate_majors(app):
                 level=item['level'],
                 university=item['university'],
                 uni_acronym=item['uni_acronym'],
-                area_tag=item['area_tag']
+                area_tag=item['area_tag'],
+                shift=Shift.FULL_DAY if item['all_day'] else Shift.MORNING if item['morning'] else Shift.AFTERNOON if item['afternoon'] else Shift.NIGHT
             )
-            # found = db.session.query(Major).filter_by(
-            #         name=major.name,
-            #         level=major.level,
-            #         university=major.university,
-            #         uni_acronym=major.uni_acronym,
-            #         area_tag=major.area_tag
-            # ).first()
-            # if not found:
+            found = db.session.query(Major).filter_by(
+                    name=major.name,
+                    level=major.level,
+                    university=major.university,
+                    uni_acronym=major.uni_acronym,
+                    area_tag=major.area_tag,
+                    shift=major.shift
+            ).first()
+            if not found:
             db.session.add(major)
         try:
             db.session.commit()
