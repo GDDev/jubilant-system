@@ -21,8 +21,20 @@ def populate_majors(app):
                 if not isinstance(field, str) and math.isnan(float(field)):
                     item[i] = None
 
-            major = Major(**item)
-            if not db.session.get(Major, major.id):
+            major = Major(
+                name=item['name'],
+                level=item['level'],
+                university=item['university'],
+                uni_acronym=item['uni_acronym'],
+                area_tag=item['area_tag']
+            )
+            if not db.session.query(Major).filter_by(
+                    name=major.name,
+                    level=major.level,
+                    university=major.university,
+                    uni_acronym=major.uni_acronym,
+                    area_tag=major.area_tag
+            ):
                 db.session.add(major)
         try:
             db.session.commit()
