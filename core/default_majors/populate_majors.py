@@ -20,14 +20,23 @@ def populate_majors(app):
             for i, field in item.items():
                 if not isinstance(field, str) and math.isnan(float(field)):
                     item[i] = None
-
+                    
+            if item['all_day']:
+                shift = Shift.FULL_DAY
+            elif item['morning']:
+                shift = Shift.MORNING
+            elif item['afternoon']:
+                shift = Shift.AFTERNOON
+            else:
+                shift = Shift.NIGHT
+            
             major = Major(
                 name=item['name'],
                 level=item['level'],
                 university=item['university'],
                 uni_acronym=item['uni_acronym'],
                 area_tag=item['area_tag'],
-                shift=Shift.FULL_DAY if item['all_day'] else Shift.MORNING if item['morning'] else Shift.AFTERNOON if item['afternoon'] else Shift.NIGHT
+                shift=shift
             )
             found = db.session.query(Major).filter_by(
                     name=major.name,
