@@ -47,7 +47,7 @@ def populate_majors(app):
                     shift=major.shift
             ).first()
             if not found:
-            db.session.add(major)
+                db.session.add(major)
         try:
             db.session.commit()
             print('Majors populated.')
