@@ -1,4 +1,4 @@
-<form action="{{ url_for('item.add_food')+'?option_id={}'.format(option.id) }}" method="post" class="row g-3
+<form action="{{ url_for('item.add_food')+'?opt_id={}'.format(option.id) }}" method="post" class="row g-3
 text-start">
     {% from "_formhelpers.html" import render_field %}
     {{ form.csrf_token }}
@@ -10,7 +10,7 @@ text-start">
 
     <div class="col-12">
         {{ form.submit }}
-        <a href="{{ url_for('item.diet_meals', item_id=option.item_meal.item.id) }}"
+        <a href="{{ url_for('item.detail_opt', opt_id=option.id) }}"
            class="btn btn-outline-danger mt-2 w-100">
             Cancelar
         </a>

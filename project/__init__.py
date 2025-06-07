@@ -79,6 +79,10 @@ def create_app(config_class=None) -> Flask:
     return flask
 
 def config_error_handlers(flask: Flask):
+    @flask.errorhandler(400)
+    def handle_bad_request(_):
+        return render_template('bad_request.html'), 400
+
     @flask.errorhandler(404)
     def not_found(_):
         from not_found import NotFoundPageQuoteApi

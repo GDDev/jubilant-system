@@ -49,8 +49,8 @@ def new():
 
             routine.created_for = who_for
             routine_service.update(routine)
-            # For the love of GOD DO NOT remove "+ '?routine_id={}'.format(routine.id)" DON'T EVEN THINK ABOUT IT
-            return redirect(url_for('routine.new')+'?routine_type={}'.format(routine.type.value) + '&routine_id={}'.format(routine.id))
+            # Doing a redirect so it doesn't submit the form again
+            return redirect(url_for('routine.new')+f'?routine_type={routine.type.value}&routine_id={routine.id}')
         return render_template('routine/new_routine.html', form=form, routine=routine, routine_type=routine_type)
 
     except Exception as e:
@@ -104,15 +104,13 @@ def detail(routine_id: int):
 def select_supervisor():
     routine_id = request.args.get('routine_id')
     routine = routine_service.get_by_id(int(routine_id))
-    major_tag = AreaTags.NUTRI if routine.type.value == 'dietary' else AreaTags.PE
+    major_tag = 'Nutrição' if routine.type.value == 'dietary' else 'Educação física'
     professors = [friend for friend in current_user.friends if friend.teaches(major_tag)]
     try:
         if not professors:
             raise Exception('Você precisa ser amigo de um professor desta área para submeter essa rotina à análise.')
         if not routine:
             raise Exception('Rotina não encontrada.')
-
-
 
     except (HTTPException, Exception) as e:
         flash(str(e))

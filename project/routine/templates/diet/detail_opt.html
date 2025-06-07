@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% block title %}Visualizar Opção de Refeição{% endblock %}
+
+{% set creator = option.item.routine.creator %}
+
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4 d-flex flex-column align-items-center">
+        <span class="fw-bold fs-5">{{ option.item.name }}</span>
+        {% if not option.opt_foods %}
+            <div class="my-4">Nenhum alimento adicionado.</div>
+        {% else %}
+            <span class="mt-4 fs-6">Alimentos:</span>
+            <div style="min-width: fit-content;">
+                {% for food in option.opt_foods %}
+                    <div class="w-100 d-flex flex-column align-items-start justify-content-between my-4">
+                        <div class="w-100 d-flex align-items-center justify-content-between">
+                            <span class="fw-bold me-2">{{ food.name }}</span>
+                            {% if creator.id == current_user.id %}
+                                <div>
+                                    <a href="{{ url_for('item.update_food', food_id=food.id) }}"
+                                       class="text-decoration-none">
+                                        <i class="bi bi-pencil text-muted"></i>
+                                    </a>
+                                    <a href="{{ url_for('item.remove_food', food_id=food.id) }}">
+                                        <i class="bi bi-trash3 text-danger ms-3"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if food.quantity %}
+                            {{ food.quantity }} unidade{% if food.quantity > 1 %}s{% endif %}
+                        {% elif food.weight %}
+                            {% if food.weight % 1 == 0 %}
+                                {{ '{:.0f}'.format(food.weight) }}
+                            {% else %}
+                                {{ '{:.2f}'.format(food.weight) }}
+                            {% endif %} 
+                            grama{% if food.weight > 1 %}s{% endif %}
+                        {% endif %}
+                        {% if food.description %}
+                            <span class="text-muted">{{ food.description|capitalize }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if creator.id == current_user.id %}
+            <div>
+                <a href="{{ url_for('item.add_food', opt_id=option.id) }}" class="btn btn-success">
+                    <i class="bi bi-plus"></i>Adicionar alimento
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{{ url_for('item.diet_meals', item_id=option.item_id) }}"
+               class="btn btn-outline-danger"><i class="bi bi-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+{% endblock %}

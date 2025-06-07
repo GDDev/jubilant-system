@@ -198,3 +198,12 @@ class MajorService:
             return self.major_repo.temp_exists(uni, acronym, level, name, shift)
         except SQLAlchemyError as e:
             raise MajorException('Erro ao checar existência da formação.') from e
+
+    def get_area_choices(self):
+        return self.major_repo.get_available_tags()
+
+    def get_level_choices(self):
+        return self.major_repo.get_available_levels()
+
+    def get_names_choices(self):
+        return self.major_repo.get_available_names()

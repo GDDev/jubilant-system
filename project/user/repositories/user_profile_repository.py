@@ -1,4 +1,5 @@
 import uuid
+from dns.e164 import query
 
 from sqlalchemy import or_, func
 from sqlalchemy.orm import joinedload
@@ -67,6 +68,7 @@ class UserProfileRepository:
                     func.lower(User.surname).ilike(search)
                 )
             )
+            .limit(12)
             .all()
         )
 
@@ -109,5 +111,9 @@ class UserProfileRepository:
 
     @staticmethod
     def get_all_pagination(page, per_page):
-        query = db.session.query(UserProfile).order_by(UserProfile.username.desc())
-        return query.paginate(page=page, per_page=per_page, error_out=False)
+        q = db.session.query(UserProfile).order_by(UserProfile.username.desc())
+        return q.paginate(page=page, per_page=per_page, error_out=False)
+
+    @staticmethod
+    def find_all():
+        return db.session.query(UserProfile).all()

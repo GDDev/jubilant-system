@@ -8,29 +8,36 @@
 <form action="{{ url_for('major.add_user_major', major_id=major_id, is_major_temp=is_major_temp) }}" method="post"
       class="row g-3
 text-start">
+    {% from '_formhelpers.html' import show_errors %}
     {{ form.csrf_token }}
     <div class="col-12 m-auto d-flex flex-column align-items-center justify-content-center gap-2">
         <div class="col-4">
+            {{ show_errors(form.college_code) }}
             {{ form.college_code.label(class='form-label') }}
             {{ form.college_code(class='form-control') }}
         </div>
         <div class="col-4">
+            {{ show_errors(form.institutional_email) }}
             {{ form.institutional_email.label(class='form-label') }}
             {{ form.institutional_email(class='form-control') }}
         </div>
         <div class="col-4">
+            {{ show_errors(form.user_is) }}
             {{ form.user_is.label(class='form-label') }}
             {{ form.user_is(class='form-select bg-select') }}
         </div>
         <div class="col-4">
+            {{ show_errors(form.start_date) }}
             {{ form.start_date.label(class='form-label') }}
             {{ form.start_date(class='form-control', type='date') }}
         </div>
         <div class="col-4">
+            {{ show_errors(form.check_ongoing) }}
             {{ form.check_ongoing(class='form-check-input') }}
             {{ form.check_ongoing.label(class='form-check-label') }}
         </div>
         <div class="col-4" id="end_date_container">
+            {{ show_errors(form.end_date) }}
             {{ form.end_date.label(class='form-label') }}
             {{ form.end_date(class='form-control', type='date') }}
         </div>

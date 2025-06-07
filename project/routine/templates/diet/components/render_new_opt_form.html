@@ -1,22 +1,35 @@
-<form action="{{ url_for('item.add_option')+'?meal_id={}'.format(meal.id) }}" method="post" class="row g-3 text-start">
+<form action="{{ url_for('item.add_opt')+'?item_id={}'.format(item.id) }}" method="post" class="row g-3 text-start">
     {{ form.csrf_token }}
 
     <div class="col-12">
-        {{ form.name.label(class='form-label') }}
-        {{ form.name(class='form-control') }}
+        {{ form.ref_time.label(class='form-label') }}
+        {{ form.ref_time(class='form-control') }}
+    </div>
+
+    <div class="col-12">
+        {{ form.goal.label(class='form-label') }}
+        {{ form.goal(class='form-control') }}
     </div>
     <div class="col-12">
-        {{ form.description.label(class='form-label') }}
-        {{ form.description(class='form-control') }}
+        {{ form.total_calories.label(class='form-label') }}
+        {{ form.total_calories(class='form-control') }}
     </div>
     <div class="col-12">
-        {{ form.meal_time.label(class='form-label') }}
-        {{ form.meal_time(class='form-control') }}
+        {{ form.total_protein.label(class='form-label') }}
+        {{ form.total_protein(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_fat.label(class='form-label') }}
+        {{ form.total_fat(class='form-control') }}
+    </div>
+    <div class="col-12">
+        {{ form.total_carbs.label(class='form-label') }}
+        {{ form.total_carbs(class='form-control') }}
     </div>
 
     <div class="col-12">
         {{ form.submit }}
-        <a href="{{ url_for('item.diet_meals', item_id=meal.item.id) }}" class="btn btn-outline-danger mt-2 w-100">
+        <a href="{{ url_for('item.diet_meals', item_id=item.id) }}" class="btn btn-outline-danger mt-2 w-100">
             Cancelar
         </a>
     </div>

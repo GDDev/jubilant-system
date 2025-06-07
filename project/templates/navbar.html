@@ -1,91 +1,115 @@
-<nav class="vh-100 position-fixed d-flex flex-column align-items-start primary-bg" style="width: 15%">
-    <div class="dropdown p-4" style="min-width: fit-content">
-        <button type="button" class="btn w-100 text-white"
-           data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0">
-            {% if current_user.username|length < 10 %}
-                <strong class="ms-1">{{ current_user.username }}</strong>
-            {% endif %}
-            <i class="fas fa-chevron-down small"></i>
-        </button>
-        <div class="dropdown-menu text-small shadow primary-bg-dark">
-            <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
-            <a class="dropdown-item" href="{{ url_for('major.list_all') }}">Formações</a>
-            <a class="dropdown-item" href="{{ url_for('perfil.settings') }}">Configurações</a>
-            <hr class="dropdown-divider border-white">
-            <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
-        </div>
-    </div>
-    <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4">
-        <li class="nav-item w-100">
-            <a href="{{ url_for('post.feed') }}"
-               class="nav-link
-                {% if request.path == url_for('post.feed') %}active px-3{% endif %}"
-                aria-current="page">
-                <i class="bi bi-house"></i> Feed
-            </a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="{{ url_for('amigo.get_friends') }}"
-               class="nav-link
-                {% if request.path == url_for('amigo.get_friends') %}active px-3{% endif %}"
-                aria-current="page">
-                <i class="bi bi-people"></i> Amigos
-            </a>
-        </li>
-        {% if current_user.is_student or current_user.is_professor %}
-        <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all')+'?routine_type=dietary' }}"
-               class="nav-link
-                {% if request.path == url_for('routine.list_all')+'?routine_type=dietary' %}active{% endif %}"
-                aria-current="page">
-                <i class="fa-solid fa-clipboard-list"></i> Dietas
-            </a>
-        </li>
-        <li class="nav-item w-100">
-            <a href="{{ url_for('routine.list_all')+'?routine_type=workout' }}"
-               class="nav-link
-                {% if request.path == url_for('routine.list_all')+'?routine_type=workout' %}active{% endif %}"
-                aria-current="page">
-                <i class="fa-solid fa-dumbbell"></i> Treinos
-            </a>
-        </li>
-        {% endif %}
-
-        <!-- <li class="nav-item w-100">
-            <a href="#" class="nav-link" aria-current="page">
-                <i class="bi bi-play-btn"></i> Vídeos
-            </a>
-        </li> -->
-{#        <li class="nav-item w-100">#}
-{#            <a href="{{ url_for('chats') }}" class="nav-link px-1 {% if request.path == url_for('chats') %}active{% endif %}" aria-current="page">#}
-{#                <i class="bi bi-chat-dots"></i> Conversas#}
-{#            </a>#}
-{#        </li>#}
-        <li class="nav-item position-relative w-100">
-            <a href="{{ url_for('notificacao.get_all') }}"
-               class="nav-link {% if request.path == url_for('notificacao.get_all') %}active px-3{% endif %}"
-                aria-current="page">
-                <i class="bi bi-bell"></i>
-                Notificações
-                <span class="position-absolute end-0 top-50 translate-middle badge rounded-circle bg-danger text-white" id="notifications-count"></span>
-                {% if current_user.notifications %}
-                    <script>let notiCount = 0;</script>
-                	{% for notification in current_user.notifications %}
-                		{% if not notification.seen %}
-                            <script>notiCount++;</script>
-                		{% endif %}
-                	{% endfor %}
+<nav class="vh-100 position-fixed d-flex flex-column align-items-start justify-content-between primary-bg" style="width: 15%">
+    <div>
+        <div class="dropdown p-4" style="min-width: fit-content">
+            <button type="button" class="btn w-100 text-white"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ current_user.profile_pic }}" alt="profile pic" class="profile-pic-sm img-thumbnail p-0">
+                {% if current_user.username|length < 10 %}
+                    <strong class="ms-1">{{ current_user.username }}</strong>
                 {% endif %}
-            </a>
+                <i class="fas fa-chevron-down small"></i>
+            </button>
+            <div class="dropdown-menu text-small shadow primary-bg-dark">
+                <a class="dropdown-item" href="{{ url_for('perfil.detail_profile', code=current_user.code) }}">Perfil</a>
+                <a class="dropdown-item" href="{{ url_for('major.list_all') }}">Formações</a>
+                <a class="dropdown-item" href="{{ url_for('perfil.settings') }}">Configurações</a>
+                <hr class="dropdown-divider border-white">
+                <a class="dropdown-item" href="{{ url_for('auth.signout') }}">Sair</a>
+            </div>
+        </div>
+        <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4">
+            <li class="nav-item w-100">
+                <a href="{{ url_for('post.feed') }}"
+                   class="nav-link
+                    {% if request.path == url_for('post.feed') %}active px-3{% endif %}"
+                    aria-current="page">
+                    <i class="bi bi-house"></i> Feed
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="{{ url_for('amigo.get_friends') }}"
+                   class="nav-link
+                    {% if request.path == url_for('amigo.get_friends') %}active px-3{% endif %}"
+                    aria-current="page">
+                    <i class="bi bi-people"></i> Amigos
+                </a>
+            </li>
+            {% if current_user.is_student or current_user.is_professor %}
+            <li class="nav-item w-100">
+                <a href="{{ url_for('routine.list_all')+'?routine_type=dietary' }}"
+                   class="nav-link
+                    {% if request.path == url_for('routine.list_all')+'?routine_type=dietary' %}active{% endif %}"
+                    aria-current="page">
+                    <i class="fa-solid fa-clipboard-list"></i> Dietas
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="{{ url_for('routine.list_all')+'?routine_type=workout' }}"
+                   class="nav-link
+                    {% if request.path == url_for('routine.list_all')+'?routine_type=workout' %}active{% endif %}"
+                    aria-current="page">
+                    <i class="fa-solid fa-dumbbell"></i> Treinos
+                </a>
+            </li>
+            {% endif %}
+
+            <!-- <li class="nav-item w-100">
+                <a href="#" class="nav-link" aria-current="page">
+                    <i class="bi bi-play-btn"></i> Vídeos
+                </a>
+            </li> -->
+    {#        <li class="nav-item w-100">#}
+    {#            <a href="{{ url_for('chats') }}" class="nav-link px-1 {% if request.path == url_for('chats') %}active{% endif %}" aria-current="page">#}
+    {#                <i class="bi bi-chat-dots"></i> Conversas#}
+    {#            </a>#}
+    {#        </li>#}
+            <li class="nav-item position-relative w-100">
+                <a href="{{ url_for('notificacao.get_all') }}"
+                   class="nav-link {% if request.path == url_for('notificacao.get_all') %}active px-3{% endif %}"
+                    aria-current="page">
+                    <i class="bi bi-bell"></i>
+                    Notificações
+                    <span class="position-absolute end-0 top-50 translate-middle badge rounded-circle bg-danger text-white" id="notifications-count"></span>
+                    {% if current_user.notifications %}
+                        <script>let notiCount = 0;</script>
+                        {% for notification in current_user.notifications %}
+                            {% if not notification.seen %}
+                                <script>notiCount++;</script>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </a>
+            </li>
+            {% if current_user.role == 'admin' or current_user.role == 'god' %}
+                {% include 'navbar_opts/is_admin.html' %}
+            {% endif %}
+            {% if current_user.is_professor %}
+                {% include 'navbar_opts/is_professor.html' %}
+            {% endif %}
+        </ul>
+    {% if not current_user.majors %}
+        <div class="nav nav-pills flex-column align-items-center mt-3 w-100 mx-auto" style="font-size: .7rem">
+            <div class="nav-item">
+                <a href="{{ url_for('major.add') }}"
+                   class="nav-link text-dark fw-bold shadow-lg rounded px-1"
+                   style="background-color: rgba(255, 255, 0, .7)">Adicionar primeira formação.</a>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+    <ul class="nav mb-5 gap-0 text-start" style="font-size: .7rem">
+        <li class="nav-item mx-auto">
+            <a href="{{ url_for('main.terms') }}" class="nav-link text-muted p-0">Termos e Condições</a>
         </li>
-        {% if current_user.role == 'admin' or current_user.role == 'god' %}
-            {% include 'navbar_opts/is_admin.html' %}
-        {% endif %}
-        {% if current_user.is_professor %}
-            {% include 'navbar_opts/is_professor.html' %}
-        {% endif %}
+        <li class="nav-item mx-auto">
+            <a href="{{ url_for('main.privacy') }}" class="nav-link text-muted p-0">Políticas de Privacidade</a>
+        </li>
+        <li class="nav-item mx-auto">
+            <a href="{{ url_for('main.faq') }}" class="nav-link text-muted p-0">Perguntas Frequentes</a>
+        </li>
     </ul>
+
 </nav>
 
 <script>

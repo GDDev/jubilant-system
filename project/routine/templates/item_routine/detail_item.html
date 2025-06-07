@@ -31,8 +31,20 @@
                     </div>
                 {% endfor %}
             {% elif item.type.value == 'meal_item' %}
-                {% for meal in item.meals %}
-{#                    Meal Fields#}
+                {% for opt in item.opts %}
+                    <div class="w-50 m-auto mt-4">
+                        <a class="btn w-100 text-start d-flex justify-content-between text-info"
+                           role="button" data-bs-toggle="collapse"
+                           href="#{{ opt.id }}" aria-expanded="false" aria-controls="{{ opt.id }}">
+                            Opção {{ loop.index }}
+                            <i class="dropdown-toggle text-info"></i>
+                        </a>
+                        <div class="collapse w-100 text-white small" id="{{ opt.id }}">
+                            <div class="card card-body bg-transparent border-0">
+                                {% include 'diet/components/card_opt.html' %}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>

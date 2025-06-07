@@ -4,12 +4,18 @@ from wtforms.fields.numeric import IntegerField
 from wtforms.fields.simple import StringField, SubmitField
 from wtforms.validators import DataRequired, Optional, NumberRange, Length
 
-from ..models import AreaTags, Shift
+from ..models import Shift
 
 
 class NewMajorForm(FlaskForm):
-    name = StringField('Nome do curso', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Nutrição", "list": "major-options"})
-    level = StringField('Nível da formação', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Bacharelado", "list": "level-options"})
+    # name = StringField('Nome do curso', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Nutrição", "list": "major-options"})
+    name = SelectField('Nome do curso', validators=[DataRequired(message='Selecione uma opção.')],
+                       choices=[],
+                       render_kw={'disabled': True, 'id': 'major-options'})
+    # level = StringField('Nível da formação', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"disabled": True, "readonly": True, "placeholder":"Ex: Bacharelado", "list": "level-options"})
+    level = SelectField('Grau da formação', validators=[DataRequired(message='Selecione uma opção.')],
+                        choices=[],
+                        render_kw={'disabled': True, 'id': 'level-options'})
     university = StringField('Universidade', validators=[DataRequired(message='Preencha este campo.'), Length(max=50)], render_kw={"placeholder": "Ex: Universidade de Mogi das Cruzes", "list": "university-options"})
     uni_acronym = StringField(
         'Sigla da Universidade',
@@ -18,8 +24,7 @@ class NewMajorForm(FlaskForm):
     )
     area_tag = SelectField(
         'Área',
-        choices=[(area.name, area.value.capitalize()) for area in AreaTags],
-        default=0,
+        coerce=str,
         validators=[DataRequired(message='Preencha este campo.')],
         render_kw={"disabled": True}
     )

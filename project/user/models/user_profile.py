@@ -231,11 +231,11 @@ class UserProfile(UserMixin, Base):
 
     def has_major(self, major_tag) -> bool:
         majors = [major.major for major in self.majors if major.major and major.approved] + [temp.temp_major for temp in self.majors if temp.temp_major and temp.approved]
-        if major_tag == AreaTags.NUTRI:
-            return any(m for m in majors if m.area_tag == AreaTags.NUTRI)
-        elif major_tag == AreaTags.PE:
-            return any(m for m in majors if m.area_tag == AreaTags.PE)
-        return any(m for m in majors if m.area_tag == AreaTags.OTHER)
+        # if major_tag == 'Nutrição':
+        #     return any(m for m in majors if m.area_tag == 'Nutrição')
+        # elif major_tag == 'Educação física':
+        #     return any(m for m in majors if m.area_tag == 'Educação física')
+        return any(m for m in majors if m.area_tag == major_tag)
 
     def teaches(self, major_tag) -> bool:
         majors = [major for major in self.taught_majors if major.major]

@@ -29,8 +29,12 @@ def add():
         If 'POST' request, redirects to the 'add_user_major' page.
     """
     form = NewMajorForm()
+    form.area_tag.choices = [('', 'Selecionar')]+[(tag, tag) for tag in major_service.get_area_choices()]
+    form.level.choices = [('', '-----Selecionar-----')]+[(level, level) for level in major_service.get_level_choices()]
+    form.name.choices = [('', '-----Selecionar-----')]+[(name, name) for name in major_service.get_names_choices()]
     try:
         if form.validate_on_submit():
+            form.process(request.form)
             uni = form.university.data
             acronym = form.uni_acronym.data.upper()
             level = form.level.data.capitalize()

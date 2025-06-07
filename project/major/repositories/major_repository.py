@@ -58,3 +58,15 @@ class MajorRepository:
     @staticmethod
     def temp_exists(uni, acronym, level, name, shift):
         return db.session.query(TempMajor).filter_by(university=uni, uni_acronym=acronym, level=level, name=name, shift=shift).first()
+
+    @staticmethod
+    def get_available_tags():
+        return [
+            tag for (tag,) in db.session.query(Major.area_tag).distinct().order_by(Major.area_tag).all()
+        ]
+
+    def get_available_levels(self):
+        return [tag for (tag,) in db.session.query(Major.level).distinct().order_by(Major.level).all()]
+
+    def get_available_names(self):
+        return [name for (name,) in db.session.query(Major.name).distinct().order_by(Major.name).all()]

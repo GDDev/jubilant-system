@@ -17,7 +17,7 @@
 {% macro show_errors(field) %}
     {% if field.errors %}
       {% for error in field.errors %}
-        <div class="text-danger">
+        <div class="text-danger small">
           {{ error }}
         </div>
       {% endfor %}
