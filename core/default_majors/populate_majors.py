@@ -28,15 +28,15 @@ def populate_majors(app):
                 uni_acronym=item['uni_acronym'],
                 area_tag=item['area_tag']
             )
-            found = db.session.query(Major).filter_by(
-                    name=major.name,
-                    level=major.level,
-                    university=major.university,
-                    uni_acronym=major.uni_acronym,
-                    area_tag=major.area_tag
-            ).first()
-            if not found:
-                db.session.add(major)
+            # found = db.session.query(Major).filter_by(
+            #         name=major.name,
+            #         level=major.level,
+            #         university=major.university,
+            #         uni_acronym=major.uni_acronym,
+            #         area_tag=major.area_tag
+            # ).first()
+            # if not found:
+            db.session.add(major)
         try:
             db.session.commit()
             print('Majors populated.')
