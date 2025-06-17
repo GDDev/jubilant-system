@@ -1,5 +1,5 @@
-from flask import render_template, flash, redirect, url_for, request
-from flask_login import login_required
+from flask import render_template, flash, redirect, url_for, request, abort
+from flask_login import login_required, current_user
 
 from .. import item_bp
 from ..forms import NewWorkoutForm
@@ -55,6 +55,10 @@ def add_exercise():
 @item_bp.route('/treino/remover/exercicio/<int:exercise_id>', methods=['GET'])
 def remove_exercise(exercise_id: int):
     try:
+        exercise = item_service.find_by_id(exercise_id)
+        if exercise:
+            if exercise.routine.created_by != current_user.id:
+                abort(403)
         workout_service.delete(exercise_id=exercise_id)
     except Exception as e:
         flash(str(e))
@@ -66,6 +70,9 @@ def update_exercise(item_id: int):
     form = NewWorkoutForm()
     item_exercise = workout_service.find_by_item_id(item_id)
     try:
+        if item_exercise:
+            if item_exercise.item.routine.created_by != current_user.id:
+                abort(403)
         if form.validate_on_submit():
             if not item_exercise:
                 raise Exception('Item de exercício não encontrado.')

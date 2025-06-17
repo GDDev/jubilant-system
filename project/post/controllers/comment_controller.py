@@ -32,7 +32,11 @@ def new(post_id):
 @login_required
 def update(post_id, comment_id):
     try:
-        comment_service.update(comment_id, request.form.get('content'))
+        comment = comment_service.find_by_id(comment_id)
+        if comment:
+            if comment.profile_id != current_user.id:
+                abort(403)
+            comment_service.update(comment_id, request.form.get('content'))
     except CommentException as e:
         flash(str(e))
     return redirect(url_for('post.detail_post', post_id=post_id))
@@ -42,7 +46,11 @@ def update(post_id, comment_id):
 @login_required
 def delete(post_id, comment_id):
     try:
-        comment_service.delete(comment_id)
+        comment = comment_service.find_by_id(comment_id)
+        if comment:
+            if comment.profile_id != current_user.id:
+                abort(403)
+            comment_service.delete(comment_id)
     except CommentException as e:
         flash(str(e))
     return redirect(url_for('post.detail_post', post_id=post_id))

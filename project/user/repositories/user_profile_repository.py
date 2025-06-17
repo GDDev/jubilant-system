@@ -5,7 +5,7 @@ from sqlalchemy import or_, func
 from sqlalchemy.orm import joinedload
 
 from project.user import UserProfile, User
-from core import db
+from utils import db
 from project.user.models.user_profile import RoleEnum
 
 
@@ -110,8 +110,8 @@ class UserProfileRepository:
         return db.session.query(UserProfile).filter_by(role=RoleEnum.ADMIN).all()
 
     @staticmethod
-    def get_all_pagination(page, per_page):
-        q = db.session.query(UserProfile).order_by(UserProfile.username.desc())
+    def get_all_pagination(page, per_page, role):
+        q = db.session.query(UserProfile).filter_by(role=role).order_by(UserProfile.username.asc())
         return q.paginate(page=page, per_page=per_page, error_out=False)
 
     @staticmethod

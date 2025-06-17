@@ -4,7 +4,7 @@ import pytest
 from werkzeug.security import generate_password_hash
 
 from project import create_app
-from core import db
+from utils import db
 from project.major import Major, UserMajor, MajorEnum
 from project.testing_config import TestingConfig
 from project.user import User, UserProfile

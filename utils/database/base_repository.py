@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar, Type
 
-from core import db
+from ..database import db
 
 
 T = TypeVar('T')

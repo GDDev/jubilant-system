@@ -38,13 +38,15 @@ def update_email():
 @fresh_login_required
 def delete():
     if request.method == 'POST':
-        c_user = user_service.find_by_id(int(request.form.get('user_id')))
+        c_user = current_user.user
         if c_user:
             try:
+                if current_user.role == 'god':
+                    raise Exception("Nuh Uh, Gods can't quit.")
                 user_service.delete(c_user)
                 logout_user()
                 flash('Conta excluída com sucesso!')
-            except SQLAlchemyError as e:
+            except (HTTPException, SQLAlchemyError, Exception) as e:
                 flash(str(e))
                 return redirect(url_for('perfil.settings'))
         return redirect(url_for('main.home'))

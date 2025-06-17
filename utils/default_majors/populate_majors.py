@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 from sqlalchemy.exc import SQLAlchemyError
 
-from core import db
+from utils import db
 from project.major import Major, Shift
 
 

@@ -39,23 +39,12 @@ def add():
             acronym = form.uni_acronym.data.upper()
             level = form.level.data.capitalize()
             name = form.name.data.capitalize()
-            tag = form.area_tag.data
             shift = form.shift.data
-            min = form.min_semesters.data
-            max = form.max_semesters.data
             # Check if exists
             major = major_service.exists(uni, acronym, level, name, shift)
-            is_major_temp = False
             if not major:
-                # Checks if it doesn't exist but was suggested
-                major = major_service.exists_as_temp(uni, acronym, level, name, shift)
-                if major:
-                    major_service.update(major, area_tag=tag, min_semesters=min, max_semesters=max)
-                else:
-                    # Creates new
-                    major = major_service.add_temp(university=uni, uni_acronym=acronym, level=level, name=name, area_tag=tag, shift=shift, min_semesters=min, max_semesters=max)
-                is_major_temp = True
-            return redirect(url_for('major.add_user_major', major_id=major.id, is_major_temp=is_major_temp))
+                raise MajorException(f'Formação não encontrada para o turno {shift}')
+            return redirect(url_for('major.add_user_major', major_id=major.id))
 
     except MajorException as e:
         flash(str(e))
@@ -74,6 +63,7 @@ def remove():
     pass
 
 @major_bp.route('/api/universidades', methods=['GET'])
+@login_required
 def autocomplete_university():
     """
     Searches the database for universities that match the query.

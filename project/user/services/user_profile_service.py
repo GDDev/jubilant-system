@@ -2,10 +2,13 @@ from flask import abort
 from numpy.random import choice
 from sqlalchemy.exc import SQLAlchemyError
 
+from utils.regex import re_search
+from utils.normalize import strip_lower
 from .. import UserProfile
 from ..repositories import UserProfileRepository
 from ...friendship import FriendshipRepository
 from ..exceptions import UserProfileException
+from re import match
 
 
 class UserProfileService:
@@ -47,6 +50,9 @@ class UserProfileService:
         if not search or search.strip() == '':
             users = self.user_profile_repository.find_all()
             return users if len(users) <= 10 else choice(users, 10, False).tolist()
+        search = strip_lower(search)
+        if not match(re_search, search):
+            raise UserProfileException('Termo de busca não permitido')
         return self.user_profile_repository.find_profiles_by_search(search)
 
     def friendship_request(self, current_user, user_profile):
@@ -59,8 +65,8 @@ class UserProfileService:
     def get_admins(self):
         return self.user_profile_repository.get_admins()
 
-    def get_all_pagination(self, page: int, per_page: int):
+    def get_all_pagination(self, page: int, per_page: int, role: str = 'user'):
         try:
-            return self.user_profile_repository.get_all_pagination(page, per_page)
+            return self.user_profile_repository.get_all_pagination(page, per_page, role)
         except SQLAlchemyError as e:
             raise UserProfileException('Erro ao buscar todos os usuários.') from e

@@ -19,11 +19,12 @@
 
         <div class="tab-content w-100" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-overview" role="tabpanel" aria-labelledby="nav-overview-tab">
-                {% include 'admin/overview.html' %}
+                {% include 'overview.html' %}
             </div>
             <div class="tab-pane fade d-flex flex-column justify-content-center
                 align-items-center mt-4" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
-                {% include 'admin/all_users.html' %}
+                {% set role = 'user' %}
+                {% include 'all_users.html' %}
             </div>
         </div>
     </div>

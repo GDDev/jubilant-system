@@ -1,9 +1,13 @@
+from re import match
+
 from werkzeug.exceptions import HTTPException
 
 from flask import render_template, redirect, url_for, request, flash, session, jsonify
 from flask_login import login_required, current_user, login_user
 
-from core import admin_required
+from utils import admin_required
+from utils.regex import re_search
+from utils.normalize import strip_lower
 from project.user import profile
 from ..services import UserService, UserProfileService
 from ..exceptions import UserProfileException
@@ -87,23 +91,10 @@ def find():
     profiles = []
     try:
         profiles = user_profile_service.find_profiles_by_search(search)
-    except Exception as e:
+    except (UserProfileException, Exception) as e:
+        if e.message == 'Termo de busca não permitido': search = '*omitido*'
         flash(str(e))
     return render_template('profile_list.html', profiles=profiles, search=search)
-
-
-@profile.route('/selecionar_supervisor', methods=['POST'])
-@login_required
-def select_supervisor():
-    sup_id = request.form.get('supervisor_id')
-    if user_profile_service.find_by_id(sup_id):
-        #TODO: add logic to send notification to chosen user before setting as supervisor.
-
-        # current_user.supervisor_id = sup_id
-        # db.session.commit()
-        user_profile_service.update(current_user, supervisor_id=sup_id)
-
-    return redirect(url_for('perfil.detail_profile', code=current_user.code))
 
 
 @profile.route('/configuracoes', methods=['GET', 'POST'])
@@ -117,9 +108,10 @@ def settings():
 @admin_required
 def get_all():
     page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
+    per_page = request.args.get('per_page', 5, type=int)
+    role = request.args.get('role') if 'role' in request.args else 'user'
     try:
-        pagination = user_profile_service.get_all_pagination(page, per_page)
+        pagination = user_profile_service.get_all_pagination(page, per_page, role)
         return jsonify({
             'users': [user.to_dict() for user in pagination.items],
             'total': pagination.total,
@@ -131,3 +123,25 @@ def get_all():
     except (HTTPException, UserProfileException, Exception) as e:
         flash(str(e))
         return jsonify({'error': str(e)})
+
+@profile.route('/api/buscar_usuario', methods=['GET'])
+@login_required
+@admin_required
+def get_user():
+    from ..repositories import UserProfileRepository
+    repo = UserProfileRepository()
+
+    search = request.args.get('search')
+    role = request.args.get('role') if 'role' in request.args else 'user'
+    try:
+        if search:
+            search = strip_lower(search)
+            if match(re_search, search):
+                return jsonify({
+                    'users': [user.to_dict() for user in repo.find_profiles_by_search(search) if user.role == role]
+                })
+        return jsonify({'users': []})
+    except (HTTPException, UserProfileException, Exception) as e:
+        flash(str(e))
+        return jsonify({'error': str(e)})
+

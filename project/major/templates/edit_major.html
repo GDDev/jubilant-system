@@ -3,8 +3,6 @@
 
 {% if user_major.major %}
     {% set major = user_major.major %}
-{% elif user_major.temp_major %}
-    {% set major = user_major.temp_major %}
 {% endif %}
 
 {% block content %}
@@ -17,10 +15,10 @@
         {% if user_major %}
             <div class="d-flex flex-column justify-content-between align-items-center my-4">
                 <span class="fs-5">Editando <b class="text-info">
-                        {{ major.level.capitalize() }} em {{ major.name.capitalize() }}
+                        {{ major.level }} em {{ major.name.capitalize() }}
                 </b></span>
                 <span class="text-muted fs-6">
-                    De {{ major.university.capitalize() }} - {{ major.uni_acronym.upper() }}
+                    De {{ major.university.title() }} - {{ major.uni_acronym }}
                 </span>
             </div>
 
@@ -28,17 +26,25 @@
                   class="row g-3 mt-4 text-start w-50 m-auto">
                 {% from '_formhelpers.html' import show_errors %}
                 {{ form.csrf_token }}
+                <input type="hidden" name="user_major_id" id="user_major_id" value="{{ user_major.id }}">
 
-                <div class="col-12 m-auto">
-                    {{ show_errors(form.college_code) }}
-                    {{ form.college_code.label(class='form-label') }}
-                    {{ form.college_code(class='form-control', value=user_major.college_code) }}
-                </div>
-                <div class="col-12 m-auto">
-                    {{ show_errors(form.institutional_email) }}
-                    {{ form.institutional_email.label(class='form-label') }}
-                    {{ form.institutional_email(class='form-control', value=user_major.institutional_email) }}
-                </div>
+                <!-- TODO: Change to resend verification email if not verified yet -->
+                {% if not user_major.approved %}
+                    <div class="col-12 m-auto">
+                        <p class="text-warning small">
+                            Percebemos que você ainda não confirmou o seu e-mail associado a esta formação. <br>
+                            Informe o seu e-mail abaixo para reenviar o link de confirmação <br><br>
+                        </p>
+                    </div>
+                	<div class="col-12 m-auto mb-5">
+                        {{ show_errors(form.institutional_email) }}
+                        {{ form.institutional_email.label(class='form-label') }} <br>
+                        <span class="text-muted small">*Este e-mail não será armazenado.</span>
+                        {{ form.institutional_email(class='form-control') }}
+                        <div id="resend-btn-container"></div>
+                    </div>
+                {% endif %}
+
                 <div class="col-12 m-auto">
                     {{ show_errors(form.user_is) }}
                     {{ form.user_is.label(class='form-label') }}
@@ -56,17 +62,42 @@
                     {{ form.start_date.label(class='form-label') }}
                     {{ form.start_date(class='form-control', type='date', value=user_major.start_date) }}
                 </div>
-                {% if user_major.end_date %}
-                    <div class="col-12 m-auto">
-                        {{ show_errors(form.end_date) }}
-                        {{ form.end_date.label(class='form-label') }}
+                <div class="col-12 m-auto">
+                    {{ show_errors(form.end_date) }}
+                    {{ form.end_date.label(class='form-label') }}
+                    {% if user_major.end_date %}
                         {{ form.end_date(class='form-control', type='date', value=user_major.end_date) }}
-                    </div>
-                {% endif %}
+                    {% else %}
+                        {{ form.end_date(class='form-control', type='date') }}
+                    {% endif %}
+                </div>
                 <div class="col-12 m-auto mt-4 text-end">
                     {{ form.submit(class='btn btn-success') }}
                 </div>
             </form>
         {% endif %}
     </div>
+
+    <script>
+        const resend_btn_container = document.getElementById("resend-btn-container");
+        const email = document.getElementById("institutional_email");
+
+        const resend_btn = document.createElement("a");
+        resend_btn.id = "resend-btn";
+        resend_btn.type = "button";
+        resend_btn.classList.add("small", "text-info", "text-decoration-none");
+        resend_btn.innerText = "Reenviar confirmação";
+        resend_btn.href = "{{ url_for('major.resend_institutional_email_verification', user_major_id=user_major.id) }}"
+
+        email.addEventListener("input", () => {
+            let value = email.value;
+            if(value.length > 7){
+                resend_btn.href += "&email="+value;
+                resend_btn_container.appendChild(resend_btn);
+            }
+            else {
+                resend_btn_container.removeChild(resend_btn);
+            }
+        });
+    </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from core import db
+from utils import db
 from project.friendship import Friendship
 
 

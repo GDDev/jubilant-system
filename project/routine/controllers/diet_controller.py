@@ -1,7 +1,7 @@
 from http.client import HTTPException
 
-from flask import request, render_template, flash, redirect, url_for
-from flask_login import login_required
+from flask import request, render_template, flash, redirect, url_for, abort
+from flask_login import login_required, current_user
 
 from ..models import ItemOpts, OptFoods
 from ..services import ItemService, MealService
@@ -22,6 +22,10 @@ def diet_meals():
     try:
         if not item:
             raise Exception('Item não encontrado.')
+        if (item.routine.created_for != current_user.id and
+            item.routine.created_by != current_user.id and
+            item.routine.supervisor_id != current_user.id):
+            abort(403)
         return render_template('diet/item_meals.html', item=item)
     except Exception as e:
         flash(str(e))
@@ -41,6 +45,9 @@ def add_opt():
         item = item_service.find_by_id(int(item_id))
         if not item:
             raise Exception('Item não encontrado.')
+
+        if not item.routine.created_by != current_user.id and item.routine.supervisor_id != current_user.id:
+            abort(403)
         form = NewOptionForm()
 
         if form.validate_on_submit():

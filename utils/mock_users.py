@@ -2,7 +2,7 @@ import uuid
 
 from faker import Faker
 from werkzeug.security import generate_password_hash
-from core import db
+from utils import db
 from project.user import User, UserProfile
 
 fake = Faker('pt_BR')

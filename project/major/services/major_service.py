@@ -3,7 +3,7 @@ from secrets import choice
 from flask_login import current_user
 from sqlalchemy.exc import SQLAlchemyError
 
-from ..models import Major, TempMajor
+from ..models import Major
 from ..repositories import MajorRepository
 from ..exceptions import MajorException
 
@@ -27,30 +27,12 @@ class MajorService:
     def __init__(self):
         self.major_repo = MajorRepository()
 
-    def add_temp(self, **kwargs) -> TempMajor | None:
+    def update(self, major: Major, **kwargs):
         """
-        Add a temporary major to the database.
+        Updates Major.
 
         Args:
-            **kwargs: Named fields to be added to the TempMajor.
-
-        Returns:
-            Either the added TempMajor or None.
-        """
-        try:
-            admin = choose_admin()
-            if not admin:
-                raise MajorException('Impossível requisitar a validação das informações do curso.')
-            return self.major_repo.insert(TempMajor(submitted_by=current_user.id, assigned_to=admin.id ,**kwargs))
-        except SQLAlchemyError as e:
-            raise MajorException('Erro ao cadastrar formação.') from e
-
-    def update(self, major: Major | TempMajor, **kwargs):
-        """
-        Updates Major or TempMajor.
-
-        Args:
-            major: Major or TempMajor to be updated.
+            major: Major to be updated.
             **kwargs: Named fields to be updated.
 
         Returns:
@@ -73,7 +55,7 @@ class MajorService:
         Deletes a major from the database.
 
         Args:
-            major: Major or TempMajor to be deleted.
+            major: Major to be deleted.
 
         Returns:
             None
@@ -98,22 +80,7 @@ class MajorService:
         except SQLAlchemyError as e:
             raise MajorException('Erro ao buscar formação.') from e
 
-    def find_temp_by_id(self, major_id: int) -> TempMajor | None:
-        """
-        Finds a TempMajor by its ID.
-
-        Args:
-            major_id: the temporary major's ID.
-
-        Returns:
-            The found TempMajor or None.
-        """
-        try:
-            return self.major_repo.find_temp_by_id(major_id)
-        except SQLAlchemyError as e:
-            raise MajorException('Erro ao buscar formação.') from e
-
-    def find_by_ilike_university(self, university: str) -> list[Major | TempMajor] | None:
+    def find_by_ilike_university(self, university: str) -> list[Major] | None:
         """
         Returns a list of majors that match the given university.
 
@@ -121,7 +88,7 @@ class MajorService:
             university: str of the university to match.
 
         Returns:
-            List of Majors or TempMajors that match the given university.
+            List of Majors that match the given university.
         """
         try:
             return self.major_repo.find_by_ilike_uni(university)
@@ -177,25 +144,6 @@ class MajorService:
         """
         try:
             return self.major_repo.exists(uni, acronym, level, name, shift)
-        except SQLAlchemyError as e:
-            raise MajorException('Erro ao checar existência da formação.') from e
-
-    def exists_as_temp(self, uni, acronym, level, name, shift) -> TempMajor | None:
-        """
-        Tries to find an existing TempMajor by its fields.
-
-        Args:
-            uni: str of the University's name.
-            acronym: str of the University's acronym.
-            level: str of the Major's level.
-            name: str of the Major's name.
-            shift: str of the Major's shift.
-
-        Returns:
-            The found TempMajor or None.
-        """
-        try:
-            return self.major_repo.temp_exists(uni, acronym, level, name, shift)
         except SQLAlchemyError as e:
             raise MajorException('Erro ao checar existência da formação.') from e
 

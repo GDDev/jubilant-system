@@ -9,4 +9,4 @@ from .controllers import routine_controller, item_controller, workout_controller
 from .models import (Routine, RoutineItem, Exercise, ItemExercises, ItemOpts, OptFoods, RoutineEnum, ItemType, RoutineStatus)
 from .forms import NewRoutineForm, NewWorkoutForm
 from .services import RoutineService, ItemService
-from .repositories import RoutineRepository, ItemRepository, ItemExerciseRepository, ExerciseRepository, BaseRepository
+from .repositories import RoutineRepository, ItemRepository, ItemExerciseRepository, ExerciseRepository

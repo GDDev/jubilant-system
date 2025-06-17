@@ -1,10 +1,13 @@
-from flask import render_template
+from flask import render_template, abort
+from flask_login import current_user
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-from core import db, send_mail
+from utils import db, send_mail, verify_verification_token
 from ..exceptions import AuthException
 from project.user import UserRepository, UserProfileRepository, User, UserProfile
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from ...major import MajorException
 
 
 class AuthService:
@@ -43,10 +46,10 @@ class AuthService:
 
         except IntegrityError as e:
             db.session.rollback()
-            raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.' + e._message()) from e
+            raise AuthException('Erro interno ao cadastrar usuário, por favor tente novamente.') from e
         except SQLAlchemyError as e:
             db.session.rollback()
-            raise AuthException('Falha ao cadastrar usuário.' + e._message()) from e
+            raise AuthException('Falha ao cadastrar usuário.') from e
 
     def sign_in_user(self, credential: str, pwd: str) -> UserProfile | None:
         try:
@@ -107,3 +110,26 @@ class AuthService:
             raise AuthException('Erro ao redefinir senha.') from e
         except Exception as e:
             raise AuthException(f'Ocorreu um erro desconhecido. {str(e)}') from e
+
+
+    # TODO: May want to move it to MajorService instead
+    @staticmethod
+    def verify_institutional_email(token, user_major_id):
+        from project.major import UserMajorService
+        # Instantiate UserMajorService
+        um_service = UserMajorService()
+        try:
+            # Tries to find a UserMajor
+            user_major = um_service.find_by_id(user_major_id)
+            if not user_major:
+                raise AuthException('Formação não encontrada.')
+            if user_major.profile_id != current_user.id:
+                abort(403)
+            # Verify if the token is valid
+            email = verify_verification_token(token)
+            if not email:
+                raise AuthException('Link de verificação inválido ou expirado.')
+
+            um_service.approve_major(user_major)
+        except (SQLAlchemyError, AuthException, MajorException, Exception) as e:
+            raise e

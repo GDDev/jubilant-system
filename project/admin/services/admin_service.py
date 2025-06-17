@@ -1,11 +1,11 @@
-from core import db
+from utils import db
 from project.friendship import Friendship
 from project.post import Post
 from project.routine import Routine
 from project.user import User
 
 
-class AdminDashboardService:
+class AdminService:
     def get_overall_stats(self):
         all_routines = db.session.query(Routine).all()
         all_workouts = [r for r in all_routines if r.type == 'workout']

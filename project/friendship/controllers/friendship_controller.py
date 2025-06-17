@@ -1,4 +1,4 @@
-from flask import redirect, flash, url_for, request, render_template
+from flask import redirect, flash, url_for, request, render_template, abort
 from flask_login import current_user, login_required
 
 from .. import friendship
@@ -37,6 +37,8 @@ def accept_request(friendship_id: int):
     friend = friendship_service.find_by_id(friendship_id)
     try:
         if friend:
+            if friend.receiver_id != current_user.id:
+                abort(403)
             notification_service.delete_by_friendship_id(friend.id)
             friendship_service.accept_request(friend)
     except FriendshipException as e:
@@ -50,6 +52,8 @@ def decline_request(friendship_id: int):
     friend = friendship_service.find_by_id(friendship_id)
     try:
         if friend:
+            if friend.receiver_id != current_user.id:
+                abort(403)
             notification_service.delete_by_friendship_id(friendship_id)
             friendship_service.decline_request(friendship_id)
     except FriendshipException as e:
@@ -64,6 +68,8 @@ def remove_friendship(friendship_id: int):
     user_code = friend.receiver.code if friend else None
     try:
         if friend:
+            if friend.receiver_id != current_user.id and friend.sender_id != current_user.id:
+                abort(403)
             notification_service.delete_by_friendship_id(friend.id)
             friendship_service.remove_friendship(friend)
     except (FriendshipException, NotificationException) as e:

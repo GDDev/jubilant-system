@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 6px;
+            color: #333;
+            max-width: 600px;
+            margin: auto;
+        }
+        .verify-email {
+            font-size: .8rem;
+            font-weight: bold;
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Confirme seu e-mail</h2>
+        <p>Olá {{ user_name }},</p>
+        <p>Clique no link abaixo para verificar o seu e-mail:</p>
+        <p class="verify-email" style="margin: 2rem 0">
+            <a href="{{ verify_url }}">
+                Clique aqui para confirmar o seu e-mail.
+            </a>
+        </p>
+        <p style="font-size: 1rem; color: red;">
+            Caso não tenha sido você quem tentou associar este e-mail com uma formação na nossa aplicação,
+            por favor ignore este e-mail não clique no link acima.
+        </p>
+        <p style="margin-top: 3rem;">Atenciosamente,<br><b>Equipe Jubilant System</b></p>
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for, flash
 from flask_login import login_user, login_required, logout_user, current_user, confirm_login
 from markupsafe import Markup
+from werkzeug.exceptions import HTTPException
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from ..forms import SignUpForm, SignInForm, ForgotPwdForm, RefreshForm
@@ -8,7 +9,7 @@ from ..services import AuthService
 from .. import auth
 from ..exceptions import AuthException
 
-from core import oauth
+from utils import oauth, strip_lower, strip_title
 
 auth_service = AuthService()
 
@@ -26,12 +27,12 @@ def signup():
             auth_service.validate_sign_up_data(form)
 
             user_data = {
-                'name': form.name.data,
-                'surname': form.surname.data,
-                'email': form.email.data
+                'name': strip_title(form.name.data),
+                'surname': strip_title(form.surname.data),
+                'email': strip_lower(form.email.data),
             }
             profile_data = {
-                'username': form.username.data,
+                'username': strip_lower(form.username.data),
                 'password': form.pwd.data
             }
 
@@ -55,7 +56,7 @@ def signin():
 
     if form.validate_on_submit():
         try:
-            profile = auth_service.sign_in_user(form.user.data, form.pwd.data)
+            profile = auth_service.sign_in_user(strip_lower(form.user.data), form.pwd.data)
 
             if profile is not None:
                 login_user(profile, remember=form.remember_me.data)
@@ -85,7 +86,8 @@ def refresh():
 @auth.route('/sair', methods=['GET'])
 @login_required
 def signout():
-    logout_user()
+    if current_user.is_authenticated:
+        logout_user()
     return redirect(url_for('auth.signin'))
 
 
@@ -96,7 +98,7 @@ def forgot_password():
     form = ForgotPwdForm()
     try:
         if form.validate_on_submit():
-            if auth_service.forgot_password(form.email.data):
+            if auth_service.forgot_password(strip_lower(form.email.data)):
                 flash('Nova senha enviada para seu email. Verifique sua caixa de entrada.')
             return redirect(url_for('auth.signin'))
     except AuthException as e:
@@ -160,6 +162,23 @@ def authorize_google():
 
     except AuthException as e:
         flash(str(e))
-    except Exception as e:
+    except Exception as _:
         flash('Ocorreu um erro ao autorizar o login. Tente novamente.')
     return redirect(url_for('auth.signin'))
+
+
+@auth.route('/verificar', methods=['GET', 'POST'])
+def verify_institutional_email():
+    token = request.args.get('token')
+    try:
+        if not token:
+            raise AuthException('Token não informado.')
+        user_major_id = request.args.get('user_major_id')
+        if not user_major_id:
+            raise AuthException('Formação inválida.')
+
+        auth_service.verify_institutional_email(token, user_major_id)
+        flash('Email verificado com sucesso.')
+    except (HTTPException, AuthException, Exception) as e:
+        flash(str(e))
+    return redirect(url_for('main.home'))

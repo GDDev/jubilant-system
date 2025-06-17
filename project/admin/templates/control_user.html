@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}{{ profile.user.name }} {{ profile.user.surname }}{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto text-center mt-4">
+        <div class="w-100 d-flex align-items-start justify-content-start">
+            <a href="{{ url_for('admin.panel') }}" class="text-decoration-none">
+                <i class="bi bi-arrow-left text-danger"> Voltar</i>
+            </a>
+        </div>
+        <div class="w-100 m-auto d-flex flex-column align-items-center gap-3">
+            <div class="gap-2 d-flex align-items-center w-100 m-auto justify-content-center">
+                    <img src="{{ profile.profile_pic }}" alt="profile pic"
+                         class="img-thumbnail profile-pic-lg p-1" style="width: 4rem; height: 4rem;">
+                    <span class="text-white fw-bold">
+                        {{ profile.user.name }} {{ profile.user.surname }}<br>
+                        ({{ profile.code }})
+                    </span>
+            </div>
+
+            <div class="w-100 m-auto d-flex flex-column">
+                {% block edit_username %}
+                    <span class="text-muted">Nome de usuário:
+                        <b class="text-white">{{ profile.username }}</b>
+                    </span>
+                    <a href="{{ url_for('perfil.update_username') }}"
+                       class="text-decoration-none text-info">
+                        Alterar nome de usuário
+                    </a>
+                {% endblock %}
+            </div>
+
+            <div class="w-100 m-auto d-flex flex-column">
+                <span class="text-muted">Email: <b class="text-white">{{ profile.user.email }}</b></span>
+                <a href="{{ url_for('usuario.update_email') }}" class="text-info text-decoration-none">
+                    Alterar email
+                </a>
+            </div>
+        </div>
+        <div class="w-50 m-auto mt-5">
+            <div class="position-relative border rounded py-4 border-danger d-flex flex-column gap-4"
+                 style="min-width: fit-content;">
+                <div class="w-100 m-auto d-flex justify-content-center">
+                    <span class="text-muted">Senha:
+                        <a href="#"
+                           class="text-decoration-none text-info">
+                            Enviar nova senha
+                        </a>
+                    </span>
+                </div>
+
+                <a href="{{ url_for('usuario.delete') }}" class="text-danger text-decoration-none">
+                    Deletar conta
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

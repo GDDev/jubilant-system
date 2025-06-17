@@ -16,7 +16,7 @@ class FriendshipService:
             try:
                 return self.friendship_repo.insert(friendship)
             except SQLAlchemyError as e:
-                raise FriendshipException('Erro ao adicionar amigo: ' + str(e._message()))
+                raise FriendshipException('Erro ao adicionar amigo') from e
         else:
             raise FriendshipException('Solicitação de amizade já enviada.')
 
@@ -46,7 +46,7 @@ class FriendshipService:
         try:
             self.friendship_repo.delete(friendship)
         except (SQLAlchemyError, Exception) as e:
-            raise  FriendshipException('Erro ao remover solicitação de amizade: ' + e._message())
+            raise  FriendshipException('Erro ao remover solicitação de amizade')
 
     def find_by_id(self, friendship_id: int) -> Friendship | None:
         try:

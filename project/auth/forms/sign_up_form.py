@@ -2,20 +2,25 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, InputRequired
 
+from utils import valid_firstname, valid_name, valid_username
+
 
 class SignUpForm(FlaskForm):
     name = StringField('Nome:', validators=[
-        DataRequired('Preencha este campo.')
+        DataRequired('Preencha este campo.'),
+        valid_firstname
     ], render_kw={"placeholder": "Insira seu nome"})
     surname = StringField('Sobrenome:', validators=[
-        DataRequired('Preencha este campo.')
+        DataRequired('Preencha este campo.'),
+        valid_name
     ], render_kw={"placeholder": "Insira seu sobrenome"})
     email = EmailField('Email:', validators=[
         DataRequired('Preencha este campo.'),
         Email('Digite um email válido.')
     ], render_kw={"placeholder": "Insira seu e-mail"})
     username = StringField('Nome de usuário:', validators=[
-        DataRequired('Preencha este campo.')
+        DataRequired('Preencha este campo.'),
+        valid_username
     ], render_kw={"placeholder": "Insira um nome de usuário"})
     pwd = PasswordField('Senha:', validators=[
         DataRequired('Preencha este campo.'),

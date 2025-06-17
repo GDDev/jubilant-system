@@ -1,12 +1,10 @@
 {% if user_major.major %}
     {% set major = user_major.major %}
-{% elif user_major.temp_major %}
-    {% set major = user_major.temp_major %}
 {% endif %}
 
 <div class="d-flex flex-column justify-content-center align-items-start mt-4
-        {% if not user_major.approved %}border border-danger rounded p-2{% endif %}"
-     style="width: 50%">
+    {% if not user_major.approved %}border border-danger rounded p-2{% endif %}"
+    style="width: 50%">
     {% if not user_major.approved %}
     	<span class="small text-danger text-uppercase fw-bolder">Aprovação Pendente</span>
     {% endif %}

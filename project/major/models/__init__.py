@@ -1,2 +1,2 @@
-from .major import Major, TempMajor, Shift, AreaTags
+from .major import Major, Shift, AreaTags
 from .user_major import UserMajor, MajorEnum

@@ -3,7 +3,7 @@ from typing import Generic, Type, TypeVar
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..models import OptFoods, ItemOpts
-from ..repositories import BaseRepository
+from utils import BaseRepository
 
 
 T = TypeVar('T')
@@ -41,7 +41,7 @@ class MealService(Generic[T]):
 
     def delete(self, item):
         try:
-            return self.base_repo.delete(item)
+            self.base_repo.delete(item)
         except SQLAlchemyError as e:
             raise Exception('Erro ao excluir de refeição.') from e
 

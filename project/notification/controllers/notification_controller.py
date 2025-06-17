@@ -1,4 +1,4 @@
-from flask import render_template, flash, url_for, redirect, request
+from flask import render_template, flash, url_for, redirect, request, abort
 from flask_login import current_user, login_required
 
 from ...notification import notification
@@ -46,6 +46,8 @@ def delete(notification_id: int):
     try:
         noti = noti_service.get_by_id(notification_id)
         if noti:
+            if noti.receiver_id != current_user.id:
+                abort(403)
             noti_service.delete(noti)
     except NotificationException as e:
         flash(str(e))

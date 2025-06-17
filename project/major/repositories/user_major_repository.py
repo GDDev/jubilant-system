@@ -1,4 +1,4 @@
-from core import db
+from utils import db
 from ..models import UserMajor
 
 
@@ -7,6 +7,7 @@ class UserMajorRepository:
     def insert(user_major: UserMajor):
         db.session.add(user_major)
         db.session.commit()
+        return user_major
 
     @staticmethod
     def update(user_major):

@@ -1,6 +1,6 @@
 import os
 
-from core import mock_100_users, populate_majors
+from utils import mock_100_users, populate_majors
 from . import create_app, config_error_handlers
 
 app = create_app()

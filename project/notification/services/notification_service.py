@@ -74,4 +74,4 @@ class NotificationService:
                 for n in notifications:
                     self.noti_repo.delete(n)
         except (SQLAlchemyError, Exception) as e:
-            raise NotificationException('Erro ao excluir notificações: ' + e._message())
+            raise NotificationException('Erro ao excluir notificações.')

@@ -1,6 +1,6 @@
 from http.client import HTTPException
 
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import login_required, current_user
 
 from .. import routine_bp
@@ -65,12 +65,14 @@ def update(routine_id: int):
     routine = routine_service.get_by_id(int(routine_id))
     try:
         if routine:
+            if routine.created_by != current_user.id:
+                abort(403)
             return render_template('routine/edit_routine.html', routine=routine)
 
     except Exception as e:
         flash(str(e))
-
-    return redirect(url_for('routine.list_all')+f'?routine_type={routine.type.value}')
+        return redirect(url_for('routine.list_all')+f'?routine_type={routine.type.value}')
+    return redirect(url_for('main.home'))
 
 
 @routine_bp.route('/remover/<int:routine_id>', methods=['GET'])
@@ -80,6 +82,8 @@ def delete(routine_id: int):
     routine_type = routine.type.value
     try:
         if routine:
+            if routine.created_by != current_user.id:
+                abort(403)
             routine_service.delete(routine)
     except Exception as e:
         flash(str(e))
@@ -93,7 +97,8 @@ def detail(routine_id: int):
         routine = routine_service.get_by_id(routine_id)
         if not routine:
             raise Exception('Rotina não encontrada.')
-
+        if routine.created_by != current_user.id and routine.created_for != current_user.id:
+            abort(403)
         return render_template('routine/detail_routine.html', routine=routine)
     except Exception as e:
         flash(str(e))
@@ -104,6 +109,11 @@ def detail(routine_id: int):
 def select_supervisor():
     routine_id = request.args.get('routine_id')
     routine = routine_service.get_by_id(int(routine_id))
+
+    if routine:
+        if routine.created_by != current_user.id:
+            abort(403)
+
     major_tag = 'Nutrição' if routine.type.value == 'dietary' else 'Educação física'
     professors = [friend for friend in current_user.friends if friend.teaches(major_tag)]
     try:

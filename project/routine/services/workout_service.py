@@ -35,7 +35,7 @@ class WorkoutService:
             self.item_exercise_repo.insert(item_exercise)
 
         except SQLAlchemyError as e:
-            raise Exception('Erro ao adicionar exercício ao treino.' + e._message()) from e
+            raise Exception('Erro ao adicionar exercício ao treino.') from e
 
     def delete(self, exercise_id):
         try:

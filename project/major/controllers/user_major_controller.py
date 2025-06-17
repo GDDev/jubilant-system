@@ -1,5 +1,5 @@
-from flask import flash, render_template, request, redirect, url_for
-from flask_login import current_user
+from flask import flash, render_template, request, redirect, url_for, abort
+from flask_login import current_user, login_required
 
 from .. import major_bp
 from ..services import UserMajorService
@@ -11,6 +11,7 @@ user_major_service = UserMajorService()
 
 
 @major_bp.route('/adicionar/institucional/', methods=['GET', 'POST'])
+@login_required
 def add_user_major():
     """
     Adds a Major to the current user.
@@ -21,7 +22,6 @@ def add_user_major():
         redirect: Redirects to the list_all page.
     """
     major_id = request.args.get('major_id')
-    is_major_temp = request.args.get('is_major_temp')
 
     if not major_id:
         raise MajorException('Formação não informada.')
@@ -29,26 +29,29 @@ def add_user_major():
     form = NewUserMajorForm()
     try:
         if form.validate_on_submit():
-            user_major_service.add(
-                major_id=int(major_id) if is_major_temp == 'False' else None,
-                temp_major_id=int(major_id) if is_major_temp == 'True' else None,
+            user_major = user_major_service.add(
+                major_id=int(major_id),
                 profile_id=current_user.id,
-                college_code=form.college_code.data,
-                institutional_email=form.institutional_email.data,
                 user_is=form.user_is.data,
                 start_date=form.start_date.data,
-                end_date=form.end_date.data if not form.check_ongoing.data else None,
-                approved=True if form.user_is.data.lower() == 'student' else False
+                end_date=form.end_date.data if not form.check_ongoing.data else None
             )
+            email = form.institutional_email.data
+            if not email:
+                flash('E-mail não informado. Por favor informe o e-mail para aprovar a sua formação.')
+            else:
+                user_major_service.send_institutional_email_verification(email, user_major.id)
             return redirect(url_for('major.list_all'))
     except MajorException as e:
         flash(str(e))
     except Exception as e:
         flash(str(e))
 
-    return render_template('new_user_major.html', form=form, major_id=major_id, is_major_temp=is_major_temp)
+    return render_template('new_user_major.html', form=form, major_id=major_id)
+
 
 @major_bp.route('/remover/institucional/<int:user_major_id>', methods=['GET'])
+@login_required
 def remove_from_user(user_major_id: int):
     """
     Removes a major from the current user.
@@ -60,14 +63,20 @@ def remove_from_user(user_major_id: int):
         redirect: Redirects to the list_all page.
     """
     try:
-        user_major_service.remove(user_major_id)
+        user_major = user_major_service.find_by_id(user_major_id)
+        if user_major:
+            if user_major.profile_id != current_user.id:
+                abort(403)
+            user_major_service.remove(user_major_id)
     except MajorException as e:
         flash(str(e))
 
     return redirect(url_for('major.list_all'))
 
-@major_bp.route('editar/institucional/<int:user_major_id>', methods=['GET', 'POST'])
-def edit_user_major(user_major_id: int):
+
+@major_bp.route('editar/institucional/', methods=['GET', 'POST'])
+@login_required
+def edit_user_major():
     """
     Updates a UserMajor.
 
@@ -79,23 +88,45 @@ def edit_user_major(user_major_id: int):
         Or
         redirect: Redirects to the list_all page.
     """
+    user_major_id = request.args.get('user_major_id')
     form = NewUserMajorForm()
-    user_major = None
     try:
-        user_major = user_major_service.find_by_id(user_major_id)
+        if not user_major_id:
+            raise MajorException('ID não informado.')
+        user_major = user_major_service.find_by_id(int(user_major_id))
         if not user_major:
             raise MajorException('Formação não encontrada.')
+        if user_major.profile_id != current_user.id:
+            abort(403)
         if form.validate_on_submit():
             user_major_service.update(
                 user_major,
-                college_code=form.college_code.data,
-                institutional_email=form.institutional_email.data,
                 user_is=form.user_is.data,
                 start_date=form.start_date.data,
-                end_date=form.end_date.data if not form.check_ongoing.data else None,
+                end_date=form.end_date.data
             )
-            return redirect(url_for('major.list_all'))
+            flash('Edições salvas com sucesso.')
+        return render_template('edit_major.html', form=form, user_major=user_major)
     except MajorException as e:
         flash(str(e))
+        return redirect(url_for('major.list_all'))
 
-    return render_template('edit_major.html', form=form, user_major=user_major)
+
+@major_bp.route('/reenviar_confirmacao', methods=['GET'])
+@login_required
+def resend_institutional_email_verification():
+    email = request.args.get('email')
+    user_major_id = request.args.get('user_major_id')
+    try:
+        if not email:
+            raise MajorException('E-mail não informado.')
+        if not user_major_id:
+            raise MajorException('ID não informado.')
+        user_major = user_major_service.find_by_id(int(user_major_id))
+        if user_major.profile_id != current_user.id:
+            abort(403)
+        user_major_service.send_institutional_email_verification(email, user_major_id)
+        return redirect(url_for('major.edit_user_major', user_major_id=user_major_id))
+    except (MajorException, Exception) as e:
+        flash(str(e))
+    return redirect(url_for('major.list_all'))

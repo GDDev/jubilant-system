@@ -2,7 +2,7 @@ from enum import Enum
 
 import uuid
 
-from core import Base
+from utils import Base
 from flask_login import UserMixin
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -147,9 +147,6 @@ class UserProfile(UserMixin, Base):
                                                                                      "UserMajor.user_is == "
                                                                                      "'professor')", viewonly=True)
 
-    submitted_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='submitter', foreign_keys='[TempMajor.submitted_by]', passive_deletes=True)
-    assigned_temp_majors: Mapped[list['TempMajor']] = relationship('TempMajor', back_populates='assigned_admin', foreign_keys='[TempMajor.assigned_to]', passive_deletes=True)
-
     posts: Mapped[list['Post']] = relationship('Post', back_populates='profile', cascade='all, delete-orphan')
     comments: Mapped[list['Comment']] = relationship('Comment', back_populates='profile', cascade='all, delete-orphan')
 
@@ -227,14 +224,10 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a professor, False otherwise.
         """
-        return any(m.approved for m in self.taught_majors)
+        return any(m for m in self.taught_majors)
 
     def has_major(self, major_tag) -> bool:
-        majors = [major.major for major in self.majors if major.major and major.approved] + [temp.temp_major for temp in self.majors if temp.temp_major and temp.approved]
-        # if major_tag == 'Nutrição':
-        #     return any(m for m in majors if m.area_tag == 'Nutrição')
-        # elif major_tag == 'Educação física':
-        #     return any(m for m in majors if m.area_tag == 'Educação física')
+        majors = [major.major for major in self.majors if major.major and major.approved]
         return any(m for m in majors if m.area_tag == major_tag)
 
     def teaches(self, major_tag) -> bool:

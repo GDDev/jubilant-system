@@ -1,3 +1,23 @@
+{% block searchbar %}
+    <div class="w-75 d-flex flex-column justify-content-center
+align-items-center mb-3">
+        <div class="position-relative d-flex">
+            <label>
+                <input type="text" name="search" class="form-control pe-5"
+                       placeholder="Buscar usuário" id="search_user">
+            </label>
+            <button type="button" class="btn position-absolute end-0 top-0 bottom-0 d-flex
+            align-items-center px-2 rounded-0 rounded-end" id="search_btn">
+                <i class="bi bi-search text-black"></i>
+            </button>
+        </div>
+        <div class="d-flex justify-content-end gap-1 mt-2 end-0" style="font-size: .8rem; width: 40%;">
+            <span>Mostrar:</span>
+            <span id="show_users" class="text-info text-muted" style="cursor: pointer;">Usuários</span> |
+            <span id="show_admins" class="text-info" style="cursor: pointer;">Admins</span>
+        </div>
+    </div>
+{% endblock %}
 <div id="users-container" class="w-75 d-flex flex-column justify-content-center align-items-center">
 </div>
 <nav>
@@ -9,11 +29,49 @@
 
 <script>
     let currentPage = 1;
+    let role = "user";
 
-    async function loadUsers(page = 1) {
+    const show_users = document.getElementById("show_users")
+    const show_admins = document.getElementById("show_admins")
+    show_users.onclick = () => {
+        role = "user";
+        loadUsers();
+        show_users.classList.add("text-muted");
+        show_admins.classList.remove("text-muted");
+    }
+    show_admins.onclick = () => {
+        role = "admin";
+        loadUsers();
+        show_admins.classList.add("text-muted");
+        show_users.classList.remove("text-muted");
+    }
+
+    async function fetchBySearch(search) {
+        const response = await fetch(`/perfil/api/buscar_usuario?search=${search}&role=${role}`);
+        return await response.json();
+    }
+
+
+    async function autoFetch(page){
+        const response = await fetch(`/perfil/api/listar_todos?page=${page}&role=${role}`);
+        return await response.json();
+    }
+
+
+    document.getElementById("search_user").addEventListener("input", async (e) => {
+        e.preventDefault();
+        let search = document.getElementById("search_user").value;
+        let data = await fetchBySearch(search);
+        if (search.length === 0){ data = await autoFetch(1)}
+        await loadUsers(1, data);
+    });
+
+
+    async function loadUsers(page = 1, data = []) {
         try {
-            const response = await fetch(`/perfil/api/listar_todos?page=${page}`);
-            const data = await response.json();
+            if (data.length <= 0){
+                data = await autoFetch(page);
+            }
 
             const container = document.getElementById('users-container');
             container.innerHTML = '';
@@ -21,7 +79,7 @@
             if (data.users && data.users.length > 0) {
                 data.users.forEach(user => {
                     const a = document.createElement('a');
-                    a.classList.add('btn', 'w-100', 'text-start', 'd-flex', 'justify-content-between');
+                    a.classList.add('btn', 'w-100', 'text-start', 'd-flex', 'justify-content-between', 'mt-2');
                     a.href = `#${user.code}`;
                     a.setAttribute('role', 'button');
                     a.setAttribute('data-bs-toggle', 'collapse');
@@ -37,15 +95,23 @@
                     div.id = `${user.code}`;
                     div.innerHTML = `
                         <div class="card card-body primary-bg">
-                            <h5 class="card-title">${user.name} (${user.username})</h5>
-                            <p class="card-text">${user.email}</p>
+                            <div>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">${user.name} (${user.username})</h5>
+                                    <a href="{{ url_for('admin.control_user') }}?p_id=${user.id}"
+                                    class="text-decoration-none bg-transparent">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
+                                <p class="card-text">${user.email}</p>
+                            </div>
                         </div>
                     `;
                     container.appendChild(a);
                     container.appendChild(div);
                 });
             } else {
-                container.innerHTML = '<span>Nenhum usuário cadastrado.</span>';
+                container.innerHTML = '<span>Nenhum usuário encontrado.</span>';
             }
 
             if (data.has_prev) { document.getElementById('prev-page').style.visibility = 'visible'; }

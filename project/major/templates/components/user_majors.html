@@ -1,6 +1,5 @@
 {% if current_user.majors %}
     {% if current_user.is_professor %}
-{#    {% if True %}#}
     	<span class="fw-bold fs-5 font-monospace">Lecionando</span>
         {% for user_major in current_user.taught_majors %}
         	{% include 'components/major_container.html' %}

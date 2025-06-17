@@ -1,8 +1,9 @@
 {% extends 'profile/config.html' %}
 {% block edit_profile %}{% endblock %}
 {% block delete_account %}
+    {% block reset_password %}{% endblock %}
     <form action="{{ url_for('usuario.delete') }}" method="post"
-          class="d-flex flex-column w-50 m-auto mt-4 gap-3 justify-content-center align-items-center">
+          class="d-flex flex-column w-50 m-auto gap-3 justify-content-center align-items-center">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="user_id" value="{{ current_user.user.id }}">
 

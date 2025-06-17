@@ -3,7 +3,7 @@ from datetime import time
 from sqlalchemy import Integer, ForeignKey, Float, String, Time
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from core import Base
+from utils import Base
 
 class ItemOpts(Base):
     __tablename__ = 'item_opts'

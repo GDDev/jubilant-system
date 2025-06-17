@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
-from core import db, migrate, config_oauth, config_mail, mock_100_users
+from utils import db, migrate, config_oauth, config_mail, mock_100_users
 from project.routine import item_bp
 
 
@@ -21,17 +21,19 @@ def register_all_bp(flask: Flask):
     from project.auth import auth
     from project.main import main
     from project.user import user, profile
+    from project.admin import admin_bp
     from project.friendship import friendship
     from project.notification import notification
     from project.major import major_bp
     from project.post import post_bp, comment_bp
     from project.routine import routine_bp, item_bp
-    from project.dashboard import admin_ds_bp
+    from project.professor import professor_bp
 
     flask.register_blueprint(auth, url_prefix='/auth')
     flask.register_blueprint(main, url_prefix='/')
     flask.register_blueprint(user, url_prefix='/usuario')
     flask.register_blueprint(profile, url_prefix='/perfil')
+    flask.register_blueprint(admin_bp, url_prefix='/admin')
     flask.register_blueprint(friendship, url_prefix='/amigo')
     flask.register_blueprint(notification, url_prefix='/notificacao')
     flask.register_blueprint(post_bp, url_prefix='/postagem')
@@ -39,7 +41,7 @@ def register_all_bp(flask: Flask):
     flask.register_blueprint(routine_bp, url_prefix='/rotina')
     flask.register_blueprint(item_bp, url_prefix='/item')
     flask.register_blueprint(major_bp, url_prefix='/formacao')
-    flask.register_blueprint(admin_ds_bp, url_prefix='/admin')
+    flask.register_blueprint(professor_bp, url_prefix='/professor')
 
 def config_login_manager(flask: Flask):
     login_manager = LoginManager()

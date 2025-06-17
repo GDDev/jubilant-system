@@ -1,4 +1,4 @@
-from core import Base
+from utils import Base
 
 from sqlalchemy import Integer, Float, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
