@@ -1,5 +1,5 @@
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.exceptions import HTTPException
 
 from utils import admin_required
@@ -29,6 +29,8 @@ def control_user():
         if profile_id is None:
             raise Exception('ID não encontrado.')
         profile = profile_service.find_by_id(profile_id)
+        if current_user.role != 'god' and current_user.id != profile.id:
+            raise Exception('Admins não podem alterar informações de outros admins.')
         return render_template('control_user.html', profile=profile)
     except (HTTPException, Exception) as e:
         flash(str(e))

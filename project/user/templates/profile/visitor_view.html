@@ -38,11 +38,13 @@
                     </a>
                 </div>
             {% elif current_user.role != 'user' %}
-                <div>
-                    <a href="{{ url_for('admin.control_user', p_id=profile.id) }}" class="text-decoration-none">
-                        Gerenciar <i class="bi bi-shield"></i>
-                    </a>
-                </div>
+                {% if current_user.role == 'god' or current_user.id == profile.id %}
+                	<div>
+                        <a href="{{ url_for('admin.control_user', p_id=profile.id) }}" class="text-decoration-none">
+                            Gerenciar <i class="bi bi-shield"></i>
+                        </a>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
 

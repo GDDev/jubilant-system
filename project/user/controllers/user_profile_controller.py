@@ -66,8 +66,13 @@ def update_password():
     try:
         if request.method == 'POST':
             new_pwd = request.form.get('pwd')
-            if not new_pwd or not new_pwd.strip():
+            confirm_pwd = request.form.get('pwd2')
+            if not new_pwd or new_pwd == '':
                 raise Exception('Senha não pode ser vazia.')
+            if not confirm_pwd or new_pwd == '':
+                raise Exception('Você precisa confirmar sua nova senha.')
+            if new_pwd != confirm_pwd:
+                raise Exception('As novas senhas não são iguais.')
             hashed_pwd = generate_password_hash(new_pwd)
             if not hashed_pwd:
                 raise Exception('Erro ao criptografar senha.')
