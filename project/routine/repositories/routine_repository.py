@@ -30,3 +30,17 @@ class RoutineRepository:
     @staticmethod
     def get_routines_by_type(routine_type, user_id):
         return db.session.query(Routine).filter_by(type=routine_type, created_for=user_id).all()
+
+    @staticmethod
+    def get_unapproved_diets():
+        return (db.session.query(Routine)
+                .filter_by(status='PENDING', type='DIETARY')
+                .order_by(Routine.created_at.asc())
+                .all())
+
+    @staticmethod
+    def get_unapproved_workouts():
+        return (db.session.query(Routine)
+                .filter_by(status='PENDING', type='WORKOUT')
+                .order_by(Routine.created_at.asc())
+                .all())

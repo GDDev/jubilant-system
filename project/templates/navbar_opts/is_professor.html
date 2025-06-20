@@ -8,7 +8,7 @@
 
         <div class="dropdown-menu ms-1 primary-bg border-0" style="font-size: .8rem;">
             {% if current_user.teaches('Nutrição') %}
-                <a href="#"
+                <a href="{{ url_for('professor.pending_diets') }}"
                    class="dropdown-item rounded-2">
                     Dietas
                 </a>

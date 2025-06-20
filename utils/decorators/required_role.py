@@ -20,3 +20,25 @@ def god_required(func):
             abort(403)
         return func(*args, **kwargs)
     return decorated_function
+
+def nutri_professor_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_professor:
+            abort(403)
+        if not current_user.teaches('Nutrição'):
+            abort(403)
+        return func(*args, **kwargs)
+    return decorated_function
+
+
+def pe_professor_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_professor:
+            abort(403)
+        if not current_user.teaches('Educação física'):
+            abort(403)
+        return func(*args, **kwargs)
+    return decorated_function
+

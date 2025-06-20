@@ -173,6 +173,9 @@ def verify_institutional_email():
     try:
         if not token:
             raise AuthException('Token não informado.')
+        if not current_user.is_authenticated:
+            flash('Por favor entre em sua conta e tente novamente.')
+            return redirect(url_for('auth.signin', next=request.path))
         user_major_id = request.args.get('user_major_id')
         if not user_major_id:
             raise AuthException('Formação inválida.')

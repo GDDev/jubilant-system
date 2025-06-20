@@ -15,12 +15,17 @@ user_profile_service = UserProfileService()
 @user.route('/alterar_email', methods=['GET', 'POST'])
 @fresh_login_required
 def update_email():
+    from re import fullmatch
+    from utils.regex import re_email_open
+
     profile = current_user
     try:
         if request.method == 'POST':
             new_email = request.form.get('email')
             if not new_email or not new_email.strip():
                 raise UserException('Email não pode ser vazio.')
+            if not bool(fullmatch(re_email_open, new_email)):
+                raise UserException('Email inválido.')
             if user_service.find_by_email(new_email):
                 raise UserException('Email já cadastrado.')
 

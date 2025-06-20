@@ -5,8 +5,9 @@ from flask_wtf import FlaskForm
 from wtforms.fields.choices import SelectField
 from wtforms.fields.datetime import DateField
 from wtforms.fields.simple import StringField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Optional, ValidationError
+from wtforms.validators import DataRequired, Length, Optional, ValidationError, Email
 
+from utils.validators import valid_institutional_email
 from ..models import MajorEnum
 
 
@@ -33,7 +34,13 @@ def end_date_validations(form, field):
 class NewUserMajorForm(FlaskForm):
     # TODO: Add e-mail constraints
     institutional_email = StringField('E-mail institucional',
-                                      validators=[Optional(), Length(max=100)],
+                                      validators=[Optional(),
+                                                  Length(max=100),
+                                                  Email(
+                                                      message='Por favor insira um e-mail válido.',
+                                                      check_deliverability=True
+                                                  ),
+                                                  valid_institutional_email],
                                       render_kw={"placeholder": "Ex: 11223344566@aluno.uni.com"})
     user_is = SelectField('Selecione uma capacitação',
                           choices=[(training.name, training.value.capitalize()) for training in MajorEnum])

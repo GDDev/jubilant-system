@@ -4,6 +4,6 @@ from .mail import config_mail, send_mail, verify_verification_token, generate_ve
 from .decorators import admin_required
 from .mock_users import mock_100_users
 from .default_majors import populate_majors
-from .validators import valid_firstname, valid_name, valid_username, valid_access_creds
+from .validators import *
 from .normalize import *
 from .regex import *

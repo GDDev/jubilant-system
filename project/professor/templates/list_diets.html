@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}Aprovar Dietas{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
+        <div>
+            {% if not diets %}
+            	<span>Nenhuma dieta encontrada para avaliar.</span>
+            {% endif %}
+            {% for diet in diets %}
+            	<div>
+                    {{ diet.creator.user.name }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

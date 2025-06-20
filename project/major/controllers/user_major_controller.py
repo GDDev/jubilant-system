@@ -115,16 +115,26 @@ def edit_user_major():
 @major_bp.route('/reenviar_confirmacao', methods=['GET'])
 @login_required
 def resend_institutional_email_verification():
+    from utils.regex import re_email_umc
+    from re import fullmatch
+
     email = request.args.get('email')
     user_major_id = request.args.get('user_major_id')
     try:
         if not email:
             raise MajorException('E-mail não informado.')
+        if not bool(fullmatch(re_email_umc, email)):
+            raise MajorException('Email inválido.')
         if not user_major_id:
             raise MajorException('ID não informado.')
         user_major = user_major_service.find_by_id(int(user_major_id))
         if user_major.profile_id != current_user.id:
             abort(403)
+        if user_major.user_is.value == 'estudante' and 'alunos' not in email:
+            raise MajorException('Email informado não corresponde à alunos.')
+        if user_major.user_is.value == 'professor' and 'alunos' in email:
+            raise MajorException('Email informado não corresponde à professores.')
+
         user_major_service.send_institutional_email_verification(email, user_major_id)
         return redirect(url_for('major.edit_user_major', user_major_id=user_major_id))
     except (MajorException, Exception) as e:

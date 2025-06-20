@@ -2,7 +2,7 @@ import re
 
 from wtforms.validators import ValidationError
 
-from .regex import re_name, re_f_name, re_username, re_text
+from .regex import re_name, re_f_name, re_username, re_text, re_email_open
 
 
 def validate_post(title: str | None, content: str) -> None:
@@ -61,7 +61,7 @@ def valid_username(form, field):
 
 def valid_access_creds(form, field):
     if field.data:
-        if not re.match(re_username, field.data.strip()):
+        if not re.match(re_username, field.data.strip()) and not re.fullmatch(re_email_open, field.data.strip()):
             raise ValidationError(f'Informações de acesso inválidas.')
 
 def valid_text(form, field):
@@ -69,3 +69,23 @@ def valid_text(form, field):
     if field.data:
         if not re.match(re_text, data):
             raise ValidationError('Caracteres inválidos encontrados.')
+
+def valid_email(form, field):
+    from .regex import re_email_open
+    email = field.data.strip()
+    if not email:
+        raise ValidationError('Email não informado.')
+    if not bool(re.fullmatch(re_email_open, email)):
+        raise ValidationError(f'Endereço de email @{email.split("@")[1]} não é aceito.')
+
+def valid_institutional_email(form, field):
+    from .regex import re_email_umc
+    email = field.data.strip()
+    if not email:
+        raise ValidationError('Email não informado.')
+    if not bool(re.fullmatch(re_email_umc, email)):
+        raise ValidationError(f'Endereço de email @{email.split("@")[1]} não é aceito.')
+    if form.user_is.data == 'STUDENT' and 'alunos' not in email:
+        raise ValidationError('Email informado não corresponde à alunos.')
+    if form.user_is.data == 'PROFESSOR' and 'alunos' in email:
+        raise ValidationError('Email informado não corresponde à professores.')
