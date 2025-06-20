@@ -6,7 +6,6 @@ from flask_login import login_required, current_user
 from .. import routine_bp
 from ..forms.new_routine_form import NewRoutineForm
 from ..services import RoutineService
-from ...major import AreaTags
 
 routine_service = RoutineService()
 

@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from .. import item_bp
 from ..forms import NewItemForm
 from ..services import ItemService, RoutineService
+from utils.normalize import strip_title
 
 
 item_service = ItemService()
@@ -21,7 +22,7 @@ def add(routine_id: int):
             item = item_service.add(
                 routine_type=routine.type.value,
                 routine_id=routine_id,
-                name=form.name.data,
+                name=strip_title(form.name.data),
                 expiration_date=form.expiration_date.data,
                 source=form.source.data,
             )

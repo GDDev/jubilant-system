@@ -3,6 +3,8 @@ from wtforms import IntegerField, DecimalField, TimeField, StringField, TextArea
 from wtforms.fields.choices import SelectField
 from wtforms.validators import DataRequired, NumberRange, Length, Optional, ValidationError
 
+from utils.validators import valid_text
+
 
 def not_default(form, field):
     if field.data == '':
@@ -16,7 +18,7 @@ class NewWorkoutForm(FlaskForm):
             return value.replace(',', '.')
         return value
 
-    exercise_name = StringField('Nome do exercício', validators=[Length(max=50), DataRequired()])
+    exercise_name = SelectField('Nome do exercício', validators=[DataRequired()])
     #TODO: Change to a SelectField
 
     # muscle_group = StringField('Grupo muscular alvo', validators=[Length(max=50), DataRequired()])
@@ -45,7 +47,7 @@ class NewWorkoutForm(FlaskForm):
                                        ('Full body', 'Full body')
                                    ]
                                )
-    instruction = TextAreaField('Intruções de execução', validators=[Optional(), Length(max=500)])
+    instruction = TextAreaField('Intruções de execução', validators=[Optional(), Length(max=500), valid_text])
 
 
     min_sets = IntegerField('Quantidade mínima de séries', validators=[DataRequired(), NumberRange(min=1)])

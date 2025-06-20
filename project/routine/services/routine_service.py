@@ -1,7 +1,7 @@
 from flask_login import current_user
 from sqlalchemy.exc import SQLAlchemyError
 
-from ..models import Routine, RoutineEnum
+from ..models import Routine, RoutineEnum, RoutineStatus
 from ..repositories import RoutineRepository
 
 
@@ -15,7 +15,8 @@ class RoutineService:
         routine = Routine(
             created_by=current_user.id,
             created_for=created_for,
-            type=RoutineEnum.WORKOUT.value if routine_type == 'workout' else RoutineEnum.DIETARY.value
+            type=RoutineEnum.WORKOUT.value if routine_type == 'workout' else RoutineEnum.DIETARY.value,
+            status=RoutineStatus.APPROVED.value if current_user.is_professor else RoutineStatus.PENDING.value
         )
         self.routine_repo.insert(routine)
         return routine

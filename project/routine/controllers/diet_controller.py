@@ -23,8 +23,7 @@ def diet_meals():
         if not item:
             raise Exception('Item não encontrado.')
         if (item.routine.created_for != current_user.id and
-            item.routine.created_by != current_user.id and
-            item.routine.supervisor_id != current_user.id):
+            item.routine.created_by != current_user.id):
             abort(403)
         return render_template('diet/item_meals.html', item=item)
     except Exception as e:
@@ -46,7 +45,7 @@ def add_opt():
         if not item:
             raise Exception('Item não encontrado.')
 
-        if not item.routine.created_by != current_user.id and item.routine.supervisor_id != current_user.id:
+        if item.routine.created_by != current_user.id:
             abort(403)
         form = NewOptionForm()
 
@@ -78,6 +77,16 @@ def add_food():
         option = opt_service.find_by_id(int(option_id))
         if option:
             form = NewOptFoodForm()
+            form.name.choices = [
+                ('', '-----Selecione-----'),
+                ('Aveia', 'Aveia'),
+                ('Leite', 'Leite'),
+                ('Whey Protein', 'Whey Protein'),
+                ('Arroz', 'Arroz'),
+                ('Peito de frango', 'Peito de frango'),
+                ('Filé mignon', 'Filé mignon'),
+                ('Tilápia', 'Tilápia')
+            ]
             if form.validate_on_submit():
                 food_service.add(
                     opt_id=option.id,

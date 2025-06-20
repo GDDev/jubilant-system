@@ -26,7 +26,6 @@
         </div>
       {% endif %}
     {% endwith %}
-
     <form action="{{ url_for('auth.signin') }}" method="post" class="row vh-auto w-25 g-3 align-items-center
     needs-validation" novalidate>
         {{ form.csrf_token }}
@@ -59,6 +58,11 @@
               <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" style="height:20px;"
               class="rounded">
               <span class="text-dark fw-bold">Entrar com Google</span>
+            </a>
+        </div>
+        <div class="col-12 text-center mt-5">
+            <a href="{{ url_for('main.faq') }}" class="small text-muted p-0 text-decoration-none m-auto">
+                Perguntas Frequentes
             </a>
         </div>
     </form>

@@ -3,7 +3,8 @@ text-start">
     {% from "_formhelpers.html" import render_field %}
     {{ form.csrf_token }}
 
-    {{ render_field(form.name) }}
+    {{ form.name.label(class='form-label') }}
+    {{ form.name(class='form-select primary-bg-dark m-auto', style='width:96%;') }}
     {{ render_field(form.quantity) }}
     {{ render_field(form.weight) }}
     {{ render_field(form.description) }}

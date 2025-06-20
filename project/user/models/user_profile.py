@@ -214,7 +214,7 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a student, False otherwise.
         """
-        return any(m for m in self.studied_majors)
+        return any(m.approved for m in self.studied_majors)
 
     @property
     def is_professor(self) -> bool:
@@ -224,14 +224,14 @@ class UserProfile(UserMixin, Base):
         Returns:
             bool: True if the user is a professor, False otherwise.
         """
-        return any(m for m in self.taught_majors)
+        return any(m.approved for m in self.taught_majors)
 
     def has_major(self, major_tag) -> bool:
         majors = [major.major for major in self.majors if major.major and major.approved]
         return any(m for m in majors if m.area_tag == major_tag)
 
     def teaches(self, major_tag) -> bool:
-        majors = [major for major in self.taught_majors if major.major]
+        majors = [major for major in self.taught_majors if major.major and major.approved]
         return any(m.approved for m in majors if m.major.area_tag == major_tag)
 
     @property

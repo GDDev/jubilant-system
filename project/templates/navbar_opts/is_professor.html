@@ -1,26 +1,24 @@
 <li class="nav-item w-100">
-    <div class="dropdown w-100">
-        <button class="text-white nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown w-100 ms-1">
+        <button type="button" class="btn border-0 text-white"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                style="font-size: .8rem;">
             <i class="bi bi-clipboard-check"></i> Aprovar
         </button>
 
-        <ul class="dropdown-menu bg-transparent border-0">
+        <div class="dropdown-menu ms-1 primary-bg border-0" style="font-size: .8rem;">
             {% if current_user.teaches('Nutrição') %}
-                <li>
-                    <a href="#"
-                       class="dropdown-item ms-3 rounded" style="width: fit-content;">
-                        Dietas
-                    </a>
-                </li>
+                <a href="#"
+                   class="dropdown-item rounded-2">
+                    Dietas
+                </a>
             {% endif %}
             {% if current_user.teaches('Educação física') %}
-                <li>
-                    <a href="#"
-                       class="dropdown-item ms-3 rounded" style="width: fit-content;">
-                        Treinos
-                    </a>
-                </li>
+                <a href="#"
+                   class="dropdown-item rounded-2">
+                    Treinos
+                </a>
             {% endif %}
-        </ul>
+        </div>
     </div>
 </li>

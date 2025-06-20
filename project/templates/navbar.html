@@ -20,6 +20,9 @@
             </div>
         </div>
         <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4" style="font-size: .75rem;">
+            {% if current_user.is_professor %}
+                {% include 'navbar_opts/is_professor.html' %}
+            {% endif %}
             {% if current_user.role == 'admin' or current_user.role == 'god' %}
                 {% include 'navbar_opts/is_admin.html' %}
             {% endif %}
@@ -31,9 +34,6 @@
                     <i class="bi bi-people-fill"></i> Meus Amigos
                 </a>
             </li>
-            {% if current_user.is_professor %}
-                {% include 'navbar_opts/is_professor.html' %}
-            {% endif %}
             <li class="nav-item w-100">
                 <a href="{{ url_for('major.list_all') }}"
                     class="nav-link

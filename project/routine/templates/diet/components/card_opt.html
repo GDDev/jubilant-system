@@ -30,9 +30,9 @@
                     {% else %}
                         <b>{{ '{:.2f}'.format(food.weight) }}</b>
                     {% endif %}
-                    grama{% if food.weight > 1 %}s{% endif %}
+                    grama{% if food.weight > 1 %}s{% endif %} de
                 {% endif %}
-                de {{ food.name }}.
+                {{ food.name }}.
                 {% if food.description %}
                 	<span class="text-muted small">({{ food.description|capitalize }})</span>
                 {% endif %}

@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DecimalField, SubmitField
+from wtforms.fields.choices import SelectField
 from wtforms.validators import DataRequired, length, Optional, NumberRange
+
+from utils.validators import valid_text
 
 
 class NewOptFoodForm(FlaskForm):
@@ -10,11 +13,10 @@ class NewOptFoodForm(FlaskForm):
             return value.replace(',', '.')
         return value
 
-    name = StringField(
+    name = SelectField(
         'Alimento',
         validators=[
-            DataRequired(message='Preencha este campo.'),
-            length(max=50, message='Limite de caracteres: 50')
+            DataRequired(message='Preencha este campo.')
         ],
         render_kw={'placeholder': 'Ex: Peito de frango'}
     )
@@ -40,7 +42,8 @@ class NewOptFoodForm(FlaskForm):
         'Observações',
         validators=[
             Optional(),
-            length(max=500, message='Limite de caracteres: 500')
+            length(max=500, message='Limite de caracteres: 500'),
+            valid_text
         ],
         render_kw={'placeholder': 'Ex: Peito de frango pode ser cozido ou frito em Air Fryer'}
     )

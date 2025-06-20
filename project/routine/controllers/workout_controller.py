@@ -10,6 +10,7 @@ workout_service = WorkoutService()
 
 
 @item_bp.route('/treino/exercicios', methods=['GET'])
+@login_required
 def workout_exercises():
     item_id = request.args.get('item_id')
     item = item_service.find_by_id(int(item_id))
@@ -23,6 +24,7 @@ def workout_exercises():
 
 
 @item_bp.route('/treino/adicionar/exercicio/', methods=['GET', 'POST'])
+@login_required
 def add_exercise():
     item_id = request.args.get('item_id')
     try:
@@ -31,6 +33,17 @@ def add_exercise():
         item = item_service.find_by_id(int(item_id))
         if item:
             form = NewWorkoutForm()
+            form.exercise_name.choices = [
+                ('', '-----Selecione-----'),
+                ('Rosca direta', 'Rosca direta'),
+                ('Supino reto', 'Supino reto'),
+                ('Rosca concentrada', 'Rosca concentrada'),
+                ('Agachamento livre', 'Agachamento livre'),
+                ('Agachamento máquina', 'Agachamento máquina'),
+                ('Stiff', 'Stiff'),
+                ('Tríceps testa', 'Tríceps testa'),
+                ('Tríceps corda', 'Tríceps corda')
+            ]
             if form.validate_on_submit():
                 workout_service.add(
                     name=form.exercise_name.data,
@@ -53,6 +66,7 @@ def add_exercise():
     return redirect(url_for('routine.list_all', routine_type='workout'))
 
 @item_bp.route('/treino/remover/exercicio/<int:exercise_id>', methods=['GET'])
+@login_required
 def remove_exercise(exercise_id: int):
     try:
         exercise = item_service.find_by_id(exercise_id)
