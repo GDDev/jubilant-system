@@ -1,5 +1,6 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required
+from werkzeug.exceptions import HTTPException
 
 from utils import admin_required
 from .. import admin_bp
@@ -24,7 +25,11 @@ def control_user():
     profile_service = UserProfileService()
 
     profile_id = request.args.get('p_id')
-    if profile_id is None:
-        pass
-    profile = profile_service.find_by_id(profile_id)
-    return render_template('control_user.html', profile=profile)
+    try:
+        if profile_id is None:
+            raise Exception('ID não encontrado.')
+        profile = profile_service.find_by_id(profile_id)
+        return render_template('control_user.html', profile=profile)
+    except (HTTPException, Exception) as e:
+        flash(str(e))
+        return redirect(url_for('admin.panel'))

@@ -1,20 +1,24 @@
 {% extends "layout.html" %}
 {% block title %}Nova Postagem{% endblock %}
 {% block content %}
-    <div class="w-75 m-auto text-start mt-4">
-        <form action="{{ url_for('post.new') }}" method="post">
+    <div class="w-50 m-auto text-start mt-4">
+        <span class="w-100 d-flex justify-content-center fs-5 mb-3 text-info fw-bold">Nova Postagem</span>
+        <form action="{{ url_for('post.new') }}" method="post" class="d-flex flex-column gap-2">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-            <label for="title" class="form-label">Título</label>
-            <input type="text" name="title" id="title" placeholder="Título da postagem"
-                   class="form-control" maxlength="50">
-
-            <label for="content">Postagem</label>
-            <textarea name="content" id="content" cols="3" rows="5" class="form-control"
-                      placeholder="O que está em sua mente?" maxlength="500" required></textarea>
-
-            <input type="submit" value="Postar" class="btn btn-success mt-3">
-            <a href="{{ url_for('post.feed') }}" class="btn btn-danger mt-3">Cancelar</a>
+            <div class="col-12">
+                <label for="title" class="form-label">Título <span class="small text-muted">(Opcional)</span></label>
+                <input type="text" name="title" id="title" placeholder="Título da postagem"
+                       class="form-control" maxlength="50">
+            </div>
+            <div class="col-12">
+                <label for="content">Postagem</label>
+                <textarea name="content" id="content" cols="3" rows="5" class="form-control"
+                          placeholder="O que está em sua mente?" maxlength="500" required></textarea>
+            </div>
+            <div class="col-12">
+                <input type="submit" value="Postar" class="btn btn-success mt-3">
+                <a href="{{ url_for('post.feed') }}" class="btn btn-danger mt-3">Cancelar</a>
+            </div>
         </form>
     </div>
 {% endblock %}

@@ -2,24 +2,22 @@
 {% block title %}Nova Notificação do Sistema{% endblock %}
 
 {% block content %}
-    {% for flash in flashes %}
-    	
-    {% endfor %}
-    
-    <form action="{{ url_for('notificacao.send_system_noti') }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="w-50 m-auto">
+        <form action="{{ url_for('notificacao.send_system_noti') }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <label for="target" class="form-label">Selecione quem deverá receber a notificação</label>
-        <select name="target" id="target" class="form-select mb-3" aria-label="Opções de alvos para
-        notificação" style="background-color: #003F88; color: white; cursor: pointer;">
-            <option value="users" selected>Usuários</option>
-            <option value="admins">Admins</option>
-            <option value="both">Usuários e Admins</option>
-        </select>
+            <label for="target" class="form-label">Selecione quem deverá receber a notificação</label>
+            <select name="target" id="target" class="form-select mb-3" aria-label="Opções de alvos para
+            notificação" style="background-color: #003F88; color: white; cursor: pointer;">
+                <option value="users" selected>Usuários</option>
+                <option value="admins">Admins</option>
+                <option value="both">Usuários e Admins</option>
+            </select>
 
-        <label for="content" class="form-label">Escreva a mensagem da notificação</label>
-        <textarea class="form-control mb-3" name="content" id="content" placeholder="Digite a mensagem da notificação" rows="2"></textarea>
+            <label for="content" class="form-label">Escreva a mensagem da notificação</label>
+            <textarea class="form-control mb-3" name="content" id="content" placeholder="Digite a mensagem da notificação" rows="2"></textarea>
 
-        <input type="submit" value="Enviar" class="btn btn-lg btn-success">
-    </form>
+            <input type="submit" value="Enviar" class="btn btn-sm btn-success">
+        </form>
+    </div>
 {% endblock %}

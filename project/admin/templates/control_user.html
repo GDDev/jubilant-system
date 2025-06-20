@@ -8,6 +8,12 @@
             </a>
         </div>
         <div class="w-100 m-auto d-flex flex-column align-items-center gap-3">
+            <div>
+                <a href="{{ url_for('perfil.detail_profile', code=profile.code) }}"
+                   class="text-decoration-none text-info fw-bold border rounded p-1 border-info shadow-lg">
+                    Ver Perfil
+                </a>
+            </div>
             <div class="gap-2 d-flex align-items-center w-100 m-auto justify-content-center">
                     <img src="{{ profile.profile_pic }}" alt="profile pic"
                          class="img-thumbnail profile-pic-lg p-1" style="width: 4rem; height: 4rem;">

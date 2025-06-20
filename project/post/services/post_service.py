@@ -1,9 +1,10 @@
-from flask_login import current_user
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..exceptions import PostException
 from ..repositories import PostRepository
 from ..models import Post
+
+from utils.validators import validate_post
 
 
 class PostService:
@@ -22,9 +23,10 @@ class PostService:
 
     def new_post(self, profile_id: str, title: str, content: str) -> None:
         try:
+            validate_post(title, content)
             self.post_repo.insert(Post(profile_id=profile_id, title=title, content=content))
-        except SQLAlchemyError as e:
-            raise PostException('Erro ao criar post.') from e
+        except (SQLAlchemyError, PostException, Exception) as e:
+            raise e
 
     def find_by_id(self, post_id: int) -> Post | None:
         try:
@@ -34,10 +36,11 @@ class PostService:
 
     def update_post(self, post: Post, title: str, content: str) -> None:
         try:
+            validate_post(title, content)
             post.title = title
             post.content = content
             self.post_repo.update(post)
-        except SQLAlchemyError as e:
+        except (SQLAlchemyError, PostException, Exception) as e:
             raise PostException('Erro ao atualizar post.') from e
 
     def delete(self, post):

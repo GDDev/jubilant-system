@@ -1,3 +1,5 @@
+from http.client import HTTPException
+
 from flask import flash, render_template, request, redirect, url_for, abort
 from flask_login import current_user, login_required
 
@@ -16,9 +18,12 @@ def new():
         return render_template('new_post.html')
     try:
         post_service.new_post(current_user.id, request.form.get('title'), request.form.get('content'))
+        return redirect(url_for('post.feed'))
     except PostException as e:
-        flash(str(e))
-    return redirect(url_for('post.feed'))
+        flash(e.message)
+    except (HTTPException, Exception) as _:
+        flash('Erro ao criar o post.')
+    return redirect(url_for('post.new'))
 
 
 @post_bp.route('/editar/<int:post_id>', methods=['GET', 'POST'])
@@ -38,7 +43,9 @@ def update(post_id: int):
         post_service.update_post(post, request.form.get('title'), request.form.get('content'))
         return redirect(url_for('post.detail_post', post_id=post_id))
     except PostException as e:
-        flash(str(e))
+        flash(e.message)
+    except (HTTPException, Exception) as _:
+        flash('Erro ao atualizar o post.')
     return redirect(url_for('post.feed'))
 
 

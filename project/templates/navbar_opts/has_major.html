@@ -1,0 +1,27 @@
+<li class="nav-item w-100">
+    <div class="dropdown w-100 ms-1">
+        <button type="button" class="btn border-0 text-white"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                style="font-size: .8rem;">
+            <i class="fa-solid fa-clipboard-list"></i> Minhas Rotinas
+        </button>
+        <div class="dropdown-menu ms-1 primary-bg border-0" style="font-size: .8rem;">
+            <a href="{{ url_for('routine.list_all')+'?routine_type=dietary' }}"
+               class="dropdown-item rounded-2
+                {% if request.full_path == url_for('routine.list_all')+'?routine_type=dietary' %}
+                    active
+                {% endif %}"
+                aria-current="page">
+                <i class="fa-solid fa-utensils"></i> Dietas
+            </a>
+            <a href="{{ url_for('routine.list_all')+'?routine_type=workout' }}"
+               class="dropdown-item rounded-2
+                {% if request.full_path == url_for('routine.list_all')+'?routine_type=workout' %}
+                    active
+                {% endif %}"
+                aria-current="page">
+                <i class="fa-solid fa-dumbbell"></i> Treinos
+            </a>
+        </div>
+    </div>
+</li>

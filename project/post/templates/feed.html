@@ -3,9 +3,6 @@
 {% block searchbar %}{% include "searchbar.html" %}{% endblock %}
 {% block content %}
     <div class="w-75 m-auto mt-4">
-        <a href="{{ url_for('post.new') }}" class="btn btn-success text-info position-absolute end-0 me-5" role="button">
-            Novo post <i class="fas fa-plus text-info"></i>
-        </a>
         {% if not all_posts %}
             <div class="w-100 m-auto text-center">
                 <span class="text-muted">
@@ -24,5 +21,13 @@
                 {% endfor %}
             </div>
         {% endif %}
+        <div class="position-fixed top-0 end-0"
+             style="z-index: 999; margin-top: 7rem; margin-right: 9.785rem;">
+            <a href="{{ url_for('post.new') }}" role="button"
+               class="btn btn-outline-info border-2 rounded-circle btn-sm"
+               style="opacity: .8;;">
+                <i class="fas fa-plus text-info"></i>
+            </a>
+        </div>
     </div>
 {% endblock %}

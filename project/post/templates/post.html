@@ -13,7 +13,7 @@
             {% include "post_dropdown.html" %}
         {% else %}
             <div>
-                <span class="text-muted">
+                <span class="text-muted" style="font-size: .7rem;">
                     {{ post.created_at.strftime('%d/%m/%Y') }}
                     {% if post.created_at != post.last_updated_at %}
                     	(editado)

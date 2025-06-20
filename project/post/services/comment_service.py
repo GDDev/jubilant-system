@@ -6,6 +6,8 @@ from ..models import Comment
 from ..exceptions import CommentException
 from ..repositories import CommentRepository
 
+from utils.validators import validate_comment
+
 
 class CommentService:
     def __init__(self):
@@ -13,6 +15,7 @@ class CommentService:
 
     def add(self, comment_data: dict) -> None:
         try:
+            validate_comment(comment_data['comment'])
             self.comment_repo.insert(
                 Comment(
                     profile_id=comment_data['profile_id'],
@@ -20,6 +23,8 @@ class CommentService:
                     comment=comment_data['comment']
                 )
             )
+        except CommentException as e:
+            raise e
         except SQLAlchemyError as e:
             raise CommentException('Falha ao comentar.') from e
 
@@ -30,8 +35,11 @@ class CommentService:
                 raise CommentException('Comentário não encontrado.')
             if comment.profile_id != current_user.id:
                 abort(403)
+            validate_comment(content)
             comment.comment = content
             self.comment_repo.update(comment)
+        except CommentException as e:
+            raise e
         except SQLAlchemyError as e:
             raise CommentException('Falha ao editar comentário.') from e
 
