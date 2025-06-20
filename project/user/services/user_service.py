@@ -1,5 +1,6 @@
 from flask import abort
 from flask_login import current_user
+from sqlalchemy.exc import SQLAlchemyError
 
 from .. import User
 from ..repositories import UserRepository
@@ -29,3 +30,11 @@ class UserService:
                 raise Exception('Você não pode excluir contas alheias')
         else:
             self.user_repository.delete(user)
+
+    def update(self, user, **kwargs):
+        try:
+            for key, value in kwargs.items():
+                setattr(user, key, value)
+            self.user_repository.update(user)
+        except (SQLAlchemyError, Exception) as e:
+            raise e

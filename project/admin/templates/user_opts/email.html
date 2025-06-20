@@ -1,0 +1,19 @@
+{% extends 'control_user.html' %}
+{% block control_email %}
+    <form action="{{ url_for('admin.change_email', p_id=profile.id) }}" method="post"
+          class="d-flex justify-content-center align-items-end mt-3 w-100 gap-2">
+        {{ form.csrf_token }}
+        {% from '_formhelpers.html' import show_errors %}
+        <div class="d-flex justify-content-center align-items-start small gap-2" style="max-width: fit-content;">
+            {{ show_errors(form.email) }}
+            {{ form.email(class='form-control bg-transparent text-white',
+                    value=profile.user.email,
+                    style="width: {}rem;".format((profile.user.email|length + 2) * 0.6)) }}
+        </div>
+        <input type="submit" value="Salvar" class="text-success small bg-transparent border-0 fw-bold">
+        <a href="{{ url_for('admin.control_user', p_id=profile.id) }}"
+           class="text-danger text-decoration-none small" role="button">
+            Cancelar
+        </a>
+    </form>
+{% endblock %}

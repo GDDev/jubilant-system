@@ -7,7 +7,7 @@
                 <div class="gap-2 d-flex align-items-center w-100 m-auto justify-content-center">
                     {% block change_profile_pic %}
                         <img src="{{ current_user.profile_pic }}" alt="profile pic"
-                             class="img-thumbnail profile-pic-lg p-1" style="width: 4rem; height: 4rem;">
+                             class="img-thumbnail profile-pic-lg p-0" style="width: 4rem; height: 4rem;">
                         <span class="text-white fw-bold">
                             {{ current_user.user.name }} {{ current_user.user.surname }}<br>
                             ({{ current_user.code }})

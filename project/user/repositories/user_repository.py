@@ -31,3 +31,7 @@ class UserRepository:
         user.email = email
         db.session.commit()
         return user
+
+    @staticmethod
+    def update(user):
+        db.session.commit()

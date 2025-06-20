@@ -82,4 +82,9 @@ def remove_friendship(friendship_id: int):
 @friendship.route('/listar', methods=['GET'])
 @login_required
 def get_friends():
-    return render_template('friend_list.html', friends=current_user.friends)
+    suggestions = []
+    try:
+        suggestions = friendship_service.get_friend_suggestions()
+    except FriendshipException as e:
+        flash(str(e))
+    return render_template('friend_list.html', friends=current_user.friends, suggestions=suggestions)
