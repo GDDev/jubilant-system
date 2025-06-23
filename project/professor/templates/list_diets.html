@@ -2,15 +2,103 @@
 {% block title %}Aprovar Dietas{% endblock %}
 {% block content %}
     <div class="w-75 m-auto d-flex flex-column align-items-center justify-content-center mt-4">
-        <div>
-            {% if not diets %}
-            	<span>Nenhuma dieta encontrada para avaliar.</span>
-            {% endif %}
-            {% for diet in diets %}
-            	<div>
-                    {{ diet.creator.user.name }}
+        <div class="w-100 m-auto d-flex flex-column align-items-start justify-content-center gap-4">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-unapproved-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-unapproved" type="button" role="tab"
+                        aria-controls="nav-unapproved" aria-selected="true">
+                        Dietas Não Aprovadas
+                    </button>
+                    <button class="nav-link" id="nav-approved-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-approved" type="button" role="tab"
+                        aria-controls="nav-approved" aria-selected="false">
+                        Dietas Já Aprovadas
+                    </button>
                 </div>
-            {% endfor %}
+            </nav>
+            <div class="tab-content w-75" id="nav-tabContent">
+                <div class="tab-pane fade show active w-100"
+                     id="nav-unapproved" role="tabpanel" aria-labelledby="nav-unapproved-tab">
+                    <div class="d-flex w-100 gap-4 flex-column">
+                        {% if not unapproved %}
+                            <span>Nenhuma dieta encontrada para avaliar.</span>
+                        {% endif %}
+                        {% for diet in unapproved %}
+                            {% set updated_date = diet.last_updated_at.strftime('%d/%m') %}
+                            {% set updated_time = diet.last_updated_at.strftime('%H:%M') %}
+                            {%
+                                set creator_name = '{} {}'.format(
+                                    diet.creator.user.name, diet.creator.user.surname
+                                )
+                            %}
+                            {%
+                                set receiver_name='{} {}'.format(
+                                    diet.receiver.user.name, diet.receiver.user.surname
+                                )
+                            %}
+                            <div class="w-100 p-3 border border-warning-subtle shadow rounded">
+                                <div class="d-flex justify-content-between w-100">
+                                    <p class="text-info">Dieta criada para: {{ receiver_name }}</p>
+                                    <span class="text-muted" style="font-size: .8rem">
+                                        Última edição: {{ updated_date }} às {{ updated_time }}
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-start w-100">
+                                    <span style="font-size: .9rem">Criador: {{ creator_name }}</span>
+                                    <div class="d-flex gap-4">
+                                        <a href="{{ url_for('professor.detail', routine_id=diet.id) }}"
+                                           class="text-decoration-none btn btn-dark">
+                                            Ver detalhes
+                                        </a>
+                                        <a href="{{ url_for('professor.approve', routine_id=diet.id) }}"
+                                           class="text-decoration-none btn btn-success">
+                                            Aprovar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane fade"
+                     id="nav-approved" role="tabpanel" aria-labelledby="nav-approved-tab">
+                    <div class="d-flex w-100 gap-4 flex-column">
+                    {% if not approved %}
+                        <span>Nenhuma dieta aprovada.</span>
+                    {% endif %}
+                    {% for diet in approved %}
+                        {% set approved_date = diet.approved_at.strftime('%d/%m') %}
+                        {% set approved_time = diet.approved_at.strftime('%H:%M') %}
+                        {% set creator_name = '{} {}'.format(diet.creator.user.name, diet.creator.user.surname) %}
+                        {% set receiver_name='{} {}'.format(diet.receiver.user.name, diet.receiver.user.surname)%}
+                        {% set
+                            prof_name='{} {}'.format(diet.supervisor.user.name, diet.supervisor.user.surname)
+                        %}
+                        <div class="w-100 border border-success rounded p-3 shadow">
+                            <div class="d-flex justify-content-between w-100">
+                                <p class="text-info">Dieta criada para: {{ receiver_name }}</p>
+                                <span class="text-muted" style="font-size: .8rem">
+                                    Aprovado: {{ approved_date }} às {{ approved_time }}
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <div class="d-flex flex-column">
+                                    <span style="font-size: .9rem">Criador: {{ creator_name }}</span>
+                                    <span style="font-size: .9rem">Aprovado por: {{ prof_name }}</span>
+                                </div>
+                                <div>
+                                    <a href="{{ url_for('professor.detail', routine_id=diet.id) }}"
+                                       class="text-decoration-none btn btn-dark">
+                                        Ver detalhes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

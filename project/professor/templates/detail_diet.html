@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% block title %}Detalhes do Treino{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column justify-content-center align-items-center">
+        {% if diet.status.value == 'approved' %}
+        	<div class="d-flex flex-column text-success px-3 fs-5 border border-2 border-success justify-content-center
+        	align-items-center rounded-5 gap-1 pb-2">
+                Aprovado
+                {% if diet.supervisor %}
+                	<span style="font-size: .8rem">Por:
+                        <a href="{{ url_for('perfil.detail_profile', code=diet.supervisor.code) }}"
+                            class="text-decoration-none">
+                            <b>{{ diet.supervisor.user.name }} {{ diet.supervisor.user.surname }}</b>
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="w-75 m-auto d-flex flex-column align-items-start" style="font-size: .9rem">
+            {% set creator = '{} {} ({})'.format(
+            diet.creator.user.name,diet.creator.user.surname,diet.creator.username
+            ) %}
+            {% set receiver = '{} {} ({})'.format(
+            diet.receiver.user.name,diet.receiver.user.surname,diet.receiver.username
+            ) %}
+            <a href="{{ url_for('professor.pending_diets') }}" class="text-decoration-none">
+                <i class="text-danger bi bi-arrow-left">Voltar</i>
+            </a>
+            <div class="w-100 d-flex justify-content-between mt-2">
+                <span>Criado por:
+                    <a href="{{ url_for('perfil.detail_profile', code=diet.creator.code) }}"
+                       class="text-info text-decoration-none">
+                        {{ creator }}
+                    </a>
+                </span>
+                <div class="d-flex flex-column align-items-end" style="font-size: .795rem">
+                {% if diet.created_at != diet.last_updated_at %}
+                    <span class="text-muted">{{ diet.created_at.strftime('%d/%m/%Y %H:%M:%S') }}</span>
+                {% endif %}
+                <span class="text-muted">
+                    Última edição:
+                    {{ diet.last_updated_at.strftime('%d/%m/%Y %H:%M:%S') }}
+                </span>
+                </div>
+            </div>
+            <span>Criado para:
+                <a href="{{ url_for('perfil.detail_profile', code=diet.receiver.code) }}"
+                   class="text-info text-decoration-none">
+                    {{ receiver }}
+                </a>
+            </span>
+        </div>
+        <div class="w-75">
+        {% if not diet.routine_items %}
+        	<span>Nenhuma refeição adicionada.</span>
+        {% else %}
+            {% for item in diet.routine_items %}
+                <div class="w-100 d-flex flex-column mt-4">
+                    <div class="w-100 d-flex justify-content-between">
+                        <span class="fw-bold">{{ item.name }}</span>
+                        <div style="font-size: .795rem;">
+                        <span class="text-muted">{{ item.created_at.strftime('%d/%m/%Y') }}</span>
+                        {% if item.expiration_date %}
+                            <span class="text-muted">- {{ item.expiration_date.strftime('%d/%m/%Y') }}</span>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <hr class="text-info">
+                    {% if item.source %}
+                        <span class="text-muted">Extra: <b>{{ item.source }}</b></span>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if not item.opts %}
+                        <span>Nenhuma opção adicionada</span>
+                    {% endif %}
+                    {% for opt in item.opts %}
+                        <div>
+                            <div class="mb-4">
+                                <div>
+                                    <div class="text-muted">
+                                        <span class="text-muted">Horário:
+                                            <b class="text-info">{{ opt.ref_time.strftime('%H:%M') }}</b>
+                                        </span>
+                                    </div>
+                                    {% if opt.goal %}
+                                        <span class="text-muted">
+                                            Objetivo: <b class="text-info">{{ opt.goal }}</b>
+                                        </span>
+                                    {% endif %}
+                                    <div>
+                                    {% if opt.total_calories %}
+                                    	<span class="text-muted">
+                                            Calorias: <b class="text-info">{{ opt.total_calories }}kcal</b>
+                                        </span>
+                                    {% endif %}
+                                    {% if opt.total_protein %}
+                                    	<span class="text-muted">
+                                            Proteínas: <b class="text-info">{{ opt.total_protein }}g</b>
+                                        </span>
+                                    {% endif %}
+                                    {% if opt.total_fat %}
+                                    	<span class="text-muted">
+                                            Gorduras: <b class="text-info">{{ opt.total_fat }}g</b>
+                                        </span>
+                                    {% endif %}
+                                    {% if opt.total_carbs %}
+                                    	<span class="text-muted">
+                                            Carboídratos: <b class="text-info">{{ opt.total_carbs }}g</b>
+                                        </span>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column justify-content-between my-2">
+                                    <span class="text-success">Alimentos:</span>
+                                    {% for food in opt.opt_foods %}
+                                        <div class="">
+                                            <span class="text-muted">
+                                                <b>{{ food.name }}</b>
+                                            </span>
+                                            {% if food.quantity %}
+                                                <span class="text-muted">
+                                                    <b>{{ food.quantity }}</b> (unidades)
+                                                </span>
+                                            {% else %}
+                                                {% if food.weight %}
+                                                	<span class="text-muted">
+                                                        <b>{{ food.weight }}</b>g
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if food.description %}
+                                            	<span class="text-muted">
+                                                    ({{ food.description }})
+                                                </span>
+                                            {% endif %}
+                                            {% if not loop.last %}
+                                            	<hr class="text-success">
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="text-info">
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if diet.status.value == 'pending' %}
+            <div class="d-flex m-auto mt-4 justify-content-center align-items-center">
+                <a href="{{ url_for('professor.approve', routine_id=diet.id) }}"
+                   class="text-decoration-none btn btn-outline-light bg-success">
+                    Aprovar?
+                </a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

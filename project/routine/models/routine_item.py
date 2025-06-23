@@ -30,6 +30,6 @@ class RoutineItem(Base):
     exercises: Mapped[list['ItemExercises']] = relationship(
         'ItemExercises', back_populates='item', cascade='all, delete-orphan'
     )
-    opts: Mapped[list['ItemMeals']] = relationship(
+    opts: Mapped[list['ItemOpts']] = relationship(
         'ItemOpts', back_populates='item', foreign_keys='[ItemOpts.item_id]', cascade='all, delete-orphan'
     )

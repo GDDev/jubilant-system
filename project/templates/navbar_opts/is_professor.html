@@ -14,7 +14,7 @@
                 </a>
             {% endif %}
             {% if current_user.teaches('Educação física') %}
-                <a href="#"
+                <a href="{{ url_for('professor.pending_workouts') }}"
                    class="dropdown-item rounded-2">
                     Treinos
                 </a>

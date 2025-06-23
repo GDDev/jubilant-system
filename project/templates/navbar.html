@@ -21,7 +21,7 @@
         </div>
         <ul class="nav nav-pills flex-column align-items-start w-100 mt-3 px-4" style="font-size: .75rem;">
             {% if current_user.is_professor %}
-{#                {% include 'navbar_opts/is_professor.html' %}#}
+                {% include 'navbar_opts/is_professor.html' %}
             {% endif %}
             {% if current_user.role == 'admin' or current_user.role == 'god' %}
                 {% include 'navbar_opts/is_admin.html' %}
@@ -93,14 +93,14 @@
     {% endif %}
     </div>
 
-    <ul class="nav mb-5 gap-0 text-start" style="font-size: .7rem">
-        <li class="nav-item mx-auto">
+    <ul class="nav mb-5 gap-0 text-center" style="font-size: .7rem">
+        <li class="nav-item mx-auto w-100">
             <a href="{{ url_for('main.terms') }}" class="nav-link text-muted p-0">Termos e Condições</a>
         </li>
-        <li class="nav-item mx-auto">
+        <li class="nav-item mx-auto w-100">
             <a href="{{ url_for('main.privacy') }}" class="nav-link text-muted p-0">Políticas de Privacidade</a>
         </li>
-        <li class="nav-item mx-auto">
+        <li class="nav-item mx-auto w-100">
             <a href="{{ url_for('main.faq') }}" class="nav-link text-muted p-0">Perguntas Frequentes</a>
         </li>
     </ul>

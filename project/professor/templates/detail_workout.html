@@ -1,0 +1,150 @@
+{% extends 'layout.html' %}
+{% block title %}Detalhes do Treino{% endblock %}
+{% block content %}
+    <div class="w-75 m-auto d-flex flex-column justify-content-center align-items-center">
+        {% if workout.status.value == 'approved' %}
+        	<div class="d-flex flex-column text-success px-3 fs-5 border border-2 border-success justify-content-center
+        	align-items-center rounded-5 gap-1 pb-2">
+                Aprovado
+                {% if workout.supervisor %}
+                	<span style="font-size: .8rem">Por:
+                        <a href="{{ url_for('perfil.detail_profile', code=workout.supervisor.code) }}"
+                            class="text-decoration-none">
+                            <b>{{ workout.supervisor.user.name }} {{ workout.supervisor.user.surname }}</b>
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %} 
+        <div class="w-75 m-auto d-flex flex-column align-items-start" style="font-size: .9rem">
+            {% set creator = '{} {} ({})'.format(
+            workout.creator.user.name,workout.creator.user.surname,workout.creator.username
+            ) %}
+            {% set receiver = '{} {} ({})'.format(
+            workout.receiver.user.name,workout.receiver.user.surname,workout.receiver.username
+            ) %}
+            <a href="{{ url_for('professor.pending_workouts') }}" class="text-decoration-none">
+                <i class="text-danger bi bi-arrow-left">Voltar</i>
+            </a>
+            <div class="w-100 d-flex justify-content-between mt-2">
+                <span>Criado por:
+                    <a href="{{ url_for('perfil.detail_profile', code=workout.creator.code) }}"
+                       class="text-info text-decoration-none">
+                        {{ creator }}
+                    </a>
+                </span>
+                <div class="d-flex flex-column align-items-end" style="font-size: .795rem">
+                {% if workout.created_at != workout.last_updated_at %}
+                    <span class="text-muted">{{ workout.created_at.strftime('%d/%m/%Y %H:%M:%S') }}</span>
+                {% endif %}
+                <span class="text-muted">
+                    Última edição:
+                    {{ workout.last_updated_at.strftime('%d/%m/%Y %H:%M:%S') }}
+                </span>
+                </div>
+            </div>
+            <span>Criado para:
+                <a href="{{ url_for('perfil.detail_profile', code=workout.receiver.code) }}"
+                   class="text-info text-decoration-none">
+                    {{ receiver }}
+                </a>
+            </span>
+        </div>
+        <div class="w-75">
+        {% if not workout.routine_items %}
+        	<span>Nenhum treino adicionado.</span>
+        {% else %}
+            {% for item in workout.routine_items %}
+                <div class="w-100 d-flex flex-column mt-4">
+                    <div class="w-100 d-flex justify-content-between">
+                        <span class="fw-bold">{{ item.name }}</span>
+                        <div style="font-size: .795rem;">
+                        <span class="text-muted">{{ item.created_at.strftime('%d/%m/%Y') }}</span>
+                        {% if item.expiration_date %}
+                            <span class="text-muted">- {{ item.expiration_date.strftime('%d/%m/%Y') }}</span>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <hr class="text-info">
+                    {% if item.source %}
+                        <span class="text-muted">Extra: <b>{{ item.source }}</b></span>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if not item.exercises %}
+                        <span>Nenhum exercício adicionado</span>
+                    {% endif %}
+                    {% for exercise in item.exercises %}
+                        <div>
+                            <div class="mb-4">
+                                <div>
+                                    <div class="text-muted">
+                                        <span class="text-muted">Exercício:
+                                            <b class="text-info">{{ exercise.exercise.name }}</b>
+                                        </span>
+                                        para {{ exercise.exercise.muscle_group }}
+                                    </div>
+                                    {% if exercise.exercise.instruction %}
+                                        <span class="text-muted">
+                                            Instruções: <b class="text-info">{{ exercise.exercise.instruction }}</b>
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex justify-content-between my-2">
+                                    <div class="d-flex flex-column align-items-start">
+                                    <span class="text-muted">
+                                        Min. séries: <b>{{ exercise.min_sets }}</b>
+                                    </span>
+                                    {% if exercise.max_sets %}
+                                        <span class="text-muted">
+                                            Máx. séries: <b>{{ exercise.max_sets }}</b>
+                                        </span>
+                                    {% endif %}
+                                    </div>
+                                    <div class="d-flex flex-column align-items-end">
+                                    {% if exercise.set_duration %}
+                                        <span class="text-muted">
+                                            Duração da série: <b>{{ exercise.set_duration }}</b>
+                                        </span>
+                                    {% endif %}
+                                    {% if exercise.set_interval %}
+                                        <span class="text-muted">
+                                            Tempo de descanso: <b>{{ exercise.set_interval }}</b>
+                                        </span>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                <span class="text-muted">
+                                    Min. repetições: <b>{{ exercise.min_reps }}</b>
+                                </span>
+                                {% if exercise.max_reps %}
+                                    <span class="text-muted">
+                                        Máx. repetições: <b>{{ exercise.max_reps }}</b>
+                                    </span>
+                                {% endif %}
+                                {% if exercise.weight %}
+                                    <span class="text-muted">
+                                        Peso: <b>{{ exercise.weight }}</b>kg
+                                    </span>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="text-info">
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if workout.status.value == 'pending' %}
+            <div class="d-flex m-auto mt-4 justify-content-center align-items-center">
+                <a href="{{ url_for('professor.approve', routine_id=workout.id) }}"
+                   class="text-decoration-none btn btn-outline-light bg-success">
+                    Aprovar?
+                </a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
